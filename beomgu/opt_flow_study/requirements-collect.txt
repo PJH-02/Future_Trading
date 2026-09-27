@@ -1,0 +1,5 @@
+# 원자료 수집기(hyfe/collect_*.py)용
+finance-datareader>=0.9
+yfinance>=0.2
+requests>=2.31
+pandas>=2.1
