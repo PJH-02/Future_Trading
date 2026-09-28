@@ -63,3 +63,4 @@
 | `opt_flow_study/` | 코드. 실행 `python run_study.py --steps 1-8`, `python backtest_periods.py`, `python explore_putflow_thresholds.py`, 검사 `python selftest.py` |
 | `collectors/` | 원자료 수집기 |
 | `results/2026-09-27/` | `report_optflow_1d.md`(판정), `periods_report.md`(기간별), `putflow_thresholds.md`(풋 강도별) |
+| `data/krx_k200_option_foreign_callput_net_daily_2010-2026.csv` | KRX 코스피200 옵션(월물·정규장) 외국인 콜/풋 순매수 일별, 2010-01-04 ~ 2026-09-23. 대금 원, 거래량 계약 |
