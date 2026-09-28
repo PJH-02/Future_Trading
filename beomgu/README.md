@@ -64,3 +64,9 @@
 | `collectors/` | 원자료 수집기 |
 | `results/2026-09-27/` | `report_optflow_1d.md`(판정), `periods_report.md`(기간별), `putflow_thresholds.md`(풋 강도별) |
 | `data/krx_k200_option_foreign_callput_net_daily_2010-2026.csv` | KRX 코스피200 옵션(월물·정규장) 외국인 콜/풋 순매수 일별, 2010-01-04 ~ 2026-09-23. 대금 원, 거래량 계약 |
+| `data/krx_opt_investor_daily.csv` | 백테스트 입력: KRX 옵션 투자자별 일별(외국인·개인·기관·기타법인·전체 × 콜/풋 × 매수·매도, 금액·계약) |
+| `data/naver_fut_investor_daily.csv` | 백테스트 입력: 코스피200 선물 투자자별 일별(네이버) |
+| `data/k200_index_daily.csv`, `data/k200_naver_fchart_daily.csv` | 백테스트 입력: K200 지수 일봉(FinanceDataReader, 네이버) |
+| `data/kodex200_daily.csv`, `data/kodex200_naver_fchart_daily.csv` | 백테스트 입력: KODEX 200 일봉(yfinance 원가격, 네이버 수정주가) |
+
+재현: `cd opt_flow_study && python run_study.py --steps 1-8 --raw-dir ../data`

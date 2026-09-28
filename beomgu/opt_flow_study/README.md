@@ -85,7 +85,7 @@ Windows 콘솔 한글은 스크립트가 stdout 을 UTF-8 로 바꿔 처리한�
 
 ## 깃
 - 이 폴더의 `.gitignore`: `data/`, `outputs/`, `config.local.json`, 캐시 제외
-- 원자료(csv)는 커밋하지 않는다. 수집기는 `../collectors/`
+- 백테스트에 쓴 원자료 csv 는 `../data/` 에 있다. 실행: `python run_study.py --steps 1-8 --raw-dir ../data`. 수집기는 `../collectors/`
 
 ## 변경 이력
 - 0.1.0 (2026-09-27) 최초 작성. 사전등록 v1.
