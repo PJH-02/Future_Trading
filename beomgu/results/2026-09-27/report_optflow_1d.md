@@ -1,7 +1,7 @@
 # 옵션 매매 지표 조사 결과 — optflow_1d
 
 실행 20260927-225806 · 코드 0.1.0 (git 4795784) · Python 3.14.4, pandas 2.3.3, numpy 2.4.4 · 사전등록 v1.1-2026-09-27
-원자료 `<local>` · 마지막 수집 기록: 2026-09-27 krx_browser_collect.js -> local_receiver.py krx_opt_investor_daily.csv bytes=2486166 lines=41181 · 파일 해시는 provenance.json
+원자료 `<raw>` · 마지막 수집 기록: 2026-09-27 krx_browser_collect.js -> local_receiver.py krx_opt_investor_daily.csv bytes=2486166 lines=41181 · 파일 해시는 provenance.json
 
 판정 창 2010-09-20 ~ 2026-09-23 → 실제 표본 n 3938 (2010-09-20 ~ 2026-09-23) · 목표 K200 지수 시가→종가(%) · KODEX 200 병기 · 비용 전
 

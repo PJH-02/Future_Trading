@@ -1,0 +1,153 @@
+{
+ "family": "D3 국면 조건 — 변동성 국면 게이트(오버나잇 보유 여부)",
+ "round": 2,
+ "frozen_at": "2026-09-29",
+ "windows": {
+  "design_A": "결정일 T 2010-01-04 ~ 2019-12-30 (T <= 2019-12-31), 하위 H1 2010~2014, H2 2015~2019",
+  "pre_sample_check": "2004-01-01 ~ 2009-12-31 (A 규칙 <= 2019 안의 자료, 후보 선정 뒤 1회 조회, 선정 기준 아님)",
+  "confirm_B": "2020-01-01 ~ 2025-06-05 (확인 전용)",
+  "E4": "2025-06-09 ~ (보고만)",
+  "burn_in": "신호 번인은 판정 구간 밖 과거 자료로 채움(USRV: SPX 1990~, RVON: KODEX 2002-10~). B 시작일에 두 게이트 모두 값이 있음"
+ },
+ "data_guard": "탐색 동안 B·E4 수익률은 계산하지 않음. 가격은 2020-01-02 까지만 읽음(2019-12-30 밤의 청산 시가), 미국·투자자별은 2019-12-31 까지. B·E4 는 원자료 존재만 확인(KODEX ~2026-09-29, SPX 종가 ~2026-09-21)",
+ "explored_variants": 95,
+ "variant_breakdown": {
+  "S1 프로파일": 10,
+  "S1 재실행(US 매핑 버그 수정)": 2,
+  "S2 단일 게이트 격자": 44,
+  "S3 결합": 3,
+  "S4 이웃": 16,
+  "S5 추가 변수 게이트": 8,
+  "USRV 이웃": 6,
+  "S6 결합": 2,
+  "S6 결합 이웃": 4
+ },
+ "multiple_testing": {
+  "S2_grid_max_t": 1.99,
+  "S2_grid_fwer_circular_shift_p": 0.42,
+  "note": "A 격자 최고 성적은 순환 이동 귀무분포(최대 t 중앙값 1.89, 95% 2.58)로 설명됨. 셀 단위 p(순환 이동 USRV 0.023 / RVON 0.017, 연도 층화 플라시보 0.012 / 0.024)는 선택 편향 미반영"
+ },
+ "common": {
+  "asset": "069500 KODEX 200. 가격 = 네이버 siseJson 분배 수정주가 일봉 OHLC (overnight_lab data.price('069500'), 캐시 <RAW>/etf/069500.csv), 2002-10-14~ 전체 이력 사용",
+  "target": "r_on(T) = O(T+1)/C(T) - 1 (결정일 T 인덱스)",
+  "entry": "T 종가 단일가(15:20~15:30) 매수, 체결가 = C(T). 게이트는 T 장 시작 전후에 이미 확정(시간외 종가 가정 불필요)",
+  "exit": "T+1 시가 단일가(08:30~09:00) 매도, 체결가 = O(T+1)",
+  "position": "gate(T)=1 이면 1박 롱 1단위, 0 이면 무포지션. 레버리지·숏 없음. 보유 밤마다 왕복 1회",
+  "cost": "왕복 5bp/보유 밤 (스트레스 7bp)",
+  "nan_policy": "gate NaN(번인·결측) 밤은 무포지션이며 표본에서 제외(매일 보유 기준선도 같은 밤 집합으로 비교)",
+  "pct_rank": "pct(t) = [#{x(t-k) < x(t)} + 0.5*#{x(t-k) == x(t)}] / W, k = 1..W. t 자신은 창에서 제외, 과거 W 개 중 하나라도 NaN 이면 pct(t)=NaN",
+  "metrics": "Δ = 평균 r_on(gate=1) - 평균 r_on(gate=0), 회귀 r = a + b*gate 의 Newey-West(5) t (engine.delta_test). 순샤프·MDD·CAGR = engine.stats(pos, r_on, cost): 일별 = pos*r - pos*cost, 표본 전체 밤(0 포함) 기준, 샤프 = mean/sd*sqrt(252), MDD = cumprod(1+일별) 기준"
+ },
+ "frozen_specs": [
+  {
+   "cell_id": "D3-USRV",
+   "asset": "069500",
+   "target": "r_on",
+   "hypothesis": "밤 프리미엄은 한국 밤 위험(= 미국 정규장 위험)에 비례하고 비용은 고정이므로, 미국 실현변동성이 과거 1년 중앙값 이상인 국면의 밤만 보유하면 비용 후 수익·MDD 가 매일 보유보다 낫다",
+   "rule": [
+    "1) S&P500 지수 일봉 종가 spx_daily.csv 'close'(미국 현지 날짜 D), 종가 결측 행 제거",
+    "2) r_us(D) = close(D)/close(D_prev) - 1 (결측 제거 후 연속 세션)",
+    "3) RV20(D) = 표본표준편차(ddof=1) of r_us(D-19..D), 20세션 모두 필요",
+    "4) pct(D) = pct_rank(RV20, W=250) — 미국 세션 창, D 제외 과거 250세션",
+    "5) 한국 거래일 T 에 D* = D < T(달력일, 같은 날짜 제외)인 마지막 미국 세션을 매핑, T - D* > 7일이면 NaN",
+    "6) gate(T) = 1 if pct(D*) >= 0.5 else 0 (NaN 이면 무포지션·표본 제외)"
+   ],
+   "params": {
+    "n": 20,
+    "W": 250,
+    "threshold": 0.5,
+    "comparison": ">=",
+    "max_gap_days": 7
+   },
+   "timing": "신호 확정: 미국 D* 종가(KST T 05:00/06:00) 직후, T 09:00 이전. 진입: T 종가 단일가 C(T). 청산: T+1 시가 단일가 O(T+1). 비용 5bp(7bp)",
+   "direction": "long (KODEX 200 1박 롱, 0/1)",
+   "neighbors": "W=120, W=500, threshold 0.4, threshold 0.6 (모두 n=20; 보고·부호 확인용). 추가 보고: n=10, n=40",
+   "A_evidence": "A 2010~2019 2,466밤 중 보유 1,119(45%, 연 112밤). 보유 +6.81bp vs 비보유 +3.21bp, Δ +3.60bp (NW t 1.60; 윈저화 +3.46 t 1.67; 중앙값 차 +4.44). 보유 밤 순평균(5bp) +1.81bp, 7bp -0.19bp. 순샤프 0.28 vs 매일 보유 -0.04, MDD -11.3% vs -27.8%, CAGR +1.8% vs -0.8%. H1 Δ +4.0 (샤프 0.40 vs 0.23) / H2 Δ +3.6 (0.12 vs -0.44). 잭나이프 Δ +2.3~+4.7. 이웃 Δ W120 +2.39 W500 +1.72 thr.4 +4.31 thr.6 +3.84 n10 +5.50 n40 +2.28. 코스피200 지수 r_on Δ +3.21 (t 1.24). 사전표본 2004-07 +6.82 (t 1.64), 2008-09 -12.60 (t -1.28). 타 자산 102110 +0.62, 122630 +4.54, 229200(2016~) +1.94. 셀 단위 순환 이동 p 0.023, 연도 층화 플라시보 p 0.012. 95개 변형 다중검정 후 유의하지 않음",
+   "A_stats": {
+    "nights": 2466,
+    "held": 1119,
+    "exposure": 0.454,
+    "held_bp": 6.81,
+    "off_bp": 3.21,
+    "delta_bp": 3.6,
+    "t_nw": 1.6,
+    "net_held_bp_5": 1.81,
+    "sharpe_5": 0.281,
+    "sharpe_base_5": -0.042,
+    "mdd_5": -0.113,
+    "mdd_base_5": -0.278,
+    "cagr_5": 0.018,
+    "cagr_base_5": -0.008,
+    "sharpe_7": -0.029,
+    "sharpe_base_7": -0.588,
+    "mdd_7": -0.191,
+    "mdd_base_7": -0.492,
+    "gate_switches_per_year": 9.8
+   }
+  },
+  {
+   "cell_id": "D3-RVON",
+   "asset": "069500",
+   "target": "r_on",
+   "hypothesis": "D3-USRV 와 같은 가설을 거래 자산 자체의 오버나잇 실현변동성으로 측정한 반복 셀(독립 아님, A 게이트 일치율 75%)",
+   "rule": [
+    "1) KODEX 200(069500) 수정주가 일봉. ron_hist(T) = O(T)/C(T-1) - 1 (= r_on(T-1), T 시가에 확정)",
+    "2) RVON20(T) = 표본표준편차(ddof=1) of ron_hist(T-19..T) = r_on(T-20..T-1) 20밤, 모두 필요",
+    "3) pct(T) = pct_rank(RVON20, W=250) — 한국 거래일 창, T 제외 과거 250거래일",
+    "4) gate(T) = 1 if pct(T) >= 0.5 else 0 (NaN 이면 무포지션·표본 제외)"
+   ],
+   "params": {
+    "n": 20,
+    "W": 250,
+    "threshold": 0.5,
+    "comparison": ">="
+   },
+   "timing": "신호 확정: T 09:00 시가 확정 직후. 진입: T 종가 단일가 C(T). 청산: T+1 시가 단일가 O(T+1). 비용 5bp(7bp)",
+   "direction": "long (KODEX 200 1박 롱, 0/1)",
+   "neighbors": "W=120, W=500, threshold 0.4, threshold 0.6 (모두 n=20; 보고·부호 확인용). 추가 보고: n=10, n=40",
+   "A_evidence": "A 보유 1,125(46%, 연 113밤). 보유 +6.86bp vs 비보유 +3.16bp, Δ +3.70bp (NW t 1.66; 윈저화 +3.58 t 1.75; 중앙값 차 +4.06). 보유 밤 순평균(5bp) +1.86bp, 7bp -0.14bp. 순샤프 0.28 vs -0.04, MDD -13.7% vs -27.8%, CAGR +1.9% vs -0.8%. H1 Δ +6.1 (샤프 0.52 vs 0.23) / H2 Δ +2.1 (-0.06 vs -0.44). 잭나이프 Δ +3.1~+4.5. 이웃 Δ W120 +1.37 W500 +2.80 thr.4 +1.99 thr.6 +2.61 n10 +4.74 n40 +4.20. 지수 r_on Δ +1.95 (t 0.76, 측정 약함). 사전표본 2004-07 +1.82 (t 0.48), 2008-09 -16.14 (t -1.38). 타 자산 102110 +1.21, 122630 +3.27, 229200 -0.05. 셀 단위 순환 이동 p 0.017, 연도 층화 플라시보 p 0.024. 다중검정 후 유의하지 않음",
+   "A_stats": {
+    "nights": 2466,
+    "held": 1125,
+    "exposure": 0.456,
+    "held_bp": 6.86,
+    "off_bp": 3.16,
+    "delta_bp": 3.7,
+    "t_nw": 1.66,
+    "net_held_bp_5": 1.86,
+    "sharpe_5": 0.282,
+    "sharpe_base_5": -0.042,
+    "mdd_5": -0.137,
+    "mdd_base_5": -0.278,
+    "cagr_5": 0.019,
+    "cagr_base_5": -0.008,
+    "sharpe_7": -0.022,
+    "sharpe_base_7": -0.588,
+    "mdd_7": -0.209,
+    "mdd_base_7": -0.492,
+    "gate_switches_per_year": 11.3
+   }
+  }
+ ],
+ "rejected_notable": {
+  "USTR200 pct<0.5": "A 최고 t 1.96(지수 t 2.11)였으나 사전표본 2004-07 Δ -1.09, 2008-09 Δ -22.58 (t -2.47)로 역전 → 제외",
+  "USTR200 < 0": "Δ +9.07 이지만 노출 15%(사전 규칙 노출 >= 30% 미달), 소수 에피소드 의존",
+  "RVON20>=.5 AND USTR200<.5": "A 순샤프 0.42 최고였으나 지수 t 1.30, 사전표본 2004-07 음수",
+  "USRV>=.5 AND RVON>=.5": "순샤프 0.30 으로 RVON 단독 0.28 과 차이 < 0.05 → 변수 적은 쪽 채택(결과를 본 뒤 추가한 동점 처리, 공개)",
+  "추세(TR200·MOM)·외인 20일 수급(FRN20)·오버나잇 지속성(ONM)": "H1·H2 부호가 뒤집히거나 Δ≈0"
+ },
+ "suggested_B_checks": [
+  "B(2020-01-01~2025-06-05)에서 셀별 Δ>0, 순샤프(5bp) > 매일 보유 순샤프, MDD 가 매일 보유보다 얕음, 보유 밤 순평균(5bp) > 0",
+  "7bp 병기, 이웃 4개 부호 동일 여부, 연도별 표",
+  "두 셀은 같은 가설이므로 둘 다 통과해야 가설 확인으로 간주 권고",
+  "E4 는 보고만"
+ ],
+ "caveats": [
+  "A 에서 다중검정(95변형) 후 유의하지 않음 — B 는 사실상 첫 검정",
+  "7bp 에서는 보유 밤 순평균이 0 근처(USRV -0.19bp, RVON -0.14bp)",
+  "지속 하락·위기 국면(2008-09)에서는 고변동성 밤이 크게 잃음 — 위기 방어 없음",
+  "초기 ETF 시가 품질 잡음(102110 과 069500 r_on 상관 0.80)"
+ ],
+ "reference_impl_python": "import numpy as np\nimport pandas as pd\n\n\ndef pct_rank_past(x, W=250):\n    \"\"\"pct(t) = [#{x(t-k) < x(t)} + 0.5*#{x(t-k) == x(t)}] / W, k = 1..W (t 제외 과거 W 개가 모두 있어야 함, 아니면 NaN).\"\"\"\n    v = x.to_numpy(float)\n    out = np.full(len(v), np.nan)\n    for i in range(W, len(v)):\n        w = v[i - W:i]\n        if np.isnan(v[i]) or np.isnan(w).any():\n            continue\n        out[i] = ((w < v[i]).sum() + 0.5 * (w == v[i]).sum()) / W\n    return pd.Series(out, index=x.index)\n\n\ndef map_us_to_kr(s_us, kr_index, max_gap_days=7):\n    \"\"\"한국 거래일 T 에 미국 날짜 D < T 인 마지막 세션 값을 붙인다(T - D > 7일이면 NaN).\"\"\"\n    s = s_us.dropna()\n    pos = np.searchsorted(s.index.values, kr_index.values, side=\"left\") - 1\n    ok = pos >= 0\n    gap = (kr_index.values - s.index.values[np.clip(pos, 0, None)]).astype(\"timedelta64[D]\").astype(int)\n    ok &= gap <= max_gap_days\n    return pd.Series(np.where(ok, s.to_numpy()[np.clip(pos, 0, None)], np.nan), index=kr_index)\n\n\ndef gate_usrv(kodex, spx_close, n=20, W=250, thr=0.5):\n    \"\"\"D3-USRV: S&P500 20세션 실현변동성의 과거 250세션 백분위 >= 0.5 인 밤만 보유.\"\"\"\n    r = spx_close.dropna().pct_change()\n    rv = r.rolling(n, min_periods=n).std()          # 표본 SD(ddof=1), 세션 D 포함 직전 n 개\n    p = map_us_to_kr(pct_rank_past(rv, W), kodex.index)\n    return (p >= thr).astype(float).where(p.notna())\n\n\ndef gate_rvon(kodex, n=20, W=250, thr=0.5):\n    \"\"\"D3-RVON: KODEX 200 오버나잇 수익률 20일 실현변동성의 과거 250거래일 백분위 >= 0.5 인 밤만 보유.\"\"\"\n    ron_hist = kodex[\"open\"] / kodex[\"close\"].shift(1) - 1   # T 행 = r_on(T-1), T 시가에 확정\n    rv = ron_hist.rolling(n, min_periods=n).std()           # r_on(T-20..T-1)\n    p = pct_rank_past(rv, W)\n    return (p >= thr).astype(float).where(p.notna())\n\n\ndef r_on(kodex):\n    return kodex[\"open\"].shift(-1) / kodex[\"close\"] - 1      # T 종가 매수 -> T+1 시가 매도\n",
+ "reference_usage": "kodex = data.price('069500'); spx = data.us_daily('spx')['close']; g1 = gate_usrv(kodex, spx); g2 = gate_rvon(kodex); ret = r_on(kodex); engine.stats(g.loc[a:b], ret.loc[a:b], 5.0), engine.delta_test(g.loc[a:b], ret.loc[a:b]) — A 구간(2010-01-01~2019-12-31)에서 위 A_stats 를 재현함(확인 완료)"
+}

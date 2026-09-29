@@ -145,3 +145,10 @@ def us_daily(name):
 
 def krx_options():
     return pd.read_csv(RAW / "krx_opt_investor_daily.csv", parse_dates=["date"])
+
+
+def spec_file(family):
+    """2차 사전 고정 사양 위치: 출력 폴더(<OUT>/round2/<family>/spec.json)에 없으면 저장소에 올린 결과 폴더에서 찾는다."""
+    cands = [OUT / "round2" / family / "spec.json",
+             (PKG / ".." / "results" / "2026-09-29-overnight" / "round2" / family / "spec.json").resolve()]
+    return next((p for p in cands if p.exists()), cands[0])

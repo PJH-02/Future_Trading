@@ -12,3 +12,7 @@
 패키지: pandas, numpy, requests, tabulate (T08 보고용 ES 1시간봉은 yfinance)
 
 규약 요약: 판정 구간 번인 후 ~ 2025-06-05, A(~2019)/B(2020~2025-06)/E4(2025-06-09~, 보고만), 비용 왕복 5bp(스트레스 7bp), 신호 NaN(번인·결측) 밤은 표본 제외.
+
+2차 디벨롭 스크립트 `topics/r2_d1.py`~`r2_d4.py` 는 사전 고정 사양 `spec.json` 을 `<OUT>/round2/<D1~D4>/spec.json` 에서 읽고, 없으면 `../results/2026-09-29-overnight/round2/<D1~D4>/spec.json` 을 읽는다(`data.spec_file`). 결과는 `<OUT>/round2/<D1~D4>/` 에 쓴다.
+
+주의: 기본 출력 폴더 `../results/overnight_lab/` 에는 실행 환경의 절대경로가 기록될 수 있으므로 커밋하지 않는다(`../.gitignore`).
