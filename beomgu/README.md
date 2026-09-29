@@ -68,12 +68,14 @@
 | `data/naver_fut_investor_daily.csv` | 백테스트 입력: 코스피200 선물 투자자별 일별(네이버) |
 | `data/k200_index_daily.csv`, `data/k200_naver_fchart_daily.csv` | 백테스트 입력: K200 지수 일봉(FinanceDataReader, 네이버) |
 | `data/kodex200_daily.csv`, `data/kodex200_naver_fchart_daily.csv` | 백테스트 입력: KODEX 200 일봉(yfinance 원가격, 네이버 수정주가) |
-| `overnight_lab/` | 종가 베팅·오버나잇 백테스트 코드(1차 t01~t08, 2차 r2_d1~d4). 실행 `python topics/t01_intraday_strength.py` |
+| `overnight_lab/` | 종가 베팅·오버나잇 백테스트 코드(1차 t01~t08, 2차 r2_d1~d4, 3차 r3_d2·bt_d2_2010_2026, 3차 탐색 tools/preopen_d2_*). 실행 `python topics/t01_intraday_strength.py` |
 | `results/2026-09-29-overnight/` | 종가 베팅·오버나잇 1차 결과(`README.md` 요약, 주제별 `report.md`·`verdict*.json`, 시행 장부 `ledger.csv`, 풋 경보 열 `put_veto_alarm.csv`) |
 | `results/2026-09-29-overnight/round2/` | 2차 디벨롭 D1~D4: 셀별 `spec.json`(사전 고정 사양)·`explore.md`(설계 구간 탐색 메모)·`report.md`·`verdict.json`. 코드 `overnight_lab/topics/r2_d1~d4.py` |
+| `results/2026-09-29-overnight/round3_D2/` | D2 3차 디벨롭: 사양(`spec.json`)·탐색 메모와 변형 목록·2003~2009 자료 품질·판정 보고(`report.md`). 코드 `overnight_lab/topics/r3_d2.py`, `overnight_lab/tools/preopen_d2_*.py` |
+| `results/2026-09-29-overnight/strategy_d2_2010_2026/` | D2 3차 셀 전략 백테스트 2010~2026: `report.md`(구간·연도별 표), `equity.png`, `daily_returns.csv`, `summary.csv`, `yearly.csv`. 코드 `overnight_lab/topics/bt_d2_2010_2026.py` |
 | `data/etf/` | 네이버 siseJson 분배 수정주가 일봉(069500·229200·102110·091160·122630·233740·360750·133690·219480·114800·123310), 네이버 fchart 코스피200 지수(KPI200)·선물 연결(FUT) |
 | `data/naver_kospi_investor_daily.csv`, `data/naver_kosdaq_investor_daily.csv` | 코스피·코스닥 현물 투자자별 일별(네이버) |
 | `data/naver_program_daily.csv`, `data/naver_kosdaq_program_daily.csv` | 코스피·코스닥 프로그램 매매 일별(차익·비차익, 네이버) |
-| `data/spx_daily.csv`, `data/ndx_comp_daily.csv` | S&P500·나스닥 종합 지수 일봉(미국 날짜) |
+| `data/spx_daily.csv`, `data/ndx_comp_daily.csv`, `data/es_daily.csv`, `data/nq_daily.csv` | S&P500·나스닥 종합 지수, S&P500·나스닥100 선물 연결 일봉(미국 날짜) |
 
 재현: `cd opt_flow_study && python run_study.py --steps 1-8 --raw-dir ../data`

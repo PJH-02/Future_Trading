@@ -16,3 +16,5 @@
 2차 디벨롭 스크립트 `topics/r2_d1.py`~`r2_d4.py` 는 사전 고정 사양 `spec.json` 을 `<OUT>/round2/<D1~D4>/spec.json` 에서 읽고, 없으면 `../results/2026-09-29-overnight/round2/<D1~D4>/spec.json` 을 읽는다(`data.spec_file`). 결과는 `<OUT>/round2/<D1~D4>/` 에 쓴다.
 
 주의: 기본 출력 폴더 `../results/overnight_lab/` 에는 실행 환경의 절대경로가 기록될 수 있으므로 커밋하지 않는다(`../.gitignore`).
+
+3차(D2): `topics/r3_d2.py`(2003~2009 판정), `topics/bt_d2_2010_2026.py`(2010~2026 전략 백테스트, matplotlib 필요, 재생성만 할 때는 `--no-ledger`), 탐색 `tools/preopen_d2_explore.py`·자료 품질 `tools/preopen_d2_h0_quality.py`. 사양 등 이전 결과는 `data.result_file()` 로 `<OUT>` 에 없으면 `../results/2026-09-29-overnight/` 에서 읽는다.
