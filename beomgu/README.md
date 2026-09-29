@@ -68,5 +68,11 @@
 | `data/naver_fut_investor_daily.csv` | 백테스트 입력: 코스피200 선물 투자자별 일별(네이버) |
 | `data/k200_index_daily.csv`, `data/k200_naver_fchart_daily.csv` | 백테스트 입력: K200 지수 일봉(FinanceDataReader, 네이버) |
 | `data/kodex200_daily.csv`, `data/kodex200_naver_fchart_daily.csv` | 백테스트 입력: KODEX 200 일봉(yfinance 원가격, 네이버 수정주가) |
+| `overnight_lab/` | 종가 베팅·오버나잇 백테스트 코드(t01~t08). 실행 `python topics/t01_intraday_strength.py` |
+| `results/2026-09-29-overnight/` | 종가 베팅·오버나잇 1차 결과(`README.md` 요약, 주제별 `report.md`·`verdict*.json`, 시행 장부 `ledger.csv`, 풋 경보 열 `put_veto_alarm.csv`) |
+| `data/etf/` | 네이버 siseJson 분배 수정주가 일봉(069500·229200·102110·091160·122630·233740·360750·133690·219480), 네이버 fchart 코스피200 지수(KPI200)·선물 연결(FUT) |
+| `data/naver_kospi_investor_daily.csv`, `data/naver_kosdaq_investor_daily.csv` | 코스피·코스닥 현물 투자자별 일별(네이버) |
+| `data/naver_program_daily.csv`, `data/naver_kosdaq_program_daily.csv` | 코스피·코스닥 프로그램 매매 일별(차익·비차익, 네이버) |
+| `data/spx_daily.csv` | S&P500 지수 일봉(미국 날짜) |
 
 재현: `cd opt_flow_study && python run_study.py --steps 1-8 --raw-dir ../data`
