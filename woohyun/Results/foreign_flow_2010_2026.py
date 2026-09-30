@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
 
+
 # ============================================================
 # KOSPI200 선물 외국인 수급 -> 다음날 KOSPI200 방향성 분석
 # 기간: 2010~2026
