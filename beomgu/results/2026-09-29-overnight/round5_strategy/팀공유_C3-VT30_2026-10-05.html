@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3-VT30 전략 검증</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: single reading column (max 880px) like a desk research memo; numbers in mono; tables scroll inside their own boxes */
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --fg: #14171c;
+  --fg-2: #4a505a;
+  --fg-3: #737a85;
+  --rule: #dfe2e7;
+  --accent: #2a78d6;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --band: #eef1f5;
+  --good: #1f7a46;
+  --warn: #9a6200;
+  --bad: #b3261e;
+  --chip-good: #e3f2e9;
+  --chip-warn: #fbf0d9;
+  --chip-bad: #fbe4e2;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121418; --panel: #1a1d22; --fg: #eef0f3; --fg-2: #b9bec7; --fg-3: #8e949e; --rule: #2e333b;
+    --accent: #3987e5; --series-1: #3987e5; --series-2: #d95926; --band: #20242a;
+    --good: #5cc48a; --warn: #e2b04a; --bad: #f08079; --chip-good: #183324; --chip-warn: #3a2e14; --chip-bad: #3d1d1b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121418; --panel: #1a1d22; --fg: #eef0f3; --fg-2: #b9bec7; --fg-3: #8e949e; --rule: #2e333b;
+  --accent: #3987e5; --series-1: #3987e5; --series-2: #d95926; --band: #20242a;
+  --good: #5cc48a; --warn: #e2b04a; --bad: #f08079; --chip-good: #183324; --chip-warn: #3a2e14; --chip-bad: #3d1d1b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 15px; line-height: 1.65; padding-inline: 16px; padding-block: 28px 56px; }
+.wrap { max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+header { display: flex; flex-direction: column; gap: 10px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--fg-3); text-transform: uppercase; }
+h1 { font-size: clamp(26px, 4.4vw, 34px); line-height: 1.25; margin: 0; font-weight: 700; text-wrap: balance; }
+h2 { font-size: 20px; margin: 0; font-weight: 700; text-wrap: balance; }
+h3 { font-size: 16px; margin: 0; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.lede { color: var(--fg-2); font-size: 16px; }
+section { display: flex; flex-direction: column; gap: 14px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.tile { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.tile .k { font-size: 12.5px; color: var(--fg-3); }
+.tile .v { font-family: var(--f-mono); font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tile .s { font-size: 12.5px; color: var(--fg-2); }
+.tile.exec { border-style: dashed; }
+ol.rules { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 72ch; }
+ol.rules li::marker { font-family: var(--f-mono); color: var(--fg-3); }
+code, .mono { font-family: var(--f-mono); font-size: 0.92em; }
+.tbl { overflow-x: auto; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+th, td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-weight: 600; color: var(--fg-2); font-size: 12.5px; background: var(--band); }
+tbody tr:last-child td { border-bottom: 0; }
+td.num, td .num { font-family: var(--f-mono); }
+tr.pick td { font-weight: 600; }
+tr.ref td { color: var(--fg-3); }
+.chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.chip.good { background: var(--chip-good); color: var(--good); }
+.chip.warn { background: var(--chip-warn); color: var(--warn); }
+.chip.bad { background: var(--chip-bad); color: var(--bad); }
+.note { font-size: 13px; color: var(--fg-3); max-width: 72ch; }
+.callout { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.callout ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.chart { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 12px 8px; position: relative; display: flex; flex-direction: column; gap: 8px; }
+.chart svg { width: 100%; height: auto; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--fg-2); padding-left: 4px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 18px; height: 2px; border-radius: 2px; display: inline-block; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; font-size: 12.5px; line-height: 1.5; color: var(--fg); box-shadow: 0 4px 14px rgba(0,0,0,0.12); min-width: 150px; }
+.tip b { font-family: var(--f-mono); font-weight: 600; }
+.tip .row { display: flex; justify-content: space-between; gap: 12px; }
+.tip .row span:last-child { font-family: var(--f-mono); }
+.copy { display: flex; flex-direction: column; gap: 8px; }
+.copy pre { margin: 0; background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; white-space: pre-wrap; word-break: keep-all; font-family: var(--f-body); font-size: 14px; line-height: 1.6; max-width: 100%; overflow-x: auto; }
+button { font: inherit; font-size: 13px; border: 1px solid var(--rule); background: var(--panel); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer; align-self: flex-start; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.two > * { min-width: 0; }
+footer { font-size: 12.5px; color: var(--fg-3); display: flex; flex-direction: column; gap: 4px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">HYFE 파생퀀트 · 5차 전략 탐색 · 2026-10-05</div>
+    <h1>C3-VT30: 미국으로 설명 안 되는 상승 갭 + ETF 시가 저평가 날에만 사고, 변동성으로 비중 조절</h1>
+    <p class="lede">갖고 있는 자료로 다섯 갈래를 시험했고, 설계 구간에서 규칙을 고정한 뒤 검증 구간 성과로 판정했습니다. 목표(연 10% 근접 또는 승률 51% 이상)를 정직하게 넘긴 것은 이 전략 하나입니다. 단, 연 10%는 09:00 시가 단일가에 체결된다는 가정에서 나오고, 09:01에 들어가면 연 7% 안팎입니다.</p>
+  </header>
+
+  <section aria-labelledby="s-head">
+    <h2 id="s-head">검증 구간 성과 (2020-01 ~ 2026-09-22, 왕복 5bp)</h2>
+    <div class="tiles">
+      <div class="tile"><span class="k">연환산 수익률(CAGR)</span><span class="v">10.6%</span><span class="s">2025-06 급등장 제외 9.3%</span></div>
+      <div class="tile"><span class="k">승률</span><span class="v">66.3%</span><span class="s">172회, 거래당 +39.5bp (t 4.45)</span></div>
+      <div class="tile"><span class="k">최대낙폭(MDD)</span><span class="v">−8.4%</span><span class="s">같은 기간 KODEX 200 보유 −40.8%</span></div>
+      <div class="tile exec"><span class="k">09:01 진입 시 (2023~2026, 100회)</span><span class="v">7.1%</span><span class="s">승률 57.0%, 거래당 +25.5bp (t 2.36)</span></div>
+    </div>
+    <p class="note">샤프 1.33, 연 26회 매매, 투자일 비중 약 10%. 스트레스 비용(KODEX 7bp, 레버리지 8bp)에서도 CAGR 9.9%. 연환산은 252거래일 기준이며 달력 기준으로는 10.3%입니다.</p>
+  </section>
+
+  <section aria-labelledby="s-rule">
+    <h2 id="s-rule">매매 규칙</h2>
+    <ol class="rules">
+      <li><b>예측 갭 계산(전일 장 마감 뒤).</b> 직전 250거래일로 회귀식 <span class="mono">코스피200 시가 갭 = a + b × 직전 미국 S&amp;P500 누적 로그수익</span>을 추정하고 잔차 표준편차 s를 구합니다.</li>
+      <li><b>갭 잔차 z.</b> 당일 개장 시 <span class="mono">z = (실제 시가 갭 − 예측 갭) / s</span>. 미국 장으로 설명되지 않는 상승 갭의 크기입니다.</li>
+      <li><b>ETF 저평가 확인.</b> <span class="mono">괴리 = ln(KODEX 200 시가 / 코스피200 시가) − 직전 5일 종가 괴리의 중앙값</span>.</li>
+      <li><b>매수 조건.</b> z ≥ 1 이고 괴리 ≤ 0 일 때만 삽니다. 약 열흘에 한 번, 연 25회 안팎입니다.</li>
+      <li><b>비중.</b> <span class="mono">w = 30% ÷ 최근 20일 코스피200 연환산 변동성</span>, 0~2배로 제한합니다. w ≤ 1이면 KODEX 200에 w만큼, 1 &lt; w ≤ 2면 (2 − w)는 KODEX 200, (w − 1)은 KODEX 레버리지(122630)에 넣습니다.</li>
+      <li><b>체결.</b> 09:00 시가 단일가에 사서 15:30 종가 단일가에 팝니다. 하루짜리 매매이고 오버나잇은 없습니다.</li>
+    </ol>
+    <p class="note">신호 정의(1~4)는 3차 연구(2010~2019 설계, 2003~2009 판정)의 C3 그대로입니다. 이번 5차에서 바꾼 것은 집행 수단(레버리지 ETF)과 비중 규칙(변동성 목표 30%)뿐이고, 42개 변형 가운데 설계 구간 성과만으로 골랐습니다.</p>
+  </section>
+
+  <section aria-labelledby="s-tbl">
+    <h2 id="s-tbl">구간별 성과</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>구간</th><th>거래</th><th>승률</th><th>거래당 순bp</th><th>CAGR</th><th>샤프</th><th>MDD</th><th>KODEX 200 보유 CAGR / MDD</th></tr></thead>
+        <tbody>
+          <tr><td>설계 2010-02 ~ 2019-12</td><td class="num">235</td><td class="num">62.6%</td><td class="num">+44.2</td><td class="num">11.1%</td><td class="num">1.72</td><td class="num">−6.5%</td><td class="num">5.2% / −27.4%</td></tr>
+          <tr class="pick"><td>검증 2020-01 ~ 2026-09</td><td class="num">172</td><td class="num">66.3%</td><td class="num">+39.5</td><td class="num">10.6%</td><td class="num">1.33</td><td class="num">−8.4%</td><td class="num">25.0% / −40.8%</td></tr>
+          <tr><td>검증 중 2025-06-05까지</td><td class="num">127</td><td class="num">66.9%</td><td class="num">+38.5</td><td class="num">9.3%</td><td class="num">1.15</td><td class="num">−8.4%</td><td class="num">7.1% / −34.6%</td></tr>
+          <tr><td>검증 중 2025-06-09 이후</td><td class="num">45</td><td class="num">64.4%</td><td class="num">+42.4</td><td class="num">16.0%</td><td class="num">2.18</td><td class="num">−4.7%</td><td class="num">139% / −40.8%</td></tr>
+          <tr class="ref"><td>추가 표본외 2003 ~ 2009 (레버리지 합성)</td><td class="num">151</td><td class="num">78.1%</td><td class="num">+91.4</td><td class="num">21.7%</td><td class="num">2.43</td><td class="num">−6.2%</td><td class="num">18.5% / −52.7%</td></tr>
+          <tr class="ref"><td>참고: 기존 C3 (1배, 비중 조절 없음) 검증</td><td class="num">172</td><td class="num">64.0%</td><td class="num">+30.1</td><td class="num">7.9%</td><td class="num">1.06</td><td class="num">−9.4%</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">2003~2009는 레버리지 ETF가 없던 때라 KODEX 200 수익의 2배로 합성했고, 당시 ETF 시가 괴리가 커서 수치가 부풀려져 있습니다. 크기보다 방향이 맞는지만 봅니다.</p>
+  </section>
+
+  <section aria-labelledby="s-eq">
+    <h2 id="s-eq">검증 구간 누적 수익 (1원 → 월말 기준)</h2>
+    <div class="chart" id="eq">
+      <div class="legend" aria-hidden="true"><span><i style="background:var(--series-1)"></i>C3-VT30 (이번 전략)</span><span><i style="background:var(--series-2)"></i>기존 C3 1배</span></div>
+      <svg id="eq-svg" viewBox="0 0 860 300" role="img" aria-label="2020년 1월부터 2026년 9월까지 C3-VT30과 기존 C3 1배의 누적 수익 곡선"></svg>
+    </div>
+    <p class="note">같은 기간 KODEX 200 보유는 1원이 4.31원(CAGR 25.0%)으로, 절대 수익은 보유가 훨씬 큽니다. 이 전략의 가치는 투자일 10%만으로 한 자릿수 낙폭을 유지한다는 데 있습니다. 축 크기가 달라 보유 곡선은 그리지 않았습니다.</p>
+  </section>
+
+  <section aria-labelledby="s-yr">
+    <h2 id="s-yr">연도별 수익 (달력 연도 복리, 왕복 5bp)</h2>
+    <div class="chart" id="yr">
+      <svg id="yr-svg" viewBox="0 0 860 280" role="img" aria-label="2003년부터 2026년까지 C3-VT30 연도별 수익 막대 그래프"></svg>
+    </div>
+    <p class="note">손실 연도는 없지만 2015~2017, 2020~2021, 2023년은 0~5%로 약했습니다. 2026년은 9월 22일까지입니다. 막대에 마우스를 올리면 그해 KODEX 200 보유 수익과 매매 횟수가 보입니다.</p>
+  </section>
+
+  <section aria-labelledby="s-exec">
+    <h2 id="s-exec">실제로 체결할 수 있나: 진입 시각별 비교 (2023-01 ~ 2026-09, C3 신호일 100회)</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>진입</th><th>승률</th><th>거래당 순bp</th><th>CAGR</th><th>MDD</th><th>시가 단일가 대비 남는 몫</th></tr></thead>
+        <tbody>
+          <tr><td>09:00 시가 단일가 (백테스트 가정)</td><td class="num">67.0%</td><td class="num">+41.8</td><td class="num">12.0%</td><td class="num">−4.7%</td><td class="num">100%</td></tr>
+          <tr class="pick"><td>09:01 첫 체결</td><td class="num">57.0%</td><td class="num">+25.5</td><td class="num">7.1%</td><td class="num">−4.9%</td><td class="num">약 62%</td></tr>
+          <tr><td>09:05 첫 체결</td><td class="num">54.0%</td><td class="num">—</td><td class="num">7.7%</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>09:10 첫 체결</td><td class="num">56.0%</td><td class="num">—</td><td class="num">6.6%</td><td class="num">—</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>연도</th><th>거래</th><th>09:00 단일가 수익 / 승률</th><th>09:01 진입 수익 / 승률</th></tr></thead>
+        <tbody>
+          <tr><td>2023</td><td class="num">19</td><td class="num">+3.2% / 57.9%</td><td class="num">−0.8% / 42.1%</td></tr>
+          <tr><td>2024</td><td class="num">29</td><td class="num">+18.9% / 75.9%</td><td class="num">+12.9% / 69.0%</td></tr>
+          <tr><td>2025</td><td class="num">21</td><td class="num">+10.6% / 71.4%</td><td class="num">+8.0% / 57.1%</td></tr>
+          <tr><td>2026 (~09-22)</td><td class="num">31</td><td class="num">+11.1% / 61.3%</td><td class="num">+5.8% / 54.8%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <h3>왜 차이가 나나</h3>
+      <ul>
+        <li>신호일에는 첫 1분 동안 KODEX가 시가 단일가보다 평균 17bp 오릅니다. 수익의 상당 부분이 "갭이 장중에 이어지는 몫"보다 "ETF 시가 단일가가 싸게 잡혔다가 풀리는 몫"에서 나옵니다.</li>
+        <li>시가 단일가를 실제로 잡으려면 08:59 예상지수와 KODEX 예상체결가로 판단해 09:00 전에 동시호가 주문을 넣어야 합니다. 과거 예상가 자료가 없어 그 오차는 아직 검증하지 못했습니다.</li>
+        <li>17bp 손실을 2020~2026 전체에 적용한 가정 추정치는 CAGR 약 3.9%(09:01) ~ 5.4%(09:05)입니다. 실측이 아니라 가정이며 2023~2026 실측(7.1%)보다 보수적입니다.</li>
+        <li>레버리지 쪽 09:01 수치는 KODEX 200 경로의 2배로 근사해 실제보다 거래당 약 8bp 낙관적입니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-other">
+    <h2 id="s-other">함께 시험했지만 기각한 네 갈래</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>갈래</th><th>최종 규칙(설계 구간에서 선택)</th><th>검증 CAGR</th><th>검증 승률</th><th>판정</th></tr></thead>
+        <tbody>
+          <tr><td>일봉 스윙</td><td style="text-align:left;white-space:normal;min-width:240px">200일선 위 조정 매수 + 외인 선물 하위 20% 회피, 종가가 5일선 위면 청산</td><td class="num">10.4%</td><td class="num">68.3%</td><td><span class="chip bad">기각</span></td></tr>
+          <tr><td>종가 베팅·오버나잇</td><td style="text-align:left;white-space:normal;min-width:240px">15:20 가격 조건 + 20일선 → 종가 매수, 익일 시가 매도</td><td class="num">0.1%</td><td class="num">58.9%</td><td><span class="chip bad">기각</span></td></tr>
+          <tr><td>장중 5분봉</td><td style="text-align:left;white-space:normal;min-width:240px">시가 범위 돌파 + 전일 외인 선물 상위 40%</td><td class="num">−7.7%</td><td class="num">43.2%</td><td><span class="chip bad">기각</span></td></tr>
+          <tr><td>수급 결합 일봉</td><td style="text-align:left;white-space:normal;min-width:240px">외인 선물·현물·프로그램 결합 점수 → 롱/숏 5일</td><td class="num">−1.4%</td><td class="num">44.6%</td><td><span class="chip bad">기각</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="note" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+      <li>일봉 스윙: 2025-06 이후 급등장을 빼면 CAGR 0.3%입니다. 승률 68%는 "5일선 위 청산" 규칙이 만드는 구조적 숫자로, 신호 없이 매일 들어가도 56~60%가 나옵니다.</li>
+      <li>종가 베팅: 승률 58.9%는 같은 기간 무조건 오버나잇 승률 59.5%보다 낮습니다. 조건이 더한 몫은 −27.7bp입니다.</li>
+      <li>장중·수급 결합: 검증 구간에서 목표에 크게 못 미쳤습니다. 장중 롱/숏 선물판의 승률 51.2%도 비용 3bp에서 50.9%, t 0.46으로 유의하지 않습니다.</li>
+      <li>다섯 갈래 모두 연구 코드와 별도로 규칙 설명만 보고 다시 짠 코드로 수치를 재현했습니다.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="s-lim">
+    <h2 id="s-lim">한계와 다음 단계</h2>
+    <div class="two">
+      <div class="callout">
+        <h3>한계</h3>
+        <ul>
+          <li>신호 자체는 2차·3차 연구에서 이미 2020~2025-06 구간을 본 적이 있습니다. 이번 검증은 집행 수단과 비중 규칙에 대해서만 표본외입니다.</li>
+          <li>연 10%는 새로운 우위가 아니라 레버리지(평균 1.4~1.8배)에서 옵니다. 고정 2배는 검증 MDD가 −18%였고, 변동성 목표가 이를 −8.4%로 줄였습니다.</li>
+          <li>KODEX 레버리지 매수에는 레버리지 ETP 사전교육과 증권사 기본예탁금이 필요합니다.</li>
+          <li>2026년 6~7월 KODEX가 하루 ±10% 넘게 움직인 날이 있어, 일부 구간 수치가 소수 거래에 민감합니다.</li>
+        </ul>
+      </div>
+      <div class="callout">
+        <h3>다음 단계</h3>
+        <ul>
+          <li>매 거래일 08:55~09:01의 예상지수·KODEX 예상체결가·실제 시가를 기록해, 08:59 판단이 09:00 체결과 얼마나 맞는지 잽니다. 기록 프로그램은 준비돼 있습니다.</li>
+          <li>신호일마다 페이퍼 매매 기록: 09:00 단일가와 09:01 진입을 둘 다 남깁니다.</li>
+          <li>20~30 신호일(약 1년)이 쌓이면 실행형 성과를 다시 판정합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-kakao" class="copy">
+    <h2 id="s-kakao">카톡 공유용 요약</h2>
+    <pre id="kakao">[5차 전략 탐색 결과]
+- 5갈래(C3 개선, 일봉 스윙, 장중 분봉, 종가 베팅, 수급 결합) 시험. 규칙은 2010~19(분봉은 2023~24) 설계 구간에서만 고르고 2020~26(분봉 2025~26) 검증 구간으로 판정, 갈래마다 별도 코드로 재현 확인함
+- 목표(연 10% 근접 or 승률 51%↑) 정직하게 넘긴 건 C3-VT30 하나
+- 규칙: 미국으로 설명 안 되는 상승 갭(z≥1) + KODEX 시가가 지수보다 싸게 열린 날만 09:00 매수→15:30 매도. 비중 = 30%/최근20일 변동성(0~2배, 1배 넘는 부분은 KODEX 레버리지)
+- 검증 2020-01~2026-09(5bp): 연 10.6%, 승률 66%, MDD -8.4%, 연 26회 (급등장 빼도 9.3%)
+- 단, 09:00 단일가 체결 가정. 09:01에 들어가면(2023~26, 100회) 연 7.1%, 승률 57%
+- 나머지 4갈래는 급등장 의존·구조적 승률·목표 미달로 기각
+- 다음: 08:59 예상가로 단일가를 잡을 수 있는지 매일 기록해서 확인 예정</pre>
+    <button type="button" id="copy-btn">요약 복사</button>
+  </section>
+
+  <footer>
+    <div>코드: <span class="mono">beomgu/overnight_lab/topics/r5_c3_levered.py</span> · 결과: <span class="mono">beomgu/results/2026-09-29-overnight/round5_strategy/c3_levered/</span></div>
+    <div>자료: KODEX 200·KODEX 레버리지 일봉(네이버 수정주가), 코스피200 지수 2003~, S&amp;P500 일봉, KODEX 200 1분봉 2023~2026. 비용 왕복 5bp(스트레스 7~8bp). 모든 수치는 백테스트 명목치이며 미래 수익을 보장하지 않습니다.</div>
+  </footer>
+</div>
+
+<script>
+const DATA = {"months": ["2020-01", "2020-02", "2020-03", "2020-04", "2020-05", "2020-06", "2020-07", "2020-08", "2020-09", "2020-10", "2020-11", "2020-12", "2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08", "2021-09", "2021-10", "2021-11", "2021-12", "2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"], "chosen": [1.0061, 0.9854, 0.9658, 0.9919, 0.9919, 1.003, 1.003, 1.0075, 1.0136, 1.0136, 1.0185, 1.0332, 1.0332, 1.0332, 1.0332, 1.0332, 1.0332, 1.0332, 1.0257, 1.0478, 1.0478, 1.0266, 1.0554, 1.0799, 1.0999, 1.1039, 1.119, 1.1646, 1.242, 1.242, 1.2418, 1.259, 1.2414, 1.2603, 1.2825, 1.2825, 1.2503, 1.2578, 1.264, 1.2889, 1.2788, 1.2788, 1.3064, 1.3117, 1.3117, 1.3142, 1.3263, 1.3237, 1.3322, 1.3606, 1.4311, 1.4562, 1.456, 1.4468, 1.5004, 1.4866, 1.5335, 1.5335, 1.5738, 1.5738, 1.5551, 1.5579, 1.5918, 1.5611, 1.5611, 1.6824, 1.6824, 1.6868, 1.7131, 1.7836, 1.7587, 1.7401, 1.7505, 1.7808, 1.7718, 1.7907, 1.8901, 1.9239, 1.9131, 1.933, 1.933], "base": [1.0024, 0.9865, 0.9641, 1.0254, 1.0254, 1.0414, 1.0414, 1.0444, 1.0487, 1.0487, 1.0513, 1.0608, 1.0608, 1.0608, 1.0608, 1.0608, 1.0608, 1.0608, 1.0565, 1.069, 1.069, 1.0597, 1.0761, 1.0919, 1.1018, 1.1059, 1.1161, 1.1413, 1.1822, 1.1822, 1.1804, 1.1875, 1.1757, 1.1841, 1.1976, 1.1976, 1.1785, 1.1842, 1.1879, 1.1978, 1.193, 1.193, 1.2056, 1.2069, 1.2069, 1.2077, 1.2168, 1.2146, 1.22, 1.2303, 1.2641, 1.2791, 1.279, 1.2729, 1.3008, 1.2862, 1.3078, 1.3078, 1.3257, 1.3257, 1.313, 1.3126, 1.3266, 1.3022, 1.3022, 1.3615, 1.3615, 1.3634, 1.3745, 1.418, 1.3853, 1.3718, 1.3897, 1.4249, 1.4064, 1.4356, 1.547, 1.6141, 1.5881, 1.6482, 1.6482], "years": [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], "y_chosen": [15.5, 14.8, 21.3, 19.9, 54.3, 25.1, 4.2, 17.1, 39.2, 10.2, 6.8, 7.8, 2.5, 3.0, 0.2, 11.4, 13.7, 3.3, 4.5, 18.8, 3.2, 18.9, 10.6, 11.1], "y_bh": [35.3, 11.9, 56.8, 6.7, 33.5, -38.3, 54.3, 23.9, -10.7, 11.3, 1.1, -6.6, -0.1, 10.2, 27.1, -17.3, 14.4, 35.6, 3.0, -24.2, 24.9, -9.4, 94.2, 85.1], "y_trades": [20, 24, 16, 19, 33, 29, 10, 18, 36, 14, 29, 24, 24, 18, 19, 26, 27, 18, 19, 35, 19, 29, 21, 31]};
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function txt(parent, x, y, s, attrs) { const t = el("text", Object.assign({ x, y, fill: "var(--fg-3)", "font-size": 11, "font-family": "var(--f-mono)" }, attrs || {}), parent); t.textContent = s; return t; }
+
+/* Equity chart */
+(function () {
+  const svg = document.getElementById("eq-svg"), box = document.getElementById("eq");
+  const W = 860, H = 300, L = 46, R = 132, T = 14, B = 30;
+  const n = DATA.months.length, ymin = 0.9, ymax = 2.0;
+  const x = i => L + (W - L - R) * i / (n - 1);
+  const y = v => T + (H - T - B) * (1 - (v - ymin) / (ymax - ymin));
+  for (const v of [1.0, 1.2, 1.4, 1.6, 1.8, 2.0]) {
+    el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: "var(--rule)", "stroke-width": v === 1.0 ? 1.2 : 1 }, svg);
+    txt(svg, L - 8, y(v) + 4, v.toFixed(1), { "text-anchor": "end" });
+  }
+  DATA.months.forEach((m, i) => { if (m.endsWith("-01")) { txt(svg, x(i), H - 10, m.slice(0, 4), { "text-anchor": "middle" }); el("line", { x1: x(i), x2: x(i), y1: H - B, y2: H - B + 4, stroke: "var(--rule)" }, svg); } });
+  const series = [{ k: "base", c: "var(--series-2)", label: "기존 C3 1배" }, { k: "chosen", c: "var(--series-1)", label: "C3-VT30" }];
+  for (const s of series) {
+    const d = DATA[s.k].map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1)).join(" ");
+    el("path", { d, fill: "none", stroke: s.c, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    const last = DATA[s.k][n - 1];
+    el("circle", { cx: x(n - 1), cy: y(last), r: 4, fill: s.c, stroke: "var(--panel)", "stroke-width": 2 }, svg);
+    const t = txt(svg, x(n - 1) + 10, y(last) + 4, s.label + " " + last.toFixed(2), { fill: "var(--fg-2)", "font-family": "var(--f-body)", "font-size": 12 });
+  }
+  const cross = el("line", { y1: T, y2: H - B, stroke: "var(--fg-3)", "stroke-width": 1, "stroke-dasharray": "3 3", visibility: "hidden" }, svg);
+  const dots = series.map(s => el("circle", { r: 4, fill: s.c, stroke: "var(--panel)", "stroke-width": 2, visibility: "hidden" }, svg));
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; box.appendChild(tip);
+  const hit = el("rect", { x: L, y: T, width: W - L - R, height: H - T - B, fill: "transparent" }, svg);
+  function show(evt) {
+    const r = svg.getBoundingClientRect(), px = (evt.clientX - r.left) * W / r.width;
+    const i = Math.max(0, Math.min(n - 1, Math.round((px - L) / (W - L - R) * (n - 1))));
+    cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+    series.forEach((s, j) => { dots[j].setAttribute("cx", x(i)); dots[j].setAttribute("cy", y(DATA[s.k][i])); dots[j].setAttribute("visibility", "visible"); });
+    tip.innerHTML = "<b>" + DATA.months[i] + "</b><div class='row'><span>C3-VT30</span><span>" + DATA.chosen[i].toFixed(3) + "</span></div><div class='row'><span>기존 C3 1배</span><span>" + DATA.base[i].toFixed(3) + "</span></div>";
+    tip.hidden = false;
+    const bx = box.getBoundingClientRect(), left = evt.clientX - bx.left + 14;
+    tip.style.left = Math.min(left, bx.width - 170) + "px"; tip.style.top = (evt.clientY - bx.top - 10) + "px";
+  }
+  function hide() { cross.setAttribute("visibility", "hidden"); dots.forEach(d => d.setAttribute("visibility", "hidden")); tip.hidden = true; }
+  hit.addEventListener("pointermove", show); hit.addEventListener("pointerleave", hide);
+})();
+
+/* Yearly bar chart */
+(function () {
+  const svg = document.getElementById("yr-svg"), box = document.getElementById("yr");
+  const W = 860, H = 280, L = 40, R = 10, T = 30, B = 30;
+  const n = DATA.years.length, vmax = 60, vmin = 0;
+  const bw = (W - L - R) / n;
+  const y = v => T + (H - T - B) * (1 - (v - vmin) / (vmax - vmin));
+  const bands = [{ a: 0, b: 7, t: "추가 표본외 2003~09 (합성)" }, { a: 7, b: 17, t: "설계 2010~19" }, { a: 17, b: 24, t: "검증 2020~26" }];
+  bands.forEach((g, j) => {
+    if (j === 1) el("rect", { x: L + g.a * bw, y: T - 22, width: (g.b - g.a) * bw, height: H - B - T + 22, fill: "var(--band)" }, svg);
+    txt(svg, L + (g.a + g.b) / 2 * bw, T - 9, g.t, { "text-anchor": "middle", "font-family": "var(--f-body)", "font-size": 12, fill: "var(--fg-2)" });
+  });
+  for (const v of [0, 20, 40, 60]) {
+    el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: "var(--rule)", "stroke-width": v === 0 ? 1.2 : 1 }, svg);
+    txt(svg, L - 6, y(v) + 4, v + "%", { "text-anchor": "end" });
+  }
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; box.appendChild(tip);
+  DATA.years.forEach((yr, i) => {
+    const v = DATA.y_chosen[i], x0 = L + i * bw + 3, w = bw - 6, top = y(Math.max(v, 0)), h = Math.max(1, y(0) - y(Math.max(v, 0)));
+    const g = el("g", {}, svg);
+    el("path", { d: "M" + x0 + " " + y(0) + " V" + (top + 4) + " Q" + x0 + " " + top + " " + (x0 + 4) + " " + top + " H" + (x0 + w - 4) + " Q" + (x0 + w) + " " + top + " " + (x0 + w) + " " + (top + 4) + " V" + y(0) + " Z", fill: "var(--series-1)", opacity: i < 7 ? 0.55 : 1 }, g);
+    if (yr % 2 === 1 || yr === 2026) txt(svg, x0 + w / 2, H - 10, String(yr).slice(2), { "text-anchor": "middle" });
+    const hit = el("rect", { x: L + i * bw, y: T, width: bw, height: H - T - B, fill: "transparent" }, g);
+    hit.addEventListener("pointermove", evt => {
+      tip.innerHTML = "<b>" + yr + (yr === 2026 ? " (~09-22)" : "") + "</b><div class='row'><span>C3-VT30</span><span>" + (v >= 0 ? "+" : "") + v.toFixed(1) + "%</span></div><div class='row'><span>KODEX 200 보유</span><span>" + (DATA.y_bh[i] >= 0 ? "+" : "") + DATA.y_bh[i].toFixed(1) + "%</span></div><div class='row'><span>매매 횟수</span><span>" + DATA.y_trades[i] + "</span></div>";
+      tip.hidden = false;
+      const bx = box.getBoundingClientRect(), left = evt.clientX - bx.left + 14;
+      tip.style.left = Math.min(left, bx.width - 170) + "px"; tip.style.top = (evt.clientY - bx.top - 10) + "px";
+    });
+    hit.addEventListener("pointerleave", () => { tip.hidden = true; });
+  });
+})();
+
+/* Copy */
+document.getElementById("copy-btn").addEventListener("click", function () {
+  const s = document.getElementById("kakao").textContent, btn = this;
+  const done = () => { btn.textContent = "복사됨"; setTimeout(() => { btn.textContent = "요약 복사"; }, 1600); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("kakao")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); btn.textContent = "선택됨: Ctrl+C로 복사"; };
+  try { navigator.clipboard.writeText(s).then(done, fallback); } catch (e) { fallback(); }
+});
+</script>
+</body>
+</html>
