@@ -72,8 +72,8 @@ THR_WEAK    = 0.5
 THR_STRONG  = 1.0
 
 # 거래비용 (왕복)
-# K200 미니선물: 수수료 ~0.5bp × 2 + 슬리피지 1틱(0.25pt/300pt ≈ 8bp) ≈ 10bp
-# 바이낸스 무기한선물: taker 0.05% × 2 = 10bp, maker 0.02% × 2 = 4bp → 평균 6bp
+# K200 미니선물: 수수료 ~1bp × 2 + 슬리피지 1틱(0.01pt/300pt ≈ 0.7bp) ≈ 2bp
+# 바이낸스 무기한선물: taker 0.05%×2=10bp / maker 0.02%×2=4bp 혼합 ~7bp + 슬리피지 0.5bp ≈ 8bp
 COST_KR      = 0.0002   # 왕복  2bp (K200 미니선물: 수수료 ~1bp + 슬리피지 1틱 ~0.7bp)
 COST_BINANCE = 0.0008   # 왕복  8bp (바이낸스 USDT 무기한: taker 10bp/maker 4bp 혼합 ~7bp + 슬리피지 0.5bp)
 ROUND_TRIP   = COST_KR  # 기본값
@@ -379,7 +379,7 @@ def main():
         print(f"  {year.year}  {s_kr:>15}  {s_bnc:>13}  {bar}")
 
     # 저장 (기본: K200 미니선물 비용 기준)
-    perf = all_perf["K200 미니선물 (10bp)"]
+    perf = all_perf["K200 미니선물 (2bp)"]
     perf.to_csv(OUT_DIR / "strategy1_performance.csv", encoding="utf-8-sig")
     sig_cols = ["open", "close", "oc_ret",
                 "call_net_b", "put_net_b",
