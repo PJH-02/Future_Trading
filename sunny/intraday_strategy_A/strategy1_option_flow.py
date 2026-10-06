@@ -71,12 +71,11 @@ BURN_IN     = 60
 THR_WEAK    = 0.5
 THR_STRONG  = 1.0
 
-# 거래비용 (왕복)
-# K200 미니선물: 수수료 ~1bp × 2 + 슬리피지 1틱(0.01pt/300pt ≈ 0.7bp) ≈ 2bp
-# 바이낸스 무기한선물: taker 0.05%×2=10bp / maker 0.02%×2=4bp 혼합 ~7bp + 슬리피지 0.5bp ≈ 8bp
-COST_KR      = 0.0002   # 왕복  2bp (K200 미니선물: 수수료 ~1bp + 슬리피지 1틱 ~0.7bp)
-COST_BINANCE = 0.0008   # 왕복  8bp (바이낸스 USDT 무기한: taker 10bp/maker 4bp 혼합 ~7bp + 슬리피지 0.5bp)
-ROUND_TRIP   = COST_KR  # 기본값
+# 거래비용 (왕복, K200 미니선물 기준)
+TRANS_COST = 0.0003   # 수수료 왕복 3bp (편도 1.5bp, 키움 기준)
+SLIP_COST  = 0.000150 # 슬리피지 1.5bp (1~2bp 중간값, 1틱 기준)
+COST_KR    = TRANS_COST + SLIP_COST  # 왕복 합계 4.5bp
+ROUND_TRIP = COST_KR
 
 
 # ═══════════════════════════════════════════════════════════
@@ -347,39 +346,24 @@ def main():
     print(f"      풋z 범위: {valid['put_z_lag'].min():.2f} ~ {valid['put_z_lag'].max():.2f}")
 
     print("\n[3/3] 백테스트...")
-    COST_SCENARIOS = {
-        "K200 미니선물 (2bp)":         COST_KR,
-        "바이낸스 무기한선물 (8bp)":   COST_BINANCE,
-    }
+    print(f"      거래비용: 수수료 3bp + 슬리피지 1.5bp = 왕복 {COST_KR*10000:.1f}bp")
+    results = {label: backtest(df, col) for label, col in CASES.items()}
 
-    all_perf = {}
-    all_results = {}
-    for cost_label, cost in COST_SCENARIOS.items():
-        results = {label: backtest(df, col, cost=cost) for label, col in CASES.items()}
-        all_results[cost_label] = results
-        rows = {label: metrics(cum, net) for label, (cum, net) in results.items()}
-        all_perf[cost_label] = pd.DataFrame(rows).T
+    rows = {label: metrics(cum, net) for label, (cum, net) in results.items()}
+    perf = pd.DataFrame(rows).T
+    print()
+    print_perf_table(perf)
 
-    for cost_label, perf in all_perf.items():
-        print(f"\n[ {cost_label} ]")
-        print_perf_table(perf)
+    # 연도별 B안
+    _, net_b = results["B. 풋z > 1.0 → 숏 (핵심)"]
+    yearly = net_b.resample("YE").apply(lambda x: (1 + x).prod() - 1)
+    print("\n[B안] 연도별 수익률 (풋z > 1.0 → 숏):")
+    for year, ret in yearly.items():
+        bar  = "█" * int(abs(ret) * 300)
+        sign = "+" if ret >= 0 else "-"
+        print(f"  {year.year}  {sign}{abs(ret)*100:4.1f}%  {bar}")
 
-    # 연도별 B안 비교
-    print("\n[B안] 연도별 수익률 비교 (풋z > 1.0 → 숏)")
-    print(f"  {'연도':>4}  {'K200 미니(2bp)':>14}  {'바이낸스(8bp)':>13}")
-    print("  " + "─" * 38)
-    b_kr  = all_results["K200 미니선물 (2bp)"]["B. 풋z > 1.0 → 숏 (핵심)"][1]
-    b_bnc = all_results["바이낸스 무기한선물 (8bp)"]["B. 풋z > 1.0 → 숏 (핵심)"][1]
-    for yr in b_kr.resample("YE").apply(lambda x: (1+x).prod()-1).items():
-        year, ret_kr  = yr
-        ret_bnc = b_bnc.resample("YE").apply(lambda x: (1+x).prod()-1).get(year, float("nan"))
-        bar = "█" * int(abs(ret_kr) * 300)
-        s_kr  = f"{'+' if ret_kr >=0 else '-'}{abs(ret_kr)*100:4.1f}%"
-        s_bnc = f"{'+' if ret_bnc>=0 else '-'}{abs(ret_bnc)*100:4.1f}%"
-        print(f"  {year.year}  {s_kr:>15}  {s_bnc:>13}  {bar}")
-
-    # 저장 (기본: K200 미니선물 비용 기준)
-    perf = all_perf["K200 미니선물 (2bp)"]
+    # 저장
     perf.to_csv(OUT_DIR / "strategy1_performance.csv", encoding="utf-8-sig")
     sig_cols = ["open", "close", "oc_ret",
                 "call_net_b", "put_net_b",
@@ -388,8 +372,8 @@ def main():
     df[sig_cols].to_csv(OUT_DIR / "strategy1_signals.csv", encoding="utf-8-sig")
     print(f"\n결과 저장 → {OUT_DIR}")
 
-    plot_results(df, all_results["K200 미니선물 (2bp)"])
-    return df, all_results
+    plot_results(df, results)
+    return df, results
 
 
 if __name__ == "__main__":
