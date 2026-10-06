@@ -40,6 +40,7 @@
 판정 구간 : 2010-01-04 ~ 2026-09-30
 """
 
+import unicodedata
 import warnings
 from pathlib import Path
 
@@ -186,6 +187,42 @@ def metrics(cum: pd.Series, net: pd.Series) -> dict:
     }
 
 
+# ── 한글 포함 테이블 출력 헬퍼 ────────────────────────────
+def _dw(s: str) -> int:
+    """터미널 출력 폭 (한글·CJK = 2칸, 나머지 = 1칸)."""
+    return sum(2 if unicodedata.east_asian_width(c) in ("W", "F") else 1
+               for c in str(s))
+
+
+def _rjust(s: str, width: int) -> str:
+    return " " * max(width - _dw(str(s)), 0) + str(s)
+
+
+def _ljust(s: str, width: int) -> str:
+    return str(s) + " " * max(width - _dw(str(s)), 0)
+
+
+def print_perf_table(perf: pd.DataFrame) -> None:
+    cols      = list(perf.columns)
+    rows      = list(perf.index)
+    row_w     = max(_dw(r) for r in rows) + 2
+    col_ws    = [max(_dw(c), max(_dw(str(perf.loc[r, c])) for r in rows)) + 2
+                 for c in cols]
+    sep_len   = row_w + sum(col_ws) + len(col_ws) * 2
+    sep       = "─" * sep_len
+
+    header = _ljust("", row_w) + "  " + "  ".join(
+        _rjust(c, w) for c, w in zip(cols, col_ws))
+    print(sep)
+    print(header)
+    print(sep)
+    for r in rows:
+        line = _ljust(r, row_w) + "  " + "  ".join(
+            _rjust(str(perf.loc[r, c]), w) for c, w in zip(cols, col_ws))
+        print(line)
+    print(sep)
+
+
 # ═══════════════════════════════════════════════════════════
 # 5. 시각화
 # ═══════════════════════════════════════════════════════════
@@ -307,9 +344,8 @@ def main():
 
     rows = {label: metrics(cum, net) for label, (cum, net) in results.items()}
     perf = pd.DataFrame(rows).T
-    print("\n" + "=" * 72)
-    print(perf.to_string())
-    print("=" * 72)
+    print()
+    print_perf_table(perf)
 
     # 연도별 B안
     _, net_b = results["B. 풋z > 1.0 → 숏 (핵심)"]
@@ -317,8 +353,8 @@ def main():
     print("\n[B안] 연도별 수익률 (풋z > 1.0 → 숏):")
     for year, ret in yearly.items():
         bar = "█" * int(abs(ret) * 300)
-        tag = "+" if ret >= 0 else "-"
-        print(f"  {year.year}: {tag}{abs(ret)*100:5.1f}%  {bar}")
+        sign = "+" if ret >= 0 else "-"
+        print(f"  {year.year}  {sign}{abs(ret)*100:4.1f}%  {bar}")
 
     # 저장
     perf.to_csv(OUT_DIR / "strategy1_performance.csv", encoding="utf-8-sig")
