@@ -74,8 +74,8 @@ THR_STRONG  = 1.0
 # 거래비용 (왕복)
 # K200 미니선물: 수수료 ~0.5bp × 2 + 슬리피지 1틱(0.25pt/300pt ≈ 8bp) ≈ 10bp
 # 바이낸스 무기한선물: taker 0.05% × 2 = 10bp, maker 0.02% × 2 = 4bp → 평균 6bp
-COST_KR      = 0.0010   # 왕복 10bp (K200 미니선물)
-COST_BINANCE = 0.0006   # 왕복  6bp (바이낸스 USDT 무기한, VIP0 taker/maker 혼합)
+COST_KR      = 0.0002   # 왕복  2bp (K200 미니선물: 수수료 ~1bp + 슬리피지 1틱 ~0.7bp)
+COST_BINANCE = 0.0008   # 왕복  8bp (바이낸스 USDT 무기한: taker 10bp/maker 4bp 혼합 ~7bp + 슬리피지 0.5bp)
 ROUND_TRIP   = COST_KR  # 기본값
 
 
@@ -348,8 +348,8 @@ def main():
 
     print("\n[3/3] 백테스트...")
     COST_SCENARIOS = {
-        "K200 미니선물 (10bp)":        COST_KR,
-        "바이낸스 무기한선물 (6bp)":   COST_BINANCE,
+        "K200 미니선물 (2bp)":         COST_KR,
+        "바이낸스 무기한선물 (8bp)":   COST_BINANCE,
     }
 
     all_perf = {}
@@ -366,10 +366,10 @@ def main():
 
     # 연도별 B안 비교
     print("\n[B안] 연도별 수익률 비교 (풋z > 1.0 → 숏)")
-    print(f"  {'연도':>4}  {'K200 미니(10bp)':>15}  {'바이낸스(6bp)':>13}")
+    print(f"  {'연도':>4}  {'K200 미니(2bp)':>14}  {'바이낸스(8bp)':>13}")
     print("  " + "─" * 38)
-    b_kr  = all_results["K200 미니선물 (10bp)"]["B. 풋z > 1.0 → 숏 (핵심)"][1]
-    b_bnc = all_results["바이낸스 무기한선물 (6bp)"]["B. 풋z > 1.0 → 숏 (핵심)"][1]
+    b_kr  = all_results["K200 미니선물 (2bp)"]["B. 풋z > 1.0 → 숏 (핵심)"][1]
+    b_bnc = all_results["바이낸스 무기한선물 (8bp)"]["B. 풋z > 1.0 → 숏 (핵심)"][1]
     for yr in b_kr.resample("YE").apply(lambda x: (1+x).prod()-1).items():
         year, ret_kr  = yr
         ret_bnc = b_bnc.resample("YE").apply(lambda x: (1+x).prod()-1).get(year, float("nan"))
@@ -388,7 +388,7 @@ def main():
     df[sig_cols].to_csv(OUT_DIR / "strategy1_signals.csv", encoding="utf-8-sig")
     print(f"\n결과 저장 → {OUT_DIR}")
 
-    plot_results(df, all_results["K200 미니선물 (10bp)"])
+    plot_results(df, all_results["K200 미니선물 (2bp)"])
     return df, all_results
 
 
