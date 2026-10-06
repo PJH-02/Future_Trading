@@ -72,10 +72,8 @@ THR_WEAK    = 0.5
 THR_STRONG  = 1.0
 
 # 거래비용 (왕복, K200 미니선물 기준)
-TRANS_COST = 0.0003   # 수수료 왕복 3bp (편도 1.5bp, 키움 기준)
-SLIP_COST  = 0.000150 # 슬리피지 1.5bp (1~2bp 중간값, 1틱 기준)
-COST_KR    = TRANS_COST + SLIP_COST  # 왕복 합계 4.5bp
-ROUND_TRIP = COST_KR
+# 키움증권 미니선물 수수료 ~1bp + 슬리피지 ~2bp = 왕복 3bp
+ROUND_TRIP = 0.0003
 
 
 # ═══════════════════════════════════════════════════════════
@@ -346,7 +344,7 @@ def main():
     print(f"      풋z 범위: {valid['put_z_lag'].min():.2f} ~ {valid['put_z_lag'].max():.2f}")
 
     print("\n[3/3] 백테스트...")
-    print(f"      거래비용: 수수료 3bp + 슬리피지 1.5bp = 왕복 {COST_KR*10000:.1f}bp")
+    print(f"      거래비용: 왕복 {ROUND_TRIP*10000:.1f}bp (키움 수수료 ~1bp + 슬리피지 ~2bp)")
     results = {label: backtest(df, col) for label, col in CASES.items()}
 
     rows = {label: metrics(cum, net) for label, (cum, net) in results.items()}

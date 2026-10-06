@@ -67,9 +67,8 @@ Z_WINDOW   = 60
 BURN_IN    = 60
 THR_Z      = 0.5
 
-TRANS_COST = 0.0003    # 수수료 왕복 3bp
-SLIP_COST  = 0.000150  # 슬리피지 1.5bp
-ROUND_TRIP = TRANS_COST + SLIP_COST   # 왕복 4.5bp
+# 키움증권 미니선물 수수료 ~1bp + 슬리피지 ~2bp = 왕복 3bp
+ROUND_TRIP = 0.0003
 
 
 # ═══════════════════════════════════════════════════════════
