@@ -55,7 +55,7 @@ plt.rcParams["axes.unicode_minus"] = False
 # ═══════════════════════════════════════════════════════════
 # 0. 경로 & 하이퍼파라미터
 # ═══════════════════════════════════════════════════════════
-REPO_DIR  = Path(__file__).resolve().parents[1]
+REPO_DIR  = Path(__file__).resolve().parents[2]
 DATA_DIR  = REPO_DIR / "beomgu" / "data"
 OUT_DIR   = Path(__file__).parent / "output"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
