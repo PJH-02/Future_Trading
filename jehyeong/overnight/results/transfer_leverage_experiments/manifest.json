@@ -1,0 +1,50 @@
+{
+  "start": "2022-12-13",
+  "end": "2026-09-17",
+  "days": 919,
+  "commission_round_trip_bp": 3,
+  "slippage_round_trip_bp": 2,
+  "missing_data_never_zero_imputed": true,
+  "vt30": "clip(0.30 / past-20-session close-return annualized SD known by T-1, 0, 2)",
+  "c3_kospi_vt30": "original KOSPI200 index SD retained",
+  "data_collection": false,
+  "source": "previous fixed signal panels / ledger; W40 KOSDAQ price signal recalculated",
+  "inputs": {
+    "jehyeong/overnight/results/six_strategy_portfolio_2022_12_13/daily_returns_by_strategy.csv": "30731ae78d51ca24661c5093806497aef6b6a639bfa3997a6184093339715e7d",
+    "jehyeong/intraday/data/069500_daily.csv": "827b3d9fba9bc68cbd672b6d1d7302c390a0ea8d532727c8c68437ca0f6d266a",
+    "jehyeong/intraday/data/122630_daily.csv": "20ac037f426a5b22fe3df943cb5b01dae899a2ca1fe95acd22bf355b4e55957f",
+    "jehyeong/intraday/data/229200_daily.csv": "67fcf69e019b3898b52c40820ac075bacc606ccf4e7b91fc0e19605faef39ea5",
+    "jehyeong/intraday/data/233740_daily.csv": "8e2f5a3c4688dabe6bdf64cbd3793d2c5cce9a8210e048a3564fa90c4263c328",
+    "jehyeong/intraday/data/114800_daily.csv": "9b71cdc03aa1b261cb719f91c6ddb246832a8f3003dcb0a3b7edf5651bc4dada",
+    "jehyeong/intraday/data/252670_daily.csv": "6b19ce817e487fb3d59a1166c7fedf285e1980e7d3c3f02cf0600d5439bbbd4b",
+    "jehyeong/intraday/data/251340_daily.csv": "6cc20f4a3e8761ed5d31f351068894f109091d4f63175450c8c9988801a418ce",
+    "jehyeong/overnight/results/team_strategy_comparison/jehyeong_proxy_signal_panel.csv": "61c845c669c4c15315369c71edcee9287d1f83d80c1021d506a4be3ad1116b15",
+    "jehyeong/overnight/results/team_strategy_comparison/beomgu_c3_vt30_signal_panel.csv": "fc13040d055511111273ce58322afb57f9cb90228eb869dd51516c427def9071",
+    "jehyeong/overnight/results/team_strategy_comparison/sunny_c_signal_panel.csv": "019c3222866a3f585906824b3d604d39d2d29a71d427a9017672feb3b703d464",
+    "jehyeong/overnight/results/team_strategy_comparison/woohyun_top40_30_signal_panel.csv": "399b7388d14b8e7e478a4a4581966751e72fdc036f506b4bd5a3bd3f6a8b2d63",
+    "jehyeong/overnight/results/team_strategy_comparison/all_strategy_trade_log.csv": "72b2fa02bf88a4cbf3d5d7ecde3ebbb102c6c054ebf01d83a36c8eb36501b4d3",
+    "jehyeong/intraday/data/minute/069500_TOSS_1m.csv": "cbcacbb705ce0e93dadc5e66003de23c0c0ba89fa1e6860357450ff9f2ae5135",
+    "jehyeong/intraday/data/minute/122630_TOSS_1m.csv": "021a078a008bb02557b3fcf7e9387ba3eab2281f5b214cb9e86903b2fbef4ceb",
+    "jehyeong/intraday/data/minute/229200_TOSS_1m.csv": "a348efcfa9c6e51172a7c85b7cd8be85e60f34b428e9b855671c2cf099601aab",
+    "jehyeong/intraday/data/minute/233740_TOSS_1m.csv": "5a10dd14973c7dd5df987bff087de2e308e374b9e54fdce8939551af768c8f2d",
+    "jehyeong/intraday/data/KOSDAQ_150_fut_foreign.csv": "33dd707df041f600d1a5de8a3382c47d533709df085a45fe7a3f02498ab32648",
+    "jehyeong/intraday/data/KOSDAQ_150_ohlcv.csv": "dac7215566b1f86d92aa5ef39a6842fee720675db9d931ddefb9db74983f3e0e",
+    "beomgu/data/spx_daily.csv": "573b1effdf40290fa52918d645f429db658f53a664e564aea4b2a2454fd8f5f3",
+    "beomgu/overnight_lab/topics/r3_d2.py": "5da6961d48da79e009a397aee0b39e5799a6f6e18b4b2e4cc20bc202d00ba509"
+  },
+  "code_sha256": "7ef3314326d38d80038824457e005d99a91713afe73c2772a6f6cc99b8be770f",
+  "completed_variants": 31,
+  "unrun_variants": 8,
+  "new_data_audit": {
+    "foreign_fifth_column": "foreign",
+    "foreign_missing_evaluation_days": 0,
+    "identical_index_rows_dropped": 1
+  },
+  "checks": {
+    "actual_etf_leg_arithmetic": "PASS",
+    "exit_date_ledger_reconciliation": "PASS",
+    "unborrowed_cash_weights": "PASS"
+  },
+  "presentation_code_sha256": "623d02238f66f2c3a7d524f447fc481f080d2f870c8f6408e71f7b3571abf918",
+  "presentation_only_refresh": "Chart labels/deduplication and report wording; numerical results unchanged"
+}

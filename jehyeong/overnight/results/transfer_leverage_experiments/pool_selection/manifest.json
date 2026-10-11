@@ -1,0 +1,25 @@
+{
+  "candidate_count": 33,
+  "group_count": 13,
+  "exhaustive_nonempty_portfolios": 8388607,
+  "exhaustive_portfolios_at_least_two": 8388574,
+  "start": "2022-12-13",
+  "end": "2026-09-17",
+  "days": 919,
+  "same_signal_one_size_only": true,
+  "kp_kd_optional": true,
+  "correlation_objective": "mean(abs(off-diagonal daily Pearson account-return correlations)), at least two accounts",
+  "capital": "equal initial capital; independently compounded accounts summed; no interaccount rebalancing",
+  "reference_file_sha256": "30731ae78d51ca24661c5093806497aef6b6a639bfa3997a6184093339715e7d",
+  "candidate_returns_sha256": "590443c11f691ce6e69aa2b0af7a11fa97b87951acdb43687947bd1cbce05aa2",
+  "code_sha256": "d520ce7e7bb956fc1dc8c44f4f1701181dd5382c815ccc02641b0d9701388734",
+  "input_manifest": "C:\\Users\\박제형\\Desktop\\Future_Trading\\jehyeong\\overnight\\results\\transfer_leverage_experiments\\manifest.json",
+  "checks": {
+    "all_saved_candidates_independently_recomputed": "PASS",
+    "counts_per_cardinality": "PASS",
+    "minimum_correlation_independent_pair_certificate": "PASS",
+    "initial_equity_in_peak": "PASS"
+  },
+  "presentation_code_sha256": "623d02238f66f2c3a7d524f447fc481f080d2f870c8f6408e71f7b3571abf918",
+  "presentation_only_refresh": "Chart labels/deduplication and report wording; numerical results unchanged"
+}

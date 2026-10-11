@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "checks": [
+    "KOSPI200: selected historical performance reproduced exactly",
+    "KOSPI200: PnL, fee, slippage, entry count, direction and exposure verified",
+    "KOSPI200: buy-and-hold cash flow, costs, exactly two orders and matched dates verified",
+    "KOSDAQ150: selected historical performance reproduced exactly",
+    "KOSDAQ150: PnL, fee, slippage, entry count, direction and exposure verified",
+    "KOSDAQ150: buy-and-hold cash flow, costs, exactly two orders and matched dates verified",
+    "KOSPI200: daily_pnl.csv identical to original final selected run",
+    "KOSPI200: trades.csv identical to original final selected run",
+    "KOSPI200: orders.csv identical to original final selected run",
+    "KOSPI200: minute_equity.csv.gz identical to original final selected run",
+    "KOSDAQ150: daily_pnl.csv identical to original final selected run",
+    "KOSDAQ150: trades.csv identical to original final selected run",
+    "KOSDAQ150: orders.csv identical to original final selected run",
+    "KOSDAQ150: minute_equity.csv.gz identical to original final selected run",
+    "All 8 retained daily/minute input CSV SHA256 hashes unchanged",
+    "Buy-and-hold flat-price fee/slippage and fractional/whole-share cash-flow offline checks passed",
+    "Both final PnL/MDD benchmark charts visually inspected; report and source snapshot refreshed"
+  ],
+  "network_calls": 0,
+  "cleanup_status": "BLOCKED_BY_TOOL_POLICY"
+}

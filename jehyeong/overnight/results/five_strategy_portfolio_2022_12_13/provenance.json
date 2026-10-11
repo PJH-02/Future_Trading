@@ -1,0 +1,19 @@
+{
+  "intraday_final_run_manifest_sha256": "29c924c5f881c8e6d243ae5d9b100ddb37604ce76d77c18e95d2af59cd36cefe",
+  "intraday_daily_pnl_sha256": "d99831f6f0d67f2364b787c0ee575bb54b6f3f87d7dfb381dc0057df8169e3bf",
+  "intraday_trades_sha256": "a0090193eda4eedd7e12747bba3d2a60a3d28542c6904bc7cb251d803fa60fee",
+  "period_start_requested": "2022-12-13",
+  "period_end_common": "2026-09-17",
+  "initial_capital_each_account": 100000000,
+  "accounts": [
+    "JEHYEONG_PROXY",
+    "SUNNY_C",
+    "WOOHYUN_TOP40_30",
+    "BEOMGU_C3_VT30",
+    "JEHYEONG_INTRADAY_KOSPI"
+  ],
+  "idle_cash_when_strategy_not_ready_or_day_not_eligible": true,
+  "transaction_costs": "round-trip 5bp on traded capital/notional; intraday 3bp fee + 2bp slippage round trip from frozen side costs",
+  "account_collision_assumption": "separate accounts, no shared buying power or order interaction",
+  "output_directory": "jehyeong\\overnight\\results\\five_strategy_portfolio_2022_12_13"
+}

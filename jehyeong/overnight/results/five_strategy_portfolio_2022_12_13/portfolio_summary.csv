@@ -1,0 +1,2 @@
+﻿period,portfolio,start,end,days,trades,total_return,CAGR,MDD,Sharpe,Calmar,initial_capital_per_account,initial_total_capital,final_total_equity
+FIVE_STRATEGIES_2022_12_13,Five independent accounts,2022-12-13,2026-09-17,919,774,0.3051957899378419,0.07577030239941673,-0.027158286004635546,1.9080683299600292,2.7899515597738307,100000000,500000000,652597894.968921

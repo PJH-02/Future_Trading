@@ -1,0 +1,9 @@
+﻿variant,status,reason
+SC_KOSDAQ_KOSPI_OPTIONS_2X,NOT_RUN,No KOSDAQ -2x ETF in the permitted vehicle universe; margin futures/ETN require a separate model
+SC_KOSDAQ_KOSPI_OPTIONS_VT30,NOT_RUN,No KOSDAQ -2x ETF in the permitted vehicle universe; margin futures/ETN require a separate model
+W40_KOSDAQ_NATIVE_1X,NOT_RUN,Only net-buy available; normalized net/(buy+sell) requires daily buy/sell amounts; separate NET_PROXY tested
+W40_KOSDAQ_NATIVE_2X,NOT_RUN,Only net-buy available; normalized net/(buy+sell) requires daily buy/sell amounts; separate NET_PROXY tested
+W40_KOSDAQ_NATIVE_VT30,NOT_RUN,Only net-buy available; normalized net/(buy+sell) requires daily buy/sell amounts; separate NET_PROXY tested
+SC_KOSDAQ_NATIVE_1X,NOT_RUN,KOSDAQ150 options foreign put / individual call daily buy/sell amounts and 60-session warmup missing
+SC_KOSDAQ_NATIVE_2X,NOT_RUN,KOSDAQ150 options foreign put / individual call daily buy/sell amounts and 60-session warmup missing
+SC_KOSDAQ_NATIVE_VT30,NOT_RUN,KOSDAQ150 options foreign put / individual call daily buy/sell amounts and 60-session warmup missing

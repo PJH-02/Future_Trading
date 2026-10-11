@@ -1,0 +1,2 @@
+﻿period,portfolio,start,end,days,trades,total_return,CAGR,MDD,Sharpe,Calmar,win_rate,avg_trade_return,initial_capital_per_account,initial_total_capital,final_total_equity,total_net_pnl
+SIX_STRATEGIES_2022_12_13,Six independent accounts,2022-12-13,2026-09-17,919,1306,0.3442574334902768,0.08450438643488356,-0.02642320122237174,2.0524212739595464,3.1981131174725417,,,100000000,600000000,806554460.094168,206554460.09416795
