@@ -1,0 +1,117 @@
+{
+  "generated_at_utc": "2026-10-27T03:27:15.377050+00:00",
+  "config": {
+    "initial_capital": 100000000,
+    "commission_bps": 1.5,
+    "slippage_bps": 1.0,
+    "start": "2022-01-01",
+    "end": "2026-12-31"
+  },
+  "common_start": "2022-11-23",
+  "common_end": "2026-10-07",
+  "sessions": 944,
+  "source_files": [
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/229200_daily.csv",
+      "symbol": "229200",
+      "kind": "daily",
+      "sha256": "1edc59e86f7dc75750b0d1bacda51c97a3d57ba6ac97b72c5602b474cc01c9b7",
+      "rows": 2704,
+      "first_date": "2015-10-01",
+      "last_date": "2026-10-13"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/minute/229200_TOSS_1m.csv",
+      "symbol": "229200",
+      "kind": "minute",
+      "sha256": "a348efcfa9c6e51172a7c85b7cd8be85e60f34b428e9b855671c2cf099601aab",
+      "rows": 368040,
+      "first_date": "2022-11-23",
+      "last_date": "2026-10-07"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/233740_daily.csv",
+      "symbol": "233740",
+      "kind": "daily",
+      "sha256": "8e2f5a3c4688dabe6bdf64cbd3793d2c5cce9a8210e048a3564fa90c4263c328",
+      "rows": 2648,
+      "first_date": "2015-12-17",
+      "last_date": "2026-10-08"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/minute/233740_TOSS_1m.csv",
+      "symbol": "233740",
+      "kind": "minute",
+      "sha256": "5a10dd14973c7dd5df987bff087de2e308e374b9e54fdce8939551af768c8f2d",
+      "rows": 368430,
+      "first_date": "2022-11-23",
+      "last_date": "2026-10-08"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/251340_daily.csv",
+      "symbol": "251340",
+      "kind": "daily",
+      "sha256": "9007b8800cf2ccc9938643fa004ad2efea1bc18fc44a130eb6cd6beabb44e1be",
+      "rows": 2492,
+      "first_date": "2016-08-10",
+      "last_date": "2026-10-13"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/minute/251340_TOSS_1m.csv",
+      "symbol": "251340",
+      "kind": "minute",
+      "sha256": "eb96010c6a0e19e84b3bb679fe539d63b9e1161ad1044a3b72f5190d2e97ccc6",
+      "rows": 368040,
+      "first_date": "2022-11-23",
+      "last_date": "2026-10-07"
+    }
+  ],
+  "code_sha256": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675",
+  "versions": {
+    "V1": "15:15",
+    "V2": "15:19"
+  },
+  "python_libraries": {
+    "pandas": "2.3.2",
+    "numpy": "2.4.3",
+    "matplotlib": "3.11.2"
+  },
+  "assumptions": [
+    "시그널: KODEX 코스닥150(229200), 매수: 레버리지(233740) 또는 인버스(251340).",
+    "V1은 15:15 시작 분봉의 종가(15:16 확정), V2는 15:19 시작 분봉의 종가(15:20 확정)를 사용합니다.",
+    "저장된 원본 분봉은 종료 시각이므로 09:06 시가 체결은 원본 09:07 봉 시가입니다.",
+    "두 버전의 오버나이트 진입은 사용자가 승인한 15:20 직전 마지막 양의 거래량 분봉 종가를 참고가격으로 사용합니다.",
+    "이는 실제 15:20 시장가 체결을 보장하지 않는 연구용 가격 가정이며 V1의 원안 대비 승인된 체결가격 변경입니다.",
+    "V2는 15:20 신호 확정 직후 지연 없이 해당 참고가격으로 거래한다고 가정합니다.",
+    "각 거래에 계좌 현금 전액을 재투자하며 소수점 수량을 허용합니다. 추가 차입은 없고 현금 이자는 0입니다.",
+    "매수·매도 각각 수수료 1.5bp와 불리한 슬리피지 1bp를 적용합니다. 가격이 같으면 왕복 비용은 약 5bp입니다.",
+    "수수료를 포함하여 매수 수량을 계산하며 ETF 실제 가격을 사용합니다. 별도 배당·세금은 더하지 않습니다.",
+    "결합 계좌는 09:00 오버나이트 청산 → 09:06 장중 매수 → 15:00 장중 청산 → 15:20 오버나이트 매수 순으로 운용합니다.",
+    "일별 NAV는 15:30 종가 평가액입니다. 오버나이트 진입 당일의 비용·평가손익과 다음 거래일 청산손익을 각각 귀속합니다.",
+    "매매하지 않는 거래일도 일별 수익률에 포함합니다. 연도 사이 계좌 자산은 이어지며 연도별 수익률 기준은 전년도 마지막 NAV입니다.",
+    "CAGR=(기말NAV/기초NAV)^(365.25/관측기간 달력일수)-1; 달력일수는 첫 NAV 날짜의 전날부터 마지막 NAV 날짜까지입니다.",
+    "연도별 total_return은 실제 해당 연도 수익률이고 CAGR은 같은 공식을 적용한 연환산 값입니다. 부분연도의 CAGR은 실제 수익률과 다릅니다.",
+    "MDD는 기초자산을 고점에 포함한 일별 평가 NAV 낙폭이며 장중 최대 손실은 아닙니다.",
+    "Sharpe=일별 수익률 평균/표본표준편차(ddof=1)×sqrt(252), 무위험수익률 0입니다. 수익률 분산이 0이면 정의되지 않아 NaN으로 표시합니다.",
+    "Turnover(x)=Σ(당일 매수·매도 체결대금 합계/전일NAV); annualized_turnover=turnover×252/거래일수입니다.",
+    "매수·매도 양방향 합산 회전율이므로 한 번 전액 매수·청산하면 약 2x입니다. 거래횟수와는 다른 지표입니다.",
+    "필수 체결봉이 없거나 거래량이 0이면 거래를 제외합니다. IBS는 09:00부터 해당 신호 분봉까지 모두 존재해야 계산합니다.",
+    "오버나이트의 다음 거래일은 필터링 전 229200 일봉 달력으로 정하며, 그날 09:00 체결봉이 없으면 신규 진입을 제외합니다.",
+    "이 사전 데이터 완전성 검사는 체결 가능성을 보장하지 않으며, 거래량 제한·시장 충격·호가잔량은 별도 모형화하지 않습니다.",
+    "마지막 표본일에는 표본 밖 청산이 필요한 오버나이트 신규 진입을 제외합니다. 제외 내역은 skips.csv에 기록합니다.",
+    "2022년 1월부터의 분봉은 보유하지 않아 2022년은 11월부터, 2026년은 데이터 종료일까지의 부분연도입니다."
+  ],
+  "signal_instrument": "229200",
+  "commission_bps_per_side": 1.5,
+  "slippage_bps_per_side": 1.0,
+  "timing_semantics": "minute-start economics; source minute-end = minute-start + 1 minute; 15:30 close is actual EOD auction mark",
+  "execution_approximation": "USER APPROVED: overnight entry uses last positive-volume close with bar_end <=15:20; idealized reference-price fill",
+  "partial_years": [
+    2022,
+    2026
+  ],
+  "selected_worker_model": "opencode/deepseek-v4.1-flash-free",
+  "worker_acceptance": "FAIL: reasoning output limit, no code",
+  "implementation_owner": "Codex direct completion, transparently announced after two exhausted repair delegations",
+  "owner_acceptance": "PASS: see acceptance.json and independent_check.json for hashes and evidence"
+}

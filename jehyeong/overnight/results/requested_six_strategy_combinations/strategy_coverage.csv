@@ -1,0 +1,7 @@
+﻿strategy,label,first_ready,last_available,observations,source_assumption
+BEOMGU_C3_VT30,Beomgu r5 C3|vt30|ETF,2010-02-22,2026-09-22,4083,C3|vt30|ETF source net_return; original same-open signal/fill assumption; 3bp commission + 2bp slippage on invested ETF cash; turnover is both sides.
+SUNNY_C,Sunny Strategy C (pos_C),2010-03-31,2026-09-17,4054,"Original Strategy C pos_C, open-to-close index proxy; original stated 3bp round-trip cost (commission); turnover is both sides."
+WOOHYUN_TOP40_30,"Woohyun Flow Top40, 30 positive bars",2024-10-10,2026-09-23,478,Original Flow Top40 and 30-positive-bar trade set; 3bp commission + 2bp slippage round trip per invested capital; absent OR/trades are flat; turnover is both sides.
+DAYNIGHT_V1_COMBINED,JeHyeong daynight V1 combined,2022-11-23,2026-10-07,944,"Stored V1 combined independent account, including sequential intraday+overnight legs; source costs and filled-notional turnover; no double deduction."
+INTRADAY_KOSPI200,JeHyeong intraday KOSPI200,2022-12-13,2026-10-07,862,Stored final KOSPI200 selected strategy daily net PnL; 1.5bp commission + 1bp slippage per side already included; ineligible/missing evaluation sessions are flat; source turnover.
+INTRADAY_KOSDAQ150,JeHyeong intraday KOSDAQ150,2022-12-13,2026-10-07,881,Stored final KOSDAQ150 selected strategy daily net PnL; 1.5bp commission + 1bp slippage per side already included; ineligible/missing evaluation sessions are flat; source turnover.

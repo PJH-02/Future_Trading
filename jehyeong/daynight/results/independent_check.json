@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "method": "Independent raw-data reference, without importing engine; chronological order-ledger replay; all metrics/yearly reconciliation",
+  "checks": [
+    {
+      "version": "V1",
+      "account": "intraday",
+      "sessions": 944,
+      "trades": 252,
+      "max_nav_absolute_error_krw": 3.5762786865234375e-06,
+      "trade_identities_equal": true,
+      "order_cash_replay_equal": true,
+      "summary_and_yearly_metrics_equal": true
+    },
+    {
+      "version": "V1",
+      "account": "overnight",
+      "sessions": 944,
+      "trades": 588,
+      "max_nav_absolute_error_krw": 2.205371856689453e-06,
+      "trade_identities_equal": true,
+      "order_cash_replay_equal": true,
+      "summary_and_yearly_metrics_equal": true
+    },
+    {
+      "version": "V1",
+      "account": "combined",
+      "sessions": 944,
+      "trades": 840,
+      "max_nav_absolute_error_krw": 1.2040138244628906e-05,
+      "trade_identities_equal": true,
+      "order_cash_replay_equal": true,
+      "summary_and_yearly_metrics_equal": true
+    },
+    {
+      "version": "V2",
+      "account": "intraday",
+      "sessions": 944,
+      "trades": 252,
+      "max_nav_absolute_error_krw": 3.5762786865234375e-06,
+      "trade_identities_equal": true,
+      "order_cash_replay_equal": true,
+      "summary_and_yearly_metrics_equal": true
+    },
+    {
+      "version": "V2",
+      "account": "overnight",
+      "sessions": 944,
+      "trades": 586,
+      "max_nav_absolute_error_krw": 3.7550926208496094e-06,
+      "trade_identities_equal": true,
+      "order_cash_replay_equal": true,
+      "summary_and_yearly_metrics_equal": true
+    },
+    {
+      "version": "V2",
+      "account": "combined",
+      "sessions": 944,
+      "trades": 838,
+      "max_nav_absolute_error_krw": 1.3232231140136719e-05,
+      "trade_identities_equal": true,
+      "order_cash_replay_equal": true,
+      "summary_and_yearly_metrics_equal": true
+    }
+  ],
+  "source_hashes_verified": 6,
+  "code_sha256": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675",
+  "daily_nav_sha256": "72b8563657daf2b0565efbcebde3ed7a2fd0c12e9ab1a52c27bea788c121ae0c"
+}

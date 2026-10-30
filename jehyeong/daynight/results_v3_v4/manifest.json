@@ -1,0 +1,97 @@
+{
+  "config": {
+    "initial_capital": 100000000.0,
+    "commission_bps": 1.5,
+    "slippage_bps": 1.0,
+    "start": "2022-01-01",
+    "end": "2026-12-31"
+  },
+  "common_start": "2022-11-23",
+  "common_end": "2026-10-07",
+  "sessions": 944,
+  "generated_at_utc": "2026-10-27T03:45:42.170062+00:00",
+  "source_files": [
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/229200_daily.csv",
+      "symbol": "229200",
+      "kind": "daily",
+      "sha256": "1edc59e86f7dc75750b0d1bacda51c97a3d57ba6ac97b72c5602b474cc01c9b7",
+      "rows": 2704,
+      "first_date": "2015-10-01",
+      "last_date": "2026-10-13"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/minute/229200_TOSS_1m.csv",
+      "symbol": "229200",
+      "kind": "minute",
+      "sha256": "a348efcfa9c6e51172a7c85b7cd8be85e60f34b428e9b855671c2cf099601aab",
+      "rows": 368040,
+      "first_date": "2022-11-23",
+      "last_date": "2026-10-07"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/233740_daily.csv",
+      "symbol": "233740",
+      "kind": "daily",
+      "sha256": "8e2f5a3c4688dabe6bdf64cbd3793d2c5cce9a8210e048a3564fa90c4263c328",
+      "rows": 2648,
+      "first_date": "2015-12-17",
+      "last_date": "2026-10-08"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/minute/233740_TOSS_1m.csv",
+      "symbol": "233740",
+      "kind": "minute",
+      "sha256": "5a10dd14973c7dd5df987bff087de2e308e374b9e54fdce8939551af768c8f2d",
+      "rows": 368430,
+      "first_date": "2022-11-23",
+      "last_date": "2026-10-08"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/251340_daily.csv",
+      "symbol": "251340",
+      "kind": "daily",
+      "sha256": "9007b8800cf2ccc9938643fa004ad2efea1bc18fc44a130eb6cd6beabb44e1be",
+      "rows": 2492,
+      "first_date": "2016-08-10",
+      "last_date": "2026-10-13"
+    },
+    {
+      "path": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/intraday/data/minute/251340_TOSS_1m.csv",
+      "symbol": "251340",
+      "kind": "minute",
+      "sha256": "eb96010c6a0e19e84b3bb679fe539d63b9e1161ad1044a3b72f5190d2e97ccc6",
+      "rows": 368040,
+      "first_date": "2022-11-23",
+      "last_date": "2026-10-07"
+    }
+  ],
+  "code_sha256": {
+    "backtest_v3_v4.py": "1875f8cb5eb3a8db10bc18e4e7870e52f65f80e629024f09d3ad41731ea3c742",
+    "pnl_ma20.py": "8de0c0f4605d5d62713fcec8622354a472763d0ad7099e494f460872ac0c946d",
+    "backtest_daynight.py": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675"
+  },
+  "versions": {
+    "V3": "V2 with 09:05 minute close entry",
+    "V4": "V3 with separate normal-shadow realized-P&L MA20 gates"
+  },
+  "normal_reference": "Standalone V3 intraday and overnight accounts; net cumulative realized P&L, 20 exchange sessions including cash days",
+  "gate_clock": "Only normal shadow exits update mode. Intraday uses mode before today's15:00 exit; overnight uses mode after today's09:00 exit.",
+  "reversal": "Swap 233740 and 251340 buys; use actual ETF prices, never negate baseline returns",
+  "assumptions": [
+    "V3는 V2를 기준으로 장중 진입 가격만 09:05 시작 분봉 종가(원본 09:06 종료 봉 종가)로 변경합니다. 신호 판단은 기존 09:05 시가를 그대로 사용하고 장중 청산은 15:00 시가입니다.",
+    "오버나이트는 V2와 같이 15:19 분봉 종가로 IBS를 계산하고 15:20 직전 마지막 실제 체결가를 참고가격으로 진입하며, 다음 거래일 09:00 시가에 청산합니다.",
+    "V4는 V3에 두 개의 독립적인 정상 전략 모의 계좌를 추가합니다. 각 모의 계좌는 최초 1억원에서 시작해 비용을 반영하고 정상 방향으로 계속 운용됩니다. 이 계좌들은 매매 방향 판단용이며 결합 계좌의 자금을 차감하지 않습니다.",
+    "각 전략의 포지션이 청산되면 모의 계좌의 누적 확정 P&L을 현재 관측값으로 삼고, 직전 19거래일 말의 확정 P&L과 함께 MA20을 계산합니다. 거래가 없는 날은 직전 확정 P&L을 유지해 평균에 포함하며, 20개 관측치가 쌓이기 전에는 정상 방향입니다.",
+    "청산 직후 정상 모의 P&L < MA20이면 해당 전략의 다음 시그널 방향을 반전하고, P&L >= MA20이면 정상으로 복귀합니다. 포지션 청산이 없는 날에는 반전 상태를 변경하지 않습니다.",
+    "장중 진입은 당일 15:00 청산 전 상태를 사용하고, 오버나이트 진입은 당일 09:00 청산 후 상태를 사용합니다. 당일 뒤에 발생할 청산손익을 미리 사용하지 않습니다.",
+    "롱·숏 반전은 레버리지 ETF(233740) 매수와 인버스 ETF(251340) 매수를 교환합니다. 실제 반전 ETF의 가격·수량·비용으로 계산하므로 수익률의 단순 부호 반전과 다릅니다. 매번 현금 전액을 투자하며 소수점 수량을 허용합니다.",
+    "정상 전략 모의 P&L은 청산된 거래의 손익만 반영합니다. 표시 성과의 NAV·MDD·Sharpe는 종전과 같은 매 거래일 15:30 종가 평가 기준이며, 두 기준을 구분합니다.",
+    "매수·매도 편도 수수료 1.5bp와 불리한 슬리피지 1bp를 적용합니다. CAGR은 관측 달력 기간, Sharpe는 무위험수익률 0·표본표준편차·sqrt(252), 회전율은 양방향 거래대금/전일 NAV의 합입니다.",
+    "15:20 참고가격 체결과 분봉 종가 체결은 이상적 체결가격 가정입니다. 필수 체결봉·다음 거래일 시가의 거래량이 없으면 해당 ETF 거래를 제외하고 사유를 남깁니다. 반전 ETF의 거래 가능 여부는 정상 ETF와 별도로 확인합니다.",
+    "초기 관측치 이전의 모의 계좌 이력은 사용하지 않습니다. 2022·2026년은 부분연도이며 모든 성과는 비용 차감 후입니다. V1·V2 원본 파일과 결과는 보존합니다."
+  ],
+  "historical_results_preserved": "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results",
+  "prior_versions_comparable": true,
+  "owner_acceptance": "PASS: acceptance.json and independent_check.json"
+}

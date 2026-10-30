@@ -1,0 +1,153 @@
+{
+  "status": "PASS",
+  "owner": "Codex",
+  "verified_at_utc": "2026-10-27T03:47:46.796905+00:00",
+  "scope": "V3 based on V2 with 09:05 minute close; V4 based on V3 with independent normal-shadow cumulative realized P&L MA20 gates and ETF swaps",
+  "user_confirmed": {
+    "v3_base": "V2",
+    "v4_base": "V3",
+    "pnl_basis": "normal shadow cumulative realized net P&L",
+    "window": "20 exchange sessions including flat/no-trade days",
+    "reversal": "swap 233740 and 251340 ETF buys"
+  },
+  "delegation": [
+    {
+      "role": "implement",
+      "model": "freellmapi/glm-4.5-flash",
+      "run": "/home/pjh/.local/state/codex-opencode/runs/implement.qbAg23GE",
+      "worker_exit": 124,
+      "launcher_exit": 124,
+      "acceptance": "FAIL",
+      "reason": "Timeout without generated files",
+      "partial_files": 0
+    },
+    {
+      "role": "debug",
+      "model": "opencode/deepseek-v4.1-flash-free",
+      "run": "/home/pjh/.local/state/codex-opencode/runs/debug.4ghBU7Ck",
+      "worker_exit": 0,
+      "launcher_exit": 0,
+      "acceptance": "PASS",
+      "written_paths": [
+        "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/pnl_ma20.py",
+        "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/test_pnl_ma20.py"
+      ],
+      "worker_tests_passed": 13
+    }
+  ],
+  "repair_delegations_used": 1,
+  "commands": [
+    {
+      "command": "python3 -m unittest discover -s jehyeong/daynight -p 'test_*.py' -v",
+      "exit": 0,
+      "tests_passed": 34
+    },
+    {
+      "command": "python3 jehyeong/daynight/backtest_v3_v4.py",
+      "exit": 0,
+      "summary_rows": 6,
+      "yearly_rows": 30
+    },
+    {
+      "command": "python3 jehyeong/daynight/independent_v3_v4.py",
+      "exit": 0,
+      "account_nav_observations": 5664,
+      "shadow_gate_observations": 1888
+    },
+    {
+      "command": "ruff check --select E9,F63,F7,F82 [five new Python files]",
+      "exit": 0
+    },
+    {
+      "command": "git diff --check -- jehyeong/daynight docs/tickets/kosdaq-daynight-v3-v4-gate.md",
+      "exit": 0
+    }
+  ],
+  "checks": {
+    "independent_six_accounts": true,
+    "trade_identities": true,
+    "normal_shadow_pnl_and_modes": true,
+    "per_strategy_exit_clock": true,
+    "no_future_mode_timestamps": true,
+    "actual_etf_order_reference_prices": true,
+    "quantities_commissions_and_cash_replay": true,
+    "all_full_and_yearly_metrics": true,
+    "turnover": true,
+    "prior_25_files_unchanged": true,
+    "source_files_unchanged": 6,
+    "html_metric_tables": 3,
+    "embedded_charts_verified": 5,
+    "png_svg_pairs": 5,
+    "comparison_and_shadow_charts_visually_reviewed": true
+  },
+  "max_absolute_nav_error_krw": 1.0728836059570312e-05,
+  "baseline_diff_diagnostics": "Each worker baseline/post scoped comparison exit0; prior repository changes retained. Temporary process-local Git CRLF normalization used for diagnostics only; no persistent configuration or source data changes.",
+  "limitations": [
+    "2022 and 2026 are partial years; common source sample 2022-11-23..2026-10-07",
+    "Minute close and approved overnight last-traded-price fills are ideal reference-price assumptions",
+    "Daily MTM MDD; fractional shares; no market-depth/size impact model",
+    "Data eligibility prevalidates required next-session endpoint; opposite ETF is checked independently"
+  ],
+  "blockers": [],
+  "code_sha256": {
+    "backtest_v3_v4.py": "1875f8cb5eb3a8db10bc18e4e7870e52f65f80e629024f09d3ad41731ea3c742",
+    "pnl_ma20.py": "8de0c0f4605d5d62713fcec8622354a472763d0ad7099e494f460872ac0c946d",
+    "backtest_daynight.py": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675"
+  },
+  "preserved_baseline_hashes": {
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/backtest_daynight.py": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/independent_check.py": "07c044b03feefca63002b3cd2320bdc2f1370f62657444241a39c327fd2eefc1",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/test_daynight.py": "342585e9b647abe987e80e0ebf3385fffedef95922e4a9e1af2d8acd104a4ac8",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/README.md": "12c4de7398c7207a082d822af557ff342d798057bdde580ce43d0d46878f0353",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/acceptance.json": "c7a0a7a83bf0c61462002bf83e472fe0c85803bc927932a51abc43f4682d1dc9",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/daily_nav.csv": "72b8563657daf2b0565efbcebde3ed7a2fd0c12e9ab1a52c27bea788c121ae0c",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/data_quality.csv": "e0fc2f239491048892452cdece0767afd05bf8b8bbe83dd1a8114e14dd1e82c5",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/independent_check.json": "0e3702fabe5a296a1e42091ec7a39c7890d30f3067502b2252a628bb5db8674e",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/manifest.json": "ee7f81856e70643f26ccd92154ecef50beede57cbe868fd72ef748f4d763c69c",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/orders.csv": "2feb0a34c1e5b2fb005e515a181eb735b6df7de0e232530d875df1fdb35f3383",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_comparison.png": "2a021e660e71811eff97f0b856a17444f48203f36ba57a8189bed2e1a0e9a9bc",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_comparison.svg": "93458ca0bee9633983f8adb51dc71844fe5b01b88383e7a09a3242e72743b423",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_V1.png": "65113e3f57778885fadf5ad5879f58239b2d6c89779f305c9631e8790533fa34",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_V1.svg": "223eda32ae223631feed660271e286f60e8d3115c23be8b47f8b1c96591a4263",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_V2.png": "67b9ccc9046c6ff582f65b9c930d1a690a51d318fb58e99dda72d664162b60ec",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_V2.svg": "994621353999c94313dc5c5b11c2a25a7f3c777ed97ee1effc5edf79203d2374",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_yearly.png": "def3cb8de3a1c35580b882f39f4ea066fda30bc7a8255c453a017f1afb67a445",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/pnl_yearly.svg": "49af4bb844ef096843901b5de63f21a436c9e4daa5fdf7dd2093cd6b28cdb6f2",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/report.html": "f7afbd3f53a37db016369effb99a4ad0aedde2f4463c601498f5f18e339b6f51",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/report.md": "661e40b042ef80c1d278f2a06a00b1aae9224cdf1eedf6591f7a77a66d8817b2",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/signals.csv": "5332898c76cbdcae011c408b8b57d723a10eea5ae981334ac033cb24b0a85878",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/skips.csv": "fd0727f5f541952690d34a34f3ba6c5e4f757cbab14d65fb35970f214cd2ec2b",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/summary.csv": "669195f3486ae89c6eae9400890840eb2499ac925b5df9541f0c89772db29700",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/trades.csv": "4f79f8d5a1bf3803a7be5488f6d0cd6d4f630da03043067db1025f97c622d4bb",
+    "/mnt/c/Users/박제형/Desktop/Future_Trading/jehyeong/daynight/results/yearly.csv": "5a5789d373b09d3cc7f107521c4fd2244a2da82b860a8c2a30d917442fcc8e66"
+  },
+  "artifact_sha256": {
+    "comparison_summary.csv": "75142be2080f75b28d06535aa948a7f1f6eb45715beceecdbfa21ca84bf03c47",
+    "comparison_yearly.csv": "e91cebcc64cdf66f146da1b05930824e89a57fd3cecf701a86476c9b2fce76be",
+    "daily_nav.csv": "069827d49482f49cef60e916bd7c09b7b44999a4eb4b9230614b101260d74431",
+    "data_quality.csv": "e0fc2f239491048892452cdece0767afd05bf8b8bbe83dd1a8114e14dd1e82c5",
+    "execution_signals.csv": "efca948ac7a90049ac63f49483abd15d1746f6bb2415bf7719d043f1bca99854",
+    "independent_check.json": "82009f96bfa3fac09452ab022b4aeff56b32e1426fb55d9c9f9068b3228106e1",
+    "manifest.json": "6b7eed6c618a23be9879c0f620f17654f163731af59917aa50c9a40372753a06",
+    "normal_signals.csv": "1a312a07f2791524e7c2fd4bb8b63e52d6d84f1a07a54de02639c8aeb59e6942",
+    "orders.csv": "16e965641c459b07b8bfa57220fa920bb160181e893bdf32c39cb20c6beb91d8",
+    "pnl_comparison.png": "047c4d99f27fe2ddb265d47e54bbc745e7b475f43a1f47ec1acd075c3c0249bd",
+    "pnl_comparison.svg": "e35e9f2e9cc2860ec262742cece788c4490c30c99926b928a2168653b7a1171e",
+    "pnl_V3.png": "985646a0ad973016c7f0df2565c6425c848d47daf1383b23afc42aee0199892e",
+    "pnl_V3.svg": "8d83d4c5721091a1873dc8aac5fad43863c52c58383d8ba2795de65d5eb14956",
+    "pnl_V4.png": "1b6bbe779ea9ee79a091276bc820c35056374cb84ec117e689a8330ab792121b",
+    "pnl_V4.svg": "3e90146ae7e1b27898a8ce205b18dbb2c55808a0168ab9c44a5ab2aaaaf43192",
+    "pnl_yearly.png": "8b1dc24724388bfb2d59a85868b55ef416c897dc00641204b8088f026f84175b",
+    "pnl_yearly.svg": "64c1fdbed07b1f07f3d97a318716eb8230aa510c3dab1881b9bd95c37bcab60b",
+    "report.html": "6938e624c5b1ff3f1a321bdd7eab4870966a21198c03469499e76e64610ef925",
+    "report.md": "bc03101bf1cf7c9b998ad98482accc835b4fa28e9f839e38f442911ca1632fed",
+    "shadow_gate.csv": "abdafe73c170c39c96dc8d092c452b957f792a1e65f4db9dede66721ed844270",
+    "shadow_pnl_ma20.png": "5799272d080f304a7f558a77d8340a4e1d0ca1c541b093594bf828c5012c5de0",
+    "shadow_pnl_ma20.svg": "a14f3a20fac7c06238b8564327d5a384239cf83247329772edf3c58ffb30c60e",
+    "skips.csv": "93ebd01ff364560259ea49ab4859f955ee748cb08e766bd777db31c6694a415a",
+    "summary.csv": "2f29e08785a4aff1a5d725f1589a63c7fa359efb2ebaa63be185bb790d926323",
+    "switch_events.csv": "cc3be6c64ac48efbd7e2e34b853d6be09b393a0138b01b2aff3ffa63b25775ed",
+    "trades.csv": "c5d18510e815fac0a0d5d5fcd3d25b7e6897a24116680ef6b1afee8055813212",
+    "yearly.csv": "8f1e9e2566b556a4e1cb9e7315a54883af986208fb21a2325edc3ecd3bced498"
+  }
+}

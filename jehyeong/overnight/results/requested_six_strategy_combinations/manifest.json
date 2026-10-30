@@ -1,0 +1,59 @@
+{
+  "status": "COMPLETE",
+  "strategies": [
+    "BEOMGU_C3_VT30",
+    "SUNNY_C",
+    "WOOHYUN_TOP40_30",
+    "DAYNIGHT_V1_COMBINED",
+    "INTRADAY_KOSPI200",
+    "INTRADAY_KOSDAQ150"
+  ],
+  "strategy_labels": {
+    "BEOMGU_C3_VT30": "Beomgu r5 C3|vt30|ETF",
+    "SUNNY_C": "Sunny Strategy C (pos_C)",
+    "WOOHYUN_TOP40_30": "Woohyun Flow Top40, 30 positive bars",
+    "DAYNIGHT_V1_COMBINED": "JeHyeong daynight V1 combined",
+    "INTRADAY_KOSPI200": "JeHyeong intraday KOSPI200",
+    "INTRADAY_KOSDAQ150": "JeHyeong intraday KOSDAQ150"
+  },
+  "combinations_evaluated": 63,
+  "initial_capital_per_strategy_account_krw": 100000000.0,
+  "annualization_sessions": 252,
+  "risk_free_rate": 0,
+  "coverage_policy": "Each selected account starts at its first ready observation and ends at the earliest last-available date among selected strategies; newly ready accounts receive a fresh equal-size capital contribution; earlier dates use only accounts already ready.",
+  "portfolio_aggregation": "Flow-adjusted time-weighted returns: daily portfolio PnL divided by prior account equity plus same-day capital contributions. Each active account compounds independently; no daily rebalance or cross-account position/netting.",
+  "metrics": "CAGR = linked_equity^(252/sessions)-1; Sharpe = mean daily TWR return / sample std * sqrt(252); MDD from linked equity including initial unit NAV; Calmar = CAGR/abs(MDD).",
+  "transaction_costs": "Net daily returns and costs as specified per original strategy/artifact; no second deduction. Turnover sums both buy and sell notional where available. For source trade-only panels, notional is reconstructed from invested weight.",
+  "source_sha256": {
+    "jehyeong/daynight/backtest_daynight.py": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675",
+    "jehyeong/daynight/results/daily_nav.csv": "72b8563657daf2b0565efbcebde3ed7a2fd0c12e9ab1a52c27bea788c121ae0c",
+    "jehyeong/daynight/results/orders.csv": "2feb0a34c1e5b2fb005e515a181eb735b6df7de0e232530d875df1fdb35f3383",
+    "jehyeong/intraday/code/backtest_intraday_momentum.py": "91782e27331a3a02a08425a4eb4b9c0ed22febc41feca4ba8f52bbec7efe1bba",
+    "jehyeong/intraday/results/final/KOSDAQ150/daily_pnl.csv": "40ac3edb35a06da72613c8b0ae745821125743dd415e9b687d78be4d60bc0e85",
+    "jehyeong/intraday/results/final/KOSPI200/daily_pnl.csv": "d99831f6f0d67f2364b787c0ee575bb54b6f3f87d7dfb381dc0057df8169e3bf",
+    "jehyeong/intraday/results/final/run_manifest.json": "29c924c5f881c8e6d243ae5d9b100ddb37604ce76d77c18e95d2af59cd36cefe",
+    "jehyeong/overnight/results/team_strategy_comparison/all_strategy_trade_log.csv": "72b2fa02bf88a4cbf3d5d7ecde3ebbb102c6c054ebf01d83a36c8eb36501b4d3",
+    "jehyeong/overnight/results/team_strategy_comparison/beomgu_c3_vt30_signal_panel.csv": "fc13040d055511111273ce58322afb57f9cb90228eb869dd51516c427def9071",
+    "jehyeong/overnight/results/team_strategy_comparison/sunny_c_signal_panel.csv": "019c3222866a3f585906824b3d604d39d2d29a71d427a9017672feb3b703d464",
+    "jehyeong/overnight/results/team_strategy_comparison/woohyun_top40_30_signal_panel.csv": "399b7388d14b8e7e478a4a4581966751e72fdc036f506b4bd5a3bd3f6a8b2d63",
+    "sunny/intraday_strategy_C/strategy3_smart_vs_dumb.py": "a0c6227473715167b60ef8f2ac50c1d07aff12f60f616c07c84a4925b3927617",
+    "woohyun/Results/vwap+orb+flow40%.py": "e6ab39e48a6577e46067236821f85e50e3eed3b384dab2e88f906dad36f5a041"
+  },
+  "outputs": [
+    "all_combinations_performance.csv",
+    "all_combinations_daily_pnl.csv",
+    "best_combinations.csv",
+    "best_combinations_daily_pnl.csv",
+    "best_combinations_pnl.png",
+    "strategy_coverage.csv",
+    "report.md",
+    "report.html",
+    "daynight_v1_combinations.csv"
+  ],
+  "winners": {
+    "highest_sharpe": "BEOMGU_C3_VT30+SUNNY_C+INTRADAY_KOSPI200+INTRADAY_KOSDAQ150",
+    "highest_cagr": "DAYNIGHT_V1_COMBINED",
+    "lowest_mdd": "WOOHYUN_TOP40_30+INTRADAY_KOSPI200",
+    "highest_calmar": "WOOHYUN_TOP40_30+INTRADAY_KOSPI200+INTRADAY_KOSDAQ150"
+  }
+}

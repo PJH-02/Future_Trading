@@ -18,20 +18,20 @@ If Kiwoom keys are absent there, read ONLY Kiwoom keys from Desktop/VibeTrading/
 
 Adapted from ETF_iNAV/intraday_research/code/collect_multiasset_1m.py,
 collect_kiwoom_research.py and overnight_research/code/kodex.py.
-Toss supports 1m/1d only, so collect available 1m pages, then aggregate 30m.
+Toss index 1m (KOSPI/KOSDAQ) comes from market-indicators candles; no 30m is aggregated from 1m.
 Kiwoom requests native 30m and 1m only when KIS_KIWOOM is enabled.
 KIS uses stock historical minute TR FHKST03010230 (not futures TR).
 Official KIS example documents a maximum one-year minute retention; every daily
 calendar date in the last 366 days is probed, with no empty-day early cutoff.
 --kis-lookback-days can extend that probe if the provider changes its retention.
 
-Timestamps: canonical 30m timestamp = decision/end time. Toss minute end labels
-and Kiwoom minute start labels follow independently checked ETF_iNAV evidence:
-intraday_v2_development_report_20261007.md (87,208 overlapping bars matched).
-KIS minute and Kiwoom bar timestamps use provider bar-start labels; Toss minute
-timestamps use bar-end labels. Provider prices are never cross-validated.
+Timestamps: canonical 30m timestamp = decision/end time. TOSS API minute labels
+are bar-start, but canonical output convention is per symbol: KOSPI index is
+converted to bar-end, while TOSS ETF labels remain bar-start, consistent with
+empirical cross-instrument alignment. KIS minute and Kiwoom bar timestamps use
+provider bar-start labels. Provider prices are never cross-validated.
 15:20 means last continuous minute CLOSE at/before 15:20, never auction close.
-Missing minute bars are NOT forward-filled. Complete 30m requires all 30 minutes.
+Missing minute bars are NOT forward-filled.
 
 All output stays in jehyeong/intraday/data or results; raw pages/checkpoints allow
 same-query resume. --max-pages 0 (default) has NO page cap. A cap/error/stalled
@@ -61,7 +61,7 @@ DESKTOP = ROOT.parents[2]
 ENV_DEFAULT = DESKTOP / "ETF_iNAV" / ".env"
 KST = "Asia/Seoul"
 UNIVERSE = {
-    "114800": "KODEX 인버스", "252670": "KODEX 선물인버스2X", "233740": "KODEX 코스닥150 레버리지"
+    "KOSPI": "코스피200"
 }
 TIMES = pd.date_range("2000-01-01 09:30", "2000-01-01 15:00", freq="30min").strftime("%H:%M").tolist()
 FIELDS = ["open", "high", "low", "close", "volume"]
@@ -195,14 +195,6 @@ def validate(x):
         raise ValueError("Invalid OHLC range")
 
 
-def unique_bars(x):
-    if x.empty:
-        return x
-    if x.groupby("timestamp")[FIELDS].nunique().gt(1).any().any():
-        raise ValueError("Conflicting overlapping bars within a provider")
-    return x.drop_duplicates("timestamp").sort_values("timestamp").reset_index(drop=True)
-
-
 class API:
     def __init__(self, provider, gap=.25):
         self.provider, self.base = provider, BASES[provider]
@@ -265,7 +257,7 @@ class API:
     def page(self, kind, symbol, cursor, end, dates):
         """Return raw rows, next cursor, terminal reason. Cursors are market data."""
         if self.provider == "TOSS":
-            payload, _ = self.request("/api/v1/candles", params={"symbol": symbol, "interval": "1d" if kind == "daily" else "1m", "count": 200, "adjusted": "false", "before": cursor or end + "T23:59:59+09:00"})
+            payload, _ = self.request(f"/api/v1/market-indicators/{symbol}/candles", params={"interval": "1d" if kind == "daily" else "1m", "count": 200, "before": cursor or end + "T23:59:59+09:00"})
             result = payload.get("result", payload)
             nxt = result.get("nextBefore")
             return result.get("candles", []), nxt, "SERVER_END" if not nxt else None
@@ -309,7 +301,7 @@ class API:
 
 
 def collect_stream(api, kind, symbol, args, dates=None):
-    query = {"provider": api.provider, "kind": kind, "symbol": symbol, "start": args.start, "end": args.end, "kis_lookback_days": args.kis_lookback_days, "adjusted": False}
+    query = {"provider": api.provider, "kind": kind, "symbol": symbol, "start": args.start, "end": args.end, "kis_lookback_days": args.kis_lookback_days, "adjusted": False, "toss_endpoint": "market-indicators"}
     # Invalidate prior Kiwoom intraday checkpoints because older versions
     # omitted ka10080's required base_dt; reuse of a SERVER_END checkpoint
     # would otherwise prevent the corrected request from ever being sent.
@@ -419,22 +411,6 @@ def minute_end(x, convention):
     return x
 
 
-def aggregate_30m(minutes):
-    """Exact 09:00..15:00 windows; no fill, no auction, no partial windows."""
-    if minutes.empty:
-        return minutes.copy()
-    x = unique_bars(minutes)
-    x = x[x.timestamp.dt.strftime("%H:%M").between("09:01", "15:00")].copy()
-    x["endpoint"] = x.timestamp.dt.ceil("30min")
-    rows = []
-    for end, g in x.groupby("endpoint", sort=True):
-        expected = pd.date_range(end - pd.Timedelta(minutes=29), end, freq="1min")
-        if len(g) != 30 or not g.timestamp.reset_index(drop=True).equals(pd.Series(expected)):
-            continue
-        rows.append({"timestamp": end, "date": end.strftime("%Y-%m-%d"), "open": g.open.iloc[0], "high": g.high.max(), "low": g.low.min(), "close": g.close.iloc[-1], "volume": g.volume.sum(), "trading_value": g.trading_value.sum() if g.trading_value.notna().all() else np.nan, "symbol": g.symbol.iloc[0], "source": g.source.iloc[0], "bar_origin": "aggregated_1m", "timestamp_semantics": "bar_end"})
-    return pd.DataFrame(rows, columns=["timestamp", "date", *FIELDS, "trading_value", "symbol", "source", "bar_origin", "timestamp_semantics"])
-
-
 def save_daily_csv(symbol, day_frames):
     """Persist available daily history before any potentially long minute sweep."""
     frames = [day_frames[p] for p in ["KIWOOM", "TOSS", "KIS"] if p in day_frames and not day_frames[p].empty]
@@ -448,6 +424,21 @@ def save_daily_csv(symbol, day_frames):
     return len(selected)
 
 
+def prepare_toss_minutes(minute, symbol):
+    """Convert TOSS's minute labels to the verified per-symbol output convention."""
+    out = minute.copy()
+    if symbol in {"KOSPI", "KOSDAQ"}:
+        # Index output labels are bar-end; the API timestamp labels the minute start.
+        out = minute_end(out, "start")
+        semantics = "bar_end"
+    else:
+        # ETF output labels are bar-start; preserve the API timestamp.
+        semantics = "bar_start"
+    out["timestamp_semantics"] = semantics
+    out["source_timestamp_convention"] = "start"
+    return out
+
+
 def prepare_symbol(symbol, streams, args):
     day_frames, mframes, thirty, forced, labels = {}, {}, [], [], []
     for provider in ["TOSS", "KIWOOM", "KIS"]:
@@ -459,14 +450,17 @@ def prepare_symbol(symbol, streams, args):
             continue
         # Preserve each vendor's documented/chart convention. Price/clock
         # values from another vendor are never used to validate or discard it.
-        label = {"TOSS": "end", "KIWOOM": "start", "KIS": args.kis_1m_label}[provider]
-        mframes[provider] = minute_end(minute, label)
-        mframes[provider]["timestamp_semantics"] = "bar_end"
-        mframes[provider]["source_timestamp_convention"] = label
-        labels.append({"symbol": symbol, "stream": provider + "_1m", "convention": label, "alignment_basis": "provider timestamp convention; no cross-provider price matching"})
+        if provider == "TOSS":
+            mframes[provider] = prepare_toss_minutes(minute, symbol)
+            label = "start"
+        else:
+            label = "start" if provider == "KIWOOM" else args.kis_1m_label
+            mframes[provider] = minute_end(minute, label)
+            mframes[provider]["timestamp_semantics"] = "bar_end"
+            mframes[provider]["source_timestamp_convention"] = label
+        labels.append({"symbol": symbol, "stream": provider + "_1m", "convention": label, "canonical_semantics": str(mframes[provider].timestamp_semantics.iloc[0]), "alignment_basis": "provider timestamp convention; no cross-provider price matching"})
         csv(mframes[provider], DATA / "minute" / f"{symbol}_{provider}_1m.csv")
     for provider, minute in mframes.items():
-        thirty.append(aggregate_30m(minute))
         f = minute[minute.timestamp.dt.strftime("%H:%M:%S").eq("15:20:00")].copy()
         f["timestamp_semantics"], f["price_semantics"] = "bar_end", "15:19..15:20 minute close"
         forced.append(f)
@@ -542,15 +536,17 @@ def test_run():
         prices = 10000 + np.arange(len(times)) * 5
         raw = pd.DataFrame({"timestamp": times, "date": "2026-09-01", "open": prices, "high": prices + 5, "low": prices - 5, "close": prices + 2, "volume": 100, "trading_value": np.nan, "symbol": "069500", "source": "KIWOOM"})
         end = minute_end(raw, "start")
-        bars = aggregate_30m(end)
-        assert len(bars) == 12 and bars.timestamp.iloc[0].strftime("%H:%M") == "09:30"
-        assert bars.close.iloc[0] == prices[29] + 2 and bars.close.iloc[-1] == prices[359] + 2
         assert end[end.timestamp.dt.strftime("%H:%M").eq("15:20")].close.iloc[0] == prices[379] + 2
-        assert len(aggregate_30m(end.drop(index=3))) == 11
-        native = bars.copy(); native["timestamp"] -= pd.Timedelta(minutes=30)
         assert minute_end(raw, "start").timestamp.iloc[0] == pd.Timestamp("2026-09-01 09:01")
         assert minute_end(end, "end").timestamp.iloc[0] == pd.Timestamp("2026-09-01 09:01")
-        checks.extend(["30m windows exclude future minute", "1520 excludes auction", "missing minute rejects partial bar", "provider timestamp conventions are explicit"])
+        raw_toss = raw.copy()
+        index_minutes = prepare_toss_minutes(raw_toss, "KOSPI")
+        etf_minutes = prepare_toss_minutes(raw_toss, "069500")
+        assert index_minutes.timestamp.iloc[0] == raw_toss.timestamp.iloc[0] + pd.Timedelta(minutes=1)
+        assert index_minutes.timestamp_semantics.eq("bar_end").all()
+        assert etf_minutes.timestamp.iloc[0] == raw_toss.timestamp.iloc[0]
+        assert etf_minutes.timestamp_semantics.eq("bar_start").all()
+        checks.extend(["1m minute_end conventions are explicit", "1520 excludes auction", "TOSS index bar-end and ETF bar-start conventions are distinct"])
         daily_sample = pd.DataFrame([{"timestamp": pd.Timestamp("2026-09-01"), "date": "2026-09-01", "open": 100, "high": 110, "low": 90, "close": 105, "volume": 10, "trading_value": np.nan, "symbol": "069500", "source": "TOSS"}])
         assert save_daily_csv("069500", {"TOSS": daily_sample}) == 1
         assert pd.read_csv(DATA / "069500_daily.csv").iloc[0].close == 105
@@ -578,7 +574,7 @@ def test_run():
                 rr, nxt, stop = api.page(kind, "069500", None, "2026-09-01", ["2026-09-01", "2026-08-31"])
                 assert rr
                 if provider == "TOSS":
-                    assert called[0][1]["params"]["interval"] == "1m" and nxt
+                    assert called[0][0] == "/api/v1/market-indicators/069500/candles" and called[0][1]["params"]["interval"] == "1m" and nxt
                 elif provider == "KIWOOM":
                     assert called[0][1]["body"]["tic_scope"] == "30" and called[0][1]["body"]["base_dt"] == "20260901" and called[0][1]["api_id"] == "ka10080" and nxt == "next_page"
                 else:
@@ -595,10 +591,10 @@ def test_run():
         single["timestamp"] += pd.Timedelta(days=1)
         single["date"] = single.timestamp.dt.strftime("%Y-%m-%d")
         prep_args = argparse.Namespace(kis_1m_label="start", kiwoom_30m_label="start")
-        prepare_symbol("069500", {("KIWOOM", "1m"): pd.concat([raw, single])}, prep_args)
-        assert len(pd.read_csv(DATA / "069500_30m.csv")) == 12
-        assert len(pd.read_csv(DATA / "069500_1520.csv")) == 2
-        checks.append("maximum 30m and exact1520 canonical ranges preserved independently")
+        prepare_symbol("KOSPI", {("KIWOOM", "1m"): pd.concat([raw, single])}, prep_args)
+        assert not (DATA / "069500_30m.csv").exists()
+        assert len(pd.read_csv(DATA / "KOSPI_1520.csv")) == 2
+        checks.append("Kiwoom native 30m and exact 15:20 snapshots preserved independently")
         class Fake:
             provider = "TOSS"
             calls = 0

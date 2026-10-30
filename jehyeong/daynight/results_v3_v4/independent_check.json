@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "method": "Independent raw-source gate and account reconstruction; all orders and performance metrics replayed",
+  "accounts": [
+    {
+      "version": "V3",
+      "account": "intraday",
+      "sessions": 944,
+      "trades": 252,
+      "max_absolute_nav_error_krw": 3.129243850708008e-06
+    },
+    {
+      "version": "V3",
+      "account": "overnight",
+      "sessions": 944,
+      "trades": 586,
+      "max_absolute_nav_error_krw": 3.7550926208496094e-06
+    },
+    {
+      "version": "V3",
+      "account": "combined",
+      "sessions": 944,
+      "trades": 838,
+      "max_absolute_nav_error_krw": 1.0728836059570312e-05
+    },
+    {
+      "version": "V4",
+      "account": "intraday",
+      "sessions": 944,
+      "trades": 252,
+      "max_absolute_nav_error_krw": 1.817941665649414e-06
+    },
+    {
+      "version": "V4",
+      "account": "overnight",
+      "sessions": 944,
+      "trades": 587,
+      "max_absolute_nav_error_krw": 1.2516975402832031e-06
+    },
+    {
+      "version": "V4",
+      "account": "combined",
+      "sessions": 944,
+      "trades": 839,
+      "max_absolute_nav_error_krw": 2.130866050720215e-06
+    }
+  ],
+  "gate_session_observations": 1888,
+  "no_future_mode_timestamps": true,
+  "source_files_verified": 6,
+  "code_sha256": {
+    "backtest_v3_v4.py": "1875f8cb5eb3a8db10bc18e4e7870e52f65f80e629024f09d3ad41731ea3c742",
+    "pnl_ma20.py": "8de0c0f4605d5d62713fcec8622354a472763d0ad7099e494f460872ac0c946d",
+    "backtest_daynight.py": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675"
+  },
+  "artifact_sha256": {
+    "comparison_summary.csv": "75142be2080f75b28d06535aa948a7f1f6eb45715beceecdbfa21ca84bf03c47",
+    "comparison_yearly.csv": "e91cebcc64cdf66f146da1b05930824e89a57fd3cecf701a86476c9b2fce76be",
+    "daily_nav.csv": "069827d49482f49cef60e916bd7c09b7b44999a4eb4b9230614b101260d74431",
+    "data_quality.csv": "e0fc2f239491048892452cdece0767afd05bf8b8bbe83dd1a8114e14dd1e82c5",
+    "execution_signals.csv": "efca948ac7a90049ac63f49483abd15d1746f6bb2415bf7719d043f1bca99854",
+    "normal_signals.csv": "1a312a07f2791524e7c2fd4bb8b63e52d6d84f1a07a54de02639c8aeb59e6942",
+    "orders.csv": "16e965641c459b07b8bfa57220fa920bb160181e893bdf32c39cb20c6beb91d8",
+    "shadow_gate.csv": "abdafe73c170c39c96dc8d092c452b957f792a1e65f4db9dede66721ed844270",
+    "skips.csv": "93ebd01ff364560259ea49ab4859f955ee748cb08e766bd777db31c6694a415a",
+    "summary.csv": "2f29e08785a4aff1a5d725f1589a63c7fa359efb2ebaa63be185bb790d926323",
+    "switch_events.csv": "cc3be6c64ac48efbd7e2e34b853d6be09b393a0138b01b2aff3ffa63b25775ed",
+    "trades.csv": "c5d18510e815fac0a0d5d5fcd3d25b7e6897a24116680ef6b1afee8055813212",
+    "yearly.csv": "8f1e9e2566b556a4e1cb9e7315a54883af986208fb21a2325edc3ecd3bced498"
+  }
+}

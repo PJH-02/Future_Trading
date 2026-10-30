@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "owner": "Codex",
+  "verified_at_utc": "2026-10-27T03:29:08.672469+00:00",
+  "scope": "Requested V1/V2 backtest with explicitly approved 229200 signals and last-traded-price overnight proxy",
+  "implementation_owner": "Codex, explicitly announced after exhausted delegation repairs",
+  "delegations": [
+    {
+      "run": "/home/pjh/.local/state/codex-opencode/runs/implement.epsdK0sP",
+      "model": "freellmapi/glm-4.5-flash",
+      "role": "implement",
+      "worker_exit": 1,
+      "launcher_exit": 1,
+      "acceptance": "FAIL",
+      "reason": "Cannot connect localhost:3001",
+      "partial_implementation_files": 0,
+      "baseline_diff_check_exit": 2,
+      "post_diff_check_exit": 2,
+      "preexisting_diagnostics_unchanged_sha256": true
+    },
+    {
+      "run": "/home/pjh/.local/state/codex-opencode/runs/implement.1CQwRWeW",
+      "model": "freellmapi/glm-4.5-flash",
+      "role": "implement",
+      "worker_exit": 143,
+      "launcher_exit": 143,
+      "acceptance": "FAIL",
+      "reason": "Repeated gateway upstream HTTP429; terminated after user approved route switch; launcher postcheck cancelled after worker stopped",
+      "partial_implementation_files": 0,
+      "baseline_diff_check_exit": 2,
+      "post_diff_check": "cancelled; independent scoped check completed separately"
+    },
+    {
+      "run": "/home/pjh/.local/state/codex-opencode/runs/implement.7159lEhG",
+      "model": "opencode/deepseek-v4.1-flash-free",
+      "role": "implement",
+      "worker_exit": 0,
+      "launcher_exit": 0,
+      "acceptance": "FAIL",
+      "reason": "Final reason=length, reasoning_tokens=32000, output_tokens=0; no code created",
+      "partial_implementation_files": 0,
+      "baseline_diff_check_exit": 0,
+      "post_diff_check_exit": 0
+    }
+  ],
+  "repair_delegations_used": 2,
+  "commands": [
+    {
+      "command": "python3 -m unittest discover -s jehyeong/daynight -p 'test_*.py' -v",
+      "exit": 0,
+      "tests_passed": 16
+    },
+    {
+      "command": "python3 jehyeong/daynight/backtest_daynight.py",
+      "exit": 0,
+      "summary_rows": 6,
+      "yearly_rows": 30,
+      "sessions_per_account": 944
+    },
+    {
+      "command": "python3 jehyeong/daynight/independent_check.py",
+      "exit": 0,
+      "accounts_compared": 6,
+      "daily_nav_observations_compared": 5664,
+      "max_absolute_nav_error_krw": 1.3232231140136719e-05
+    },
+    {
+      "command": "ruff check --select E9,F63,F7,F82 jehyeong/daynight/",
+      "exit": 0
+    },
+    {
+      "command": "git diff --check -- jehyeong/daynight docs/tickets/kosdaq-daynight.md",
+      "exit": 0,
+      "untracked_text_whitespace_separately_checked": true
+    }
+  ],
+  "verified": {
+    "all_trade_identities": true,
+    "all_order_quantities_and_commissions": true,
+    "chronological_order_cash_replay": true,
+    "full_and_yearly_metrics": true,
+    "turnover_and_annualization": true,
+    "source_files_unchanged": 6,
+    "report_html_metric_tables": 2,
+    "valid_embedded_png_charts": 4,
+    "png_and_svg_chart_pairs": 4,
+    "combined_plot_visually_reviewed": true,
+    "final_regenerated_outputs_match_independently_verified_hashes": true
+  },
+  "baseline_notes": "Preexisting repository changes and CRLF whitespace diagnostics retained. Later dispatch used process-local Git core.whitespace=cr-at-eol and core.autocrlf=true for inspection only; no persistent Git setting or input file was changed.",
+  "limitations": [
+    "2022 and 2026 partial-year coverage; 2022 begins 2022-11-23, common sample ends 2026-10-07",
+    "Overnight entry is approved hypothetical last-traded-price proxy, not an assertion of executable 15:20 market fills",
+    "V2 assumes zero processing latency at 15:20",
+    "Daily MTM MDD, fractional shares, no explicit market-depth or size impact; data completeness eligibility may use future endpoint availability"
+  ],
+  "blockers": [],
+  "code_sha256": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675",
+  "daily_nav_sha256": "72b8563657daf2b0565efbcebde3ed7a2fd0c12e9ab1a52c27bea788c121ae0c",
+  "artifact_sha256": {
+    "daily_nav.csv": "72b8563657daf2b0565efbcebde3ed7a2fd0c12e9ab1a52c27bea788c121ae0c",
+    "data_quality.csv": "e0fc2f239491048892452cdece0767afd05bf8b8bbe83dd1a8114e14dd1e82c5",
+    "independent_check.json": "0e3702fabe5a296a1e42091ec7a39c7890d30f3067502b2252a628bb5db8674e",
+    "manifest.json": "ee7f81856e70643f26ccd92154ecef50beede57cbe868fd72ef748f4d763c69c",
+    "orders.csv": "2feb0a34c1e5b2fb005e515a181eb735b6df7de0e232530d875df1fdb35f3383",
+    "pnl_comparison.png": "2a021e660e71811eff97f0b856a17444f48203f36ba57a8189bed2e1a0e9a9bc",
+    "pnl_comparison.svg": "93458ca0bee9633983f8adb51dc71844fe5b01b88383e7a09a3242e72743b423",
+    "pnl_V1.png": "65113e3f57778885fadf5ad5879f58239b2d6c89779f305c9631e8790533fa34",
+    "pnl_V1.svg": "223eda32ae223631feed660271e286f60e8d3115c23be8b47f8b1c96591a4263",
+    "pnl_V2.png": "67b9ccc9046c6ff582f65b9c930d1a690a51d318fb58e99dda72d664162b60ec",
+    "pnl_V2.svg": "994621353999c94313dc5c5b11c2a25a7f3c777ed97ee1effc5edf79203d2374",
+    "pnl_yearly.png": "def3cb8de3a1c35580b882f39f4ea066fda30bc7a8255c453a017f1afb67a445",
+    "pnl_yearly.svg": "49af4bb844ef096843901b5de63f21a436c9e4daa5fdf7dd2093cd6b28cdb6f2",
+    "report.html": "f7afbd3f53a37db016369effb99a4ad0aedde2f4463c601498f5f18e339b6f51",
+    "report.md": "661e40b042ef80c1d278f2a06a00b1aae9224cdf1eedf6591f7a77a66d8817b2",
+    "signals.csv": "5332898c76cbdcae011c408b8b57d723a10eea5ae981334ac033cb24b0a85878",
+    "skips.csv": "fd0727f5f541952690d34a34f3ba6c5e4f757cbab14d65fb35970f214cd2ec2b",
+    "summary.csv": "669195f3486ae89c6eae9400890840eb2499ac925b5df9541f0c89772db29700",
+    "trades.csv": "4f79f8d5a1bf3803a7be5488f6d0cd6d4f630da03043067db1025f97c622d4bb",
+    "yearly.csv": "5a5789d373b09d3cc7f107521c4fd2244a2da82b860a8c2a30d917442fcc8e66"
+  }
+}
