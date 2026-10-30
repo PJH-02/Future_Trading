@@ -1,0 +1,52 @@
+{
+ "slot": "C_intraday",
+ "market": "KOSDAQ",
+ "instrument": "KOSDAQ150 레버리지 ETF 장중 모멘텀 (분봉, 거래소 TOSS 소스)",
+ "timing": "intraday_09:30~15:20 (거래일 당일 기록)",
+ "cost_bp": "롱 원본(편도 2.5bp) / 숏 선물 1.8bp×|pos|",
+ "source_files": [
+  "<repo>\\jehyeong\\intraday\\results\\final\\KOSDAQ150\\daily_pnl.csv 열 daily_return",
+  "<repo>\\jehyeong\\intraday\\results\\final\\KOSDAQ150\\trades.csv",
+  "<repo>\\jehyeong\\intraday\\results\\final\\performance_summary.csv",
+  "intraday/kis_minute/kq150_full_day/futures_1min.csv",
+  "jehyeong/intraday/data/minute/229200_TOSS_1m.csv"
+ ],
+ "notes": "13차 jehyeong_KQ 교체본: pos<0 일만 코스닥150 선물(2025.10.22~ KIS 1분봉 실측, 그 전 229200 TOSS 신호가 대리) 진입·청산 시각 동일, 1.8bp×|pos|. 롱 원본 그대로. 창 차이 없음(장중). passed=False",
+ "handle": "jehyeong_KQ_fut",
+ "first_valid": "2022-12-13",
+ "last_valid": "2026-09-29",
+ "n_days": 925,
+ "n_active": 535,
+ "dropped_off_calendar": [
+  "2026-09-30",
+  "2026-10-01",
+  "2026-10-02",
+  "2026-10-06",
+  "2026-10-07"
+ ],
+ "repro": {
+  "n_active": 535,
+  "CAGR": 0.17906747563125602,
+  "MDD": -0.06490061077760068,
+  "비고": "저장 CSV 재계산(유효 구간 전체)"
+ },
+ "full_valid_stats": {
+  "start": "2022-12-13",
+  "end": "2026-09-29",
+  "n_days": 925,
+  "n_active": 535,
+  "cum": 0.5159485268479618,
+  "cagr": 0.12001620331108476,
+  "vol": 0.12364216854896014,
+  "sharpe": 0.9770382379111291,
+  "mdd": -0.09071622477283192,
+  "calmar": 1.322984985449127,
+  "win": 0.3644859813084112
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율",
+ "replaced_from": "jehyeong_KQ",
+ "design": "02_kq_short_fut",
+ "created": "2026-10-30",
+ "n_changed_rows": 265,
+ "passed": false
+}

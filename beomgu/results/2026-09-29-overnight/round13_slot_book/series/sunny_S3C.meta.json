@@ -1,0 +1,54 @@
+{
+ "handle": "sunny_S3C",
+ "source_files": [
+  "<OUT>\\round10_portfolio\\series\\sunny_S3C.csv",
+  "sunny/intraday_strategy_C/output/strategy3_signals.csv",
+  "sunny/intraday_strategy_C/output/strategy3_performance.csv",
+  "sunny/intraday_strategy_C/strategy3_smart_vs_dumb.py",
+  "sunny/intraday_strategy_C/README.md",
+  "beomgu/data/krx_opt_investor_daily.csv",
+  "beomgu/data/k200_index_daily.csv"
+ ],
+ "instrument": "코스피200 미니선물 (지수 시가→종가로 대리)",
+ "timing": "intraday_oc",
+ "cost_bp": 3,
+ "first_valid": "2010-03-31",
+ "last_valid": "2026-09-17",
+ "n_days": 4054,
+ "n_active": 198,
+ "repro": {
+  "expected": {
+   "source": "strategy3_performance.csv (C안)",
+   "range": "2010-01-04~2026-09-17 (전체거래일 4114, README 표기 2010-03-31~)",
+   "연환산수익률": "+1.47%",
+   "연변동성": "3.87%",
+   "샤프지수": "0.380",
+   "최대낙폭": "-9.31%",
+   "승률": "54.55%",
+   "유효거래일": 198,
+   "전체거래일": 4114
+  },
+  "got": {
+   "copied_from_round10": true
+  }
+ },
+ "notes": "전략 C안: 전일 외인 풋 순매수 z(60일, min_periods 60, ddof=1) > 1 ∧ 전일 개인 콜 순매수 z > 0 → 당일 시가 숏, 종가 청산. pos=pos_C(−1=숏), gross=oc_ret·pos, net=gross−0.0003·|pos|. 원 코드 backtest()는 pos_C 가 np.where 로 생성되어 번인 구간도 0 으로 채워진 전체 4114일(2010-01-04~2026-09-17)을 쓰며, metrics()의 n_years 는 달력일수/365.25(16.701년), ann_ret=cum^(1/n_years)−1, 샤프=ann_ret/연변동성(산술평균 아님). 이 정의로 performance.csv 7개 수치 모두 일치. README 의 '판정 구간 2010-03-31~' 은 첫 유효 신호일 기준 표기이며, 유효 구간만으로 그의 정의를 적용하면 연환산 +1.49%, 샤프 0.383 (전체거래일 4054). 공통 정의(유효 구간 2010-03-31~2026-09-17, 4054일, 비용 후): CAGR +1.53%, 연변동성 3.89%, 샤프 0.408, MDD -9.31%, Calmar 0.16, 승률 54.55%, 활성일 198. 독립 재현: krx_opt_investor_daily.csv(열 date,investor,cp,buy_qty,sell_qty,buy_amt,sell_amt; investor∈['foreign', 'individual', 'institution', 'othercorp', 'total'])에서 foreign/individual × C/P 의 buy_amt−sell_amt 일합계 → k200_index_daily.csv(open/close) 와 inner join → 60일 롤링 z → 전일 값 → 임계 1/0 으로 pos_C 재계산. 공통 4114일 중 일치 4114일(100.0000%), 불일치 0일; z 최대 절대차 풋 2.6e-13, 콜 6.2e-14, oc_ret 최대 절대차 1.0e-16. signals.csv 에만 있는 날 0, 재계산에만 있는 날 0(옵션 자료가 2026-09-23 까지인데 지수 자료는 2026-09-17 까지라 inner join 에서 탈락). 원자료 중복(date,investor,cp) 0행, 4개 투자자·콜풋 중 하나라도 빠진 날 0일. 지수 시가→종가 수익률로 미니선물을 대리하므로 베이시스·호가 체결 차이는 반영되지 않은 추정치. 3bp 는 원 코드 가정(수수료 ~1bp+슬리피지 ~2bp).",
+ "reference_only": true,
+ "slot": "B_open",
+ "market": "KOSPI",
+ "dropped_off_calendar": [],
+ "full_valid_stats": {
+  "start": "2010-03-31",
+  "end": "2026-09-17",
+  "n_days": 4054,
+  "n_active": 198,
+  "cum": 0.2757564981329663,
+  "cagr": 0.015253776024376275,
+  "vol": 0.038942744268803356,
+  "sharpe": 0.4082148382903131,
+  "mdd": -0.09314447555222172,
+  "calmar": 0.16376468850076034,
+  "win": 0.5454545454545454
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

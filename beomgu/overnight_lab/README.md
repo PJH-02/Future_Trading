@@ -18,3 +18,11 @@
 주의: 기본 출력 폴더 `../results/overnight_lab/` 에는 실행 환경의 절대경로가 기록될 수 있으므로 커밋하지 않는다(`../.gitignore`).
 
 3차(D2): `topics/r3_d2.py`(2003~2009 판정), `topics/bt_d2_2010_2026.py`(2010~2026 전략 백테스트, matplotlib 필요, 재생성만 할 때는 `--no-ledger`), 탐색 `tools/preopen_d2_explore.py`·자료 품질 `tools/preopen_d2_h0_quality.py`. 사양 등 이전 결과는 `data.result_file()` 로 `<OUT>` 에 없으면 `../results/2026-09-29-overnight/` 에서 읽는다.
+
+## 13·15차 시간대별 장부와 공유 구성 (2026-10-30)
+
+• `topics/r13_slot_book.py`: 13차 시간대별 장부. 코스피·코스닥 각각 밤(A, 15:30 종가 → 익일 09:00 시가)·아침(B, 09:00 → 15:30)·낮(C, 장중) 다리를 같은 자본으로 회전한다(같은 시장에서 B 활성일엔 C 0). 합산 = 코스피 50% + 코스닥 50% 매일 재조정. 다리 시계열 규격은 `date,pos,gross,net`(자본 1 기준 일수익, 밤 다리는 date = 청산일) + `<handle>.meta.json`. 결과 `../results/2026-09-29-overnight/round13_slot_book/`.
+• `topics/r15_final_book.py`: 15차 공유 구성. 13차 장부의 코스닥 숏·인버스 다리(251340)를 코스닥150 선물로 집행(밤 15:45 → 08:45, 낮 숏은 원 체결 모형 총수익에 선물 비용 1.8bp)하고 전체 명목을 k배 한다. 결과 `../results/2026-09-29-overnight/round15_alpha_share/final/`(base_k1.csv, k_grid.csv, k_picks.csv, criteria.csv, check_inverse_nights_fut.csv, fig_final.png).
+• `topics/r15_leverage_desk.py`: 13차 장부 × k 기준선(결과 `round15_alpha_share/leverage_desk/`). `topics/r15_01~06_*.py`: 15차 사전 등록 설계 6개(판정은 각 폴더 notes.md·cells.csv, 교체·후보 시계열은 `round15_alpha_share/series/`).
+• 입력: 13차·15차 시계열은 결과 폴더 series/ 에 있어 `r15_final_book.py` 의 장부 재현은 저장소 자료만으로 된다(선물 경로 독립 대조에는 코스닥150 선물 일봉이 필요). 15차 신규 원자료(코스피200·코스닥150 선물 일봉·1분봉, ETF NAV, VKOSPI 일봉 등 KIS 시세 조회분, 코스닥150 1배 ETF 일봉)는 넣지 않았다. 코드의 `<OUT>`(결과 루트), `<raw>`(원자료 루트), `<repo>`(이 저장소) 표기는 실행 환경에 맞게 바꾼다.
+• 규약: 비용 ETF 왕복 5bp, 선물 왕복 1.8bp, 251340 호가 비용 연도별(2024 13.6, 2025 14.2, 2026 21.5, 그 외 10bp), ETF 09:00·15:30 및 선물 08:45·15:45 단일가 체결 가정, 통계 HAC(maxlags 5).

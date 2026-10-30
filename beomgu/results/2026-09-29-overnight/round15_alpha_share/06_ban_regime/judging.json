@@ -1,0 +1,48 @@
+{
+ "main_cell_id": "M1_long_A_2020oos",
+ "cond1_oos_long_cagr_mdd": false,
+ "cond1_relaxed_mdd_nonworse": false,
+ "cond2_leg_t": {
+  "jehyeong_ON": -2.477841546569059,
+  "beomgu_C3Q": -2.8099236798316864,
+  "passed": true
+ },
+ "cond3_wall": false,
+ "cond3_relaxed": true,
+ "cond4_y2024_y2025": true,
+ "passed": false,
+ "passed_relaxed": false,
+ "book_rule_passed": false,
+ "book_rule_relaxed": true,
+ "grade": "estimate",
+ "numbers": {
+  "W_long_orig": [
+   15.036909817899557,
+   -9.610694168621892
+  ],
+  "W_long_A2020": [
+   14.963468321082217,
+   -9.61069416862179
+  ],
+  "W_long_A_all": [
+   15.543213687355184,
+   -9.61069416862179
+  ],
+  "W_all_orig": [
+   31.417945906329912,
+   -6.104566480995999
+  ],
+  "W_all_A": [
+   35.03431630661555,
+   -6.104566480996054
+  ],
+  "Y2024": [
+   11.22769239437873,
+   20.324240206119004
+  ],
+  "Y2025": [
+   11.36685026455304,
+   12.65265756697036
+  ]
+ }
+}

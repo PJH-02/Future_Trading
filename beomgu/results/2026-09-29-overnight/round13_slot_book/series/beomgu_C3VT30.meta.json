@@ -1,0 +1,46 @@
+{
+ "slot": "B_open",
+ "market": "KOSPI",
+ "instrument": "KODEX 200 (069500) + KODEX 레버리지 (122630), VT30 배수 (2010-02 이전 2x 합성)",
+ "timing": "intraday_09:00 단일가 → 15:30 종가",
+ "cost_bp": 5,
+ "direction": "long_only",
+ "source_files": [
+  "<OUT>\\round5_strategy\\c3_levered\\daily_returns.csv 열 net5_chosen, w_chosen"
+ ],
+ "notes": "C3: 미국 지수 갭 잔차 z ∧ ETF 시가 괴리 조건 롱. net = gross − 5bp×min(w,1). 10차 series 와 동일 원본.",
+ "handle": "beomgu_C3VT30",
+ "first_valid": "2003-01-02",
+ "last_valid": "2026-09-22",
+ "n_days": 5856,
+ "n_active": 558,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "window": "2020-01-02~2026-09-22",
+   "cagr": 0.1058,
+   "mdd": -0.0839,
+   "n_active": 172
+  },
+  "got": {
+   "window": "2020-01-02~2026-09-22",
+   "cagr": 0.10582950524052404,
+   "mdd": -0.08387045000000004,
+   "n_active": 172
+  }
+ },
+ "full_valid_stats": {
+  "start": "2003-01-02",
+  "end": "2026-09-22",
+  "n_days": 5856,
+  "n_active": 558,
+  "cum": 19.804056867823927,
+  "cagr": 0.13952428044046328,
+  "vol": 0.0733266571173723,
+  "sharpe": 1.818092151206535,
+  "mdd": -0.08387045000000015,
+  "calmar": 1.663568997667987,
+  "win": 0.6792114695340502
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

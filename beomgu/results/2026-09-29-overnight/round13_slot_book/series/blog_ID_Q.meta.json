@@ -1,0 +1,34 @@
+{
+ "handle": "blog_ID_Q",
+ "slot": "C_intraday",
+ "market": "KOSDAQ",
+ "instrument": {
+  "signal": "229200",
+  "long": "233740",
+  "short": "251340"
+ },
+ "timing": "09:06 open(09:05 봉 확인) → 15:00 봉 close",
+ "cost_bp": 5.0,
+ "first_valid": "2022-12-01",
+ "last_valid": "2026-10-07",
+ "n_active": 245,
+ "source_files": [
+  "<repo>/jehyeong/intraday/data/minute/229200_TOSS_1m.csv",
+  "<repo>/jehyeong/intraday/data/minute/233740_TOSS_1m.csv",
+  "<repo>/jehyeong/intraday/data/minute/251340_TOSS_1m.csv",
+  "<repo>/jehyeong/intraday/data/229200_daily.csv",
+  "<raw>/etf/069500.csv"
+ ],
+ "repro": {
+  "expected": "블로그 수치 없음. 블로그 주장: 연 40% 스킵",
+  "reproduced_skip": 0.738,
+  "trades_csv_cum": 1.221333,
+  "series_cum": 1.221333
+ },
+ "notes": [
+  "블로그 공개 규칙 그대로, 조정 없음",
+  "10시 개장일은 쉼",
+  "분봉 결측 거래일은 0",
+  "스트레스 7bp 수치는 report.md"
+ ]
+}
