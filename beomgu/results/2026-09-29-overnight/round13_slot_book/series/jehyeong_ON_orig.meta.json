@@ -1,0 +1,48 @@
+{
+ "slot": "A_overnight",
+ "market": "KOSPI",
+ "instrument": "KODEX 200 (069500) 종가 매수 → 익일 시가 매도",
+ "timing": "overnight_close_to_next_open (date=청산일)",
+ "cost_bp": 5,
+ "direction": "long_only",
+ "source_files": [
+  "<repo>\\jehyeong\\overnight\\results\\analysis_output_foreign_preus_pnl\\daily_pnl.csv 열 QQQ_SPY_ORIGINAL",
+  "<repo>\\jehyeong\\overnight\\results\\analysis_output_foreign_preus_pnl\\strategy_trade_log.csv",
+  "<repo>\\jehyeong\\overnight\\results\\analysis_output_foreign_preus_pnl\\performance_summary.csv"
+ ],
+ "notes": "보조. QQQ·SPY 직접 PREUS(2023-02-10~) 버전. 규칙·비용은 jehyeong_ON 과 같음.",
+ "handle": "jehyeong_ON_orig",
+ "first_valid": "2023-02-10",
+ "last_valid": "2026-09-28",
+ "n_days": 884,
+ "n_active": 213,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "cagr": 0.1823565667526379,
+   "mdd": -0.0852134652046759,
+   "days": 884,
+   "trades": 213
+  },
+  "got": {
+   "cagr": 0.18235656675263923,
+   "mdd": -0.08521346520467465,
+   "days": 884,
+   "trades": 213
+  }
+ },
+ "full_valid_stats": {
+  "start": "2023-02-10",
+  "end": "2026-09-28",
+  "n_days": 884,
+  "n_active": 213,
+  "cum": 0.7996871094599649,
+  "cagr": 0.18235656675263923,
+  "vol": 0.1313026669937559,
+  "sharpe": 1.3401770693750445,
+  "mdd": -0.08521346520467465,
+  "calmar": 2.1399970804453976,
+  "win": 0.5727699530516432
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

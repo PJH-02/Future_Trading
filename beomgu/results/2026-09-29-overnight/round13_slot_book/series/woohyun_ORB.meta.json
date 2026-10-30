@@ -1,0 +1,61 @@
+{
+ "handle": "woohyun_ORB",
+ "source_files": [
+  "<OUT>\\round10_portfolio\\series\\woohyun_ORB.csv",
+  "woohyun/Results/vwap+orb+flow40%.py",
+  "woohyun/README.md",
+  "woohyun/data/KODEX200_1min_2023_2026.csv",
+  "woohyun/data/KRX foreign_buy.xlsx",
+  "woohyun/data/KRX foreign_sell.xlsx"
+ ],
+ "instrument": "KODEX 200 (069500) 1분봉",
+ "timing": "intraday_30m",
+ "cost_bp": 2,
+ "first_valid": "2024-10-10",
+ "last_valid": "2026-09-23",
+ "n_days": 478,
+ "n_active": 152,
+ "repro": {
+  "expected": {
+   "trades": 152,
+   "win_rate": 56.58,
+   "avg_return": 0.0693,
+   "profit_factor": 1.417,
+   "sharpe": 1.841,
+   "mdd": -3.56
+  },
+  "got": {
+   "copied_from_round10": true
+  }
+ },
+ "notes": [
+  "본인 규칙(README) 그대로: 전일 flow ≥ 롤링 250일(min_periods=250) 60% 분위.",
+  "규칙: flow=(외국인 매수−매도)/(매수+매도), 전일 flow ≥ 롤링 250일 60% 분위(shift 1) 이면 당일 허용; OR 09:01~09:10 고·저; 09:11 부터 close>OR고 ∧ close>VWAP 첫 봉의 다음 봉 시가 진입, 30봉 뒤 close 청산; 하루 1회 롱.",
+  "코드 그대로: 거래량 0 봉(전체 8,728봉; 그중 15:21~15:29 동시호가 구간 8,172봉, 09:11~15:20 산재 495봉, 09:10 이전 52봉)을 제거한 뒤 인덱스로 30봉을 셈. 하루 390봉 중 보통 381봉만 남음. OR 창(09:01~09:10)에 거래량 0 봉이 있던 날 7일(그중 본 전략 거래일 1일). 본 거래 표본에서는 제거된 봉이 보유 구간에 끼지 않아 시계 기준 보유시간은 평균 30.0분, 중앙 30분, 최대 30분 (15:30 종가로 청산된 거래 0건).",
+  "진입 시각 분포(n=152): 중앙 09:31, 최빈 09:12, 사분위 09:14~10:06; 시간대별 09시대 107건, 10시대 29건, 11시대 6건, 12시대 5건, 13시대 4건, 14시대 1건.",
+  "비용: README 는 비용 미적용. 본 시리즈 net = gross − 2bp/거래(왕복 가정). gross 는 거래일에 거래 수익, 무거래일 0. pos 는 거래일 +1(계좌 100% 노출 가정), 무거래일 0.",
+  "유효 구간: 2024-10-10 ~ 2026-09-23 (KODEX 거래일 478일, 거래 152일). first_valid = 롤링 분위(shift 1)가 처음 정의되어 신호가 판정되는 flow 테이블 행의 날짜(분위 자체가 처음 계산된 날은 직전 행 2024-10-08); 그 전 KODEX 날짜는 NaN. last_valid = flow 자료 마지막 행(2026-09-23); 이후 KODEX 날짜(2026-09-28, 2026-09-29)는 외국인 자료 부재로 신호 미정의 → NaN.",
+  "유효 구간 내 KODEX 거래일 중 flow 테이블에 없는 날 0일 → 코드상 신호 NaN 으로 무거래(0 처리). flow 테이블에는 있으나 KODEX 에 없는 날 0일.",
+  "지표(일수익 기준, net): cum_return=0.0748, cagr=0.0388, ann_vol=0.0535, sharpe=0.7382, mdd=-0.0454, calmar=0.8543, win_rate_active=0.5329, n_days=478, n_nonzero_days=152",
+  "지표(일수익 기준, gross): cum_return=0.1080, cagr=0.0556, ann_vol=0.0536, sharpe=1.0356, mdd=-0.0356, calmar=1.5606, win_rate_active=0.5695, n_days=478, n_nonzero_days=151",
+  "원자료: KODEX 200 1분봉 2023-01-02~2026-09-29 (912일), 코스피200 선물 외국인 매수·매도 2023-09-25~2026-09-23 (728일). 깃의 'KRX foreign_buy/sell.xlsx' 를 코드의 'KRX 외국인 매수/매도.xlsx' 로 간주."
+ ],
+ "reference_only": true,
+ "slot": "C_intraday",
+ "market": "KOSPI",
+ "dropped_off_calendar": [],
+ "full_valid_stats": {
+  "start": "2024-10-10",
+  "end": "2026-09-23",
+  "n_days": 478,
+  "n_active": 152,
+  "cum": 0.07483485358188036,
+  "cagr": 0.038779238041585895,
+  "vol": 0.053470476272563655,
+  "sharpe": 0.7382083680028066,
+  "mdd": -0.045391646057299506,
+  "calmar": 0.8543254411314688,
+  "win": 0.5328947368421053
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

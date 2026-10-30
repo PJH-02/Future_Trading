@@ -1,0 +1,45 @@
+{
+ "slot": "B_open",
+ "market": "KOSPI",
+ "instrument": "KODEX 인버스 (114800) 매수, VT30 배수 (2009-09 이전 합성, syn_114800)",
+ "timing": "intraday_09:00 단일가 → 15:30 종가",
+ "cost_bp": 5,
+ "direction": "short_index_via_inverse_long",
+ "source_files": [
+  "<OUT>\\round11_c3_extend\\kr_inverse\\daily_returns.csv 열 net5|M2|invVT30, w|M2|invVT30, gross|M2|invVT30"
+ ],
+ "notes": "검증 결과를 본 뒤 고른 사후 셀, 포워드 후보. M2: 미국 갭 잔차 하락 → 인버스 ETF 롱. pos = −w (지수 기준 부호). 합성 구간(syn_114800=True) 1665일.",
+ "handle": "beomgu_M2inv",
+ "first_valid": "2003-01-02",
+ "last_valid": "2026-09-22",
+ "n_days": 5856,
+ "n_active": 794,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "window": "2020~2026-09-22",
+   "cagr": 0.112,
+   "mdd": -0.132
+  },
+  "got": {
+   "window": "2020-01-02~2026-09-22",
+   "cagr": 0.11154017314989129,
+   "mdd": -0.1316565986456808,
+   "n_active": 262
+  }
+ },
+ "full_valid_stats": {
+  "start": "2003-01-02",
+  "end": "2026-09-22",
+  "n_days": 5856,
+  "n_active": 794,
+  "cum": 12.348372090759549,
+  "cagr": 0.11797042906166366,
+  "vol": 0.09742602737734801,
+  "sharpe": 1.1931147886626863,
+  "mdd": -0.14678989837062384,
+  "calmar": 0.8036685791811432,
+  "win": 0.5642317380352645
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

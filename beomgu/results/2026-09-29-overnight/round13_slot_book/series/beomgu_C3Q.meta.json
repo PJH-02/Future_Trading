@@ -1,0 +1,45 @@
+{
+ "slot": "B_open",
+ "market": "KOSDAQ",
+ "instrument": "KODEX 코스닥150 (229200) 1배, VT30 배수",
+ "timing": "intraday_09:00 단일가 → 15:30 종가",
+ "cost_bp": 5,
+ "direction": "long_only",
+ "source_files": [
+  "<OUT>\\round9_c3_etfs\\kq150_etfs\\daily_returns.csv 열 net5_KODEX_vt30, w_KODEX_vt30, oc_229200"
+ ],
+ "notes": "C3 를 코스닥150 ETF 로 옮긴 판. gross = w×oc_229200 (net 과 최대 오차 1.44e-02). 첫 유효일 = w 첫 비NaN.",
+ "handle": "beomgu_C3Q",
+ "first_valid": "2016-05-09",
+ "last_valid": "2026-09-22",
+ "n_days": 2547,
+ "n_active": 225,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "window": "2020~2026-09-22",
+   "cagr": 0.068,
+   "mdd": -0.132
+  },
+  "got": {
+   "window": "2020-01-02~2026-09-22",
+   "cagr": 0.06814276334629721,
+   "mdd": -0.13235004340580525,
+   "n_active": 146
+  }
+ },
+ "full_valid_stats": {
+  "start": "2016-05-09",
+  "end": "2026-09-22",
+  "n_days": 2547,
+  "n_active": 225,
+  "cum": 1.8291686302351677,
+  "cagr": 0.10837594848002441,
+  "vol": 0.09366391028147797,
+  "sharpe": 1.1455380477002566,
+  "mdd": -0.13235004340580514,
+  "calmar": 0.8188584279321122,
+  "win": 0.64
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

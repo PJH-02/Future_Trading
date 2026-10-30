@@ -1,0 +1,54 @@
+{
+ "slot": "B_open",
+ "market": "KOSDAQ",
+ "instrument": "KODEX 코스닥150 (229200) + KODEX 코스닥150선물인버스 (251340) 동시 매수",
+ "timing": "intraday_09:00 단일가 → 15:30 종가 단일가",
+ "cost_bp": 5,
+ "direction": "market_neutral_pair",
+ "source_files": [
+  "<OUT>\\round12_ideas\\cross_mkt\\daily_signals.csv 열 r_pairQ_oc, misQ_bp, misI251340_bp",
+  "<OUT>\\round12_ideas\\cross_mkt\\notes.md 16~31행"
+ ],
+ "notes": "사후 탐색, 09:00 단일가 가정, 251340 호가 단위 14~18bp. 신호: misQ_bp ≤ 0 ∧ misI251340_bp ≤ 0. r_pairQ_oc 는 무조건 값(explore.py: ocE + ocI, 비NaN 2484일 vs 신호 281일) → 신호일만 취하고 나머지 0. 주의: r_pairQ_oc = 229200 oc + 251340 oc 두 다리 합(다리당 자본 1배, 명목 2배)이며 notes.md 규약은 페어 10bp. 과제 지시대로 gross=r_pairQ_oc 그대로, net=gross−5bp, pos=+1 로 기록. 자본 반씩 집행 시 자본 대비 수익은 gross/2−5bp (pairQ_half 참조).",
+ "uncond_check": {
+  "n_nonnull": 2484,
+  "n_signal": 281,
+  "mean_bp_all": -2.610305958132045,
+  "mean_bp_signal": 20.370106761565836
+ },
+ "handle": "pairQ",
+ "first_valid": "2016-08-10",
+ "last_valid": "2026-09-29",
+ "n_days": 2484,
+ "n_active": 281,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "window": "2016-01~2026-09 사후",
+   "n": 281,
+   "mean_bp": 20.4,
+   "net_bp_10bp": 10.4
+  },
+  "got": {
+   "n": 281,
+   "mean_bp": 20.370106761565836,
+   "net_bp_5bp": 15.370106761565836,
+   "cagr": 0.04436085227409037,
+   "mdd": -0.009772112970227953
+  }
+ },
+ "full_valid_stats": {
+  "start": "2016-08-10",
+  "end": "2026-09-29",
+  "n_days": 2484,
+  "n_active": 281,
+  "cum": 0.5339559887047209,
+  "cagr": 0.04436085227409037,
+  "vol": 0.028959260722085895,
+  "sharpe": 1.5130200473511777,
+  "mdd": -0.009772112970227953,
+  "calmar": 4.5395353501583156,
+  "win": 0.6298932384341637
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

@@ -1,0 +1,68 @@
+{
+ "handle": "beomgu_FDS_K",
+ "slot": "C_intraday_short",
+ "market": "KOSPI",
+ "instrument": "코스피200 선물 front 숏 (kis_fut_k200_daily front=1, 명목 1x, 증거금 21% 별도)",
+ "timing": "intraday_08:45→15:45 (date = 집행일 T+1, 신호 = T 장 마감 뒤 확정치)",
+ "cost_bp": 1.8,
+ "direction": "short_only",
+ "first_valid": "2011-09-01",
+ "last_valid": "2026-09-28",
+ "n_days": 3703,
+ "n_active": 198,
+ "source_files": [
+  "<raw>\\naver_kospi_investor_daily.csv",
+  "<raw>\\naver_fut_investor_daily.csv",
+  "<raw>\\r15_external\\kis_fut_k200_daily.csv",
+  "<raw>\\etf\\069500.csv",
+  "<code>\\topics\\r15_05_frn_dual_sell.py"
+ ],
+ "repro": {
+  "expected": {
+   "cagr": 0.029475034082065754,
+   "mdd": -0.11271745779591535,
+   "days": 3703,
+   "trades": 198
+  },
+  "got": {
+   "cagr": 0.029475034085903795,
+   "mdd": -0.11271745778697762,
+   "days": 3703,
+   "trades": 198
+  }
+ },
+ "full_valid_stats": {
+  "n_days": 3703,
+  "n_active": 198,
+  "cum": 0.5324363701995325,
+  "cagr": 0.029475034085903795,
+  "vol": 0.05068765800545975,
+  "sharpe": 0.5979209175345194,
+  "mdd": -0.11271745778697762,
+  "mdd_date": "2026-02-26",
+  "calmar": 0.26149484440651644,
+  "worst_day": -0.03621403282,
+  "worst_day_date": "2026-02-03",
+  "loss_run_n": 5,
+  "loss_run_ret": -0.11271745778697762,
+  "win": 0.5606060606060606,
+  "ruin": false
+ },
+ "grade": "reference",
+ "judging": {
+  "common": false,
+  "stress": true,
+  "rho": true,
+  "wall": false,
+  "wlong": true,
+  "y2024": true,
+  "y2025": true,
+  "ex2026": true,
+  "book05": false,
+  "book_rule": false,
+  "passed": false,
+  "grade": "reference"
+ },
+ "notes": "규칙: T 확정치 z_spot(코스피 외인 순매수 원, 250일 t 제외) ≤ −0.84 ∧ z_fut(코스피200 선물 외인 순매수 계약, 250일) ≤ −0.84 → T+1 08:45 front 매도 → 15:45 환매, gross = −ln(close/open), net = gross − 1.8bp, pos = −1(명목 1x). 만기일은 차근월물(front 플래그 규칙). 첫 신호 가능일 2011-09-23, 마지막 신호일 2026-09-23(코스피 투자자별 자료 끝). 사전 등록 판정 reference. 15차 05_frn_dual_sell.",
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

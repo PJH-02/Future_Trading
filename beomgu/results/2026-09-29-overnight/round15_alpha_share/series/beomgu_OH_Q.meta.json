@@ -1,0 +1,48 @@
+{
+ "slot": "B_open_neutral",
+ "market": "KOSDAQ",
+ "instrument": "KODEX 코스닥150 (229200) 롱 1 + 코스닥150 선물 숏 1(지수 헤지 대용)",
+ "timing": "intraday_09:00 단일가 → 15:30 종가(ETF 롱 1 + 선물 숏 1, 지수 헤지 대용)",
+ "cost_bp": 6.8,
+ "direction": "market_neutral",
+ "source_files": [
+  "hyfe/data/raw/etf/229200.csv",
+  "hyfe/data/raw/etf_extra/KQ150_index_kis.csv",
+  "round13_slot_book/series/beomgu_C3Q.csv"
+ ],
+ "notes": "mis = ln(O_etf/O_idx) − 직전 5일 ln(C_etf/C_idx) 중앙 ≤ −10bp, beomgu_C3Q 비활성일만, 09:00 단일가 → 15:30, net = ln차 − 6.8bp",
+ "handle": "beomgu_OH_Q",
+ "first_valid": "2016-01-04",
+ "last_valid": "2026-09-29",
+ "n_days": 2633,
+ "n_active": 1046,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "window": "2016-01-04~2026-09-29",
+   "cagr": 0.2089,
+   "mdd": -0.0142,
+   "n_active": 1046
+  },
+  "got": {
+   "window": "2016-01-04~2026-09-29",
+   "cagr": 0.2088583445021932,
+   "mdd": -0.014210771029223745,
+   "n_active": 1046
+  }
+ },
+ "full_valid_stats": {
+  "start": "2016-01-04",
+  "end": "2026-09-29",
+  "n_days": 2633,
+  "n_active": 1046,
+  "cum": 6.255917028659821,
+  "cagr": 0.2088583445021932,
+  "vol": 0.03411699082430933,
+  "sharpe": 5.5786399893842145,
+  "mdd": -0.014210771029223745,
+  "calmar": 14.697185963568506,
+  "win": 0.765774378585086
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

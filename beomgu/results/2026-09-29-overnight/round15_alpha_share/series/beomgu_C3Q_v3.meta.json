@@ -1,0 +1,40 @@
+{
+ "slot": "B_open",
+ "market": "KOSDAQ",
+ "instrument": "코스닥150 1배 ETF 중 시가 최저 괴리 차량(자격: 20일 거래대금 중앙 ≥ 10억, 자격 ≥ 3, 그룹 중앙 − 최저 ≥ 10bp), 그 외 날 229200",
+ "timing": "intraday_09:00 단일가 → 15:30 종가",
+ "cost_bp": 5,
+ "direction": "long_only",
+ "source_files": [
+  "round13_slot_book/series/beomgu_C3Q.csv",
+  "etf_extra/<8종>.csv",
+  "KQ150_index_kis.csv"
+ ],
+ "notes": "V3: C3Q 활성일 ∩ 신호일 54일(그중 229200 자체가 최저 12일) net += pos×(oc_선택차량 − oc_229200). 단일가 체결량 10% 조건 미검정(자료 없음) → passed=false 전달. 위약 대칭",
+ "handle": "beomgu_C3Q_v3",
+ "first_valid": "2016-05-09",
+ "last_valid": "2026-09-22",
+ "n_days": 2547,
+ "n_active": 225,
+ "dropped_off_calendar": [],
+ "repro": {
+  "W_all": {
+   "cagr": 0.3197189174205637,
+   "mdd": -0.06104565076197521
+  },
+  "원본_대비": "바꾸지 않은 행은 원본과 동일(값이 바뀐 행 42)"
+ },
+ "full_valid_stats": {
+  "start": "2016-05-09",
+  "end": "2026-09-22",
+  "n_days": 2547,
+  "n_active": 225,
+  "cum": 2.146366704901342,
+  "cagr": 0.12009077568639714,
+  "sharpe": 1.2549566397059675,
+  "mdd": -0.13209855732783093
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율",
+ "n_replaced": 54,
+ "n_self_229200": 12
+}

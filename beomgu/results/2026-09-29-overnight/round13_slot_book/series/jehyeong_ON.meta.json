@@ -1,0 +1,48 @@
+{
+ "slot": "A_overnight",
+ "market": "KOSPI",
+ "instrument": "KODEX 200 (069500) 종가 매수 → 익일 시가 매도",
+ "timing": "overnight_close_to_next_open (date=청산일)",
+ "cost_bp": 5,
+ "direction": "long_only",
+ "source_files": [
+  "<repo>\\jehyeong\\overnight\\results\\analysis_output_foreign_preus_pnl\\daily_pnl.csv 열 US_CLOSE_PROXY",
+  "<repo>\\jehyeong\\overnight\\results\\analysis_output_foreign_preus_pnl\\strategy_trade_log.csv",
+  "<repo>\\jehyeong\\overnight\\results\\analysis_output_foreign_preus_pnl\\performance_summary.csv"
+ ],
+ "notes": "미국 종가 기준 보정 proxy(304940·219480) 15:20 지표 > 0 ∧ 직전 거래일 외국인 순매수 > 0 → 종가 매수·익일 시가 매도. 5bp 포함. pos=1 은 trade_log 청산일. gross=net+5bp(청산일).",
+ "handle": "jehyeong_ON",
+ "first_valid": "2021-12-20",
+ "last_valid": "2026-09-28",
+ "n_days": 1166,
+ "n_active": 246,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "cagr": 0.1147933241245198,
+   "mdd": -0.1235368039099412,
+   "days": 1166,
+   "trades": 246
+  },
+  "got": {
+   "cagr": 0.11479332412452115,
+   "mdd": -0.12353680390993826,
+   "days": 1166,
+   "trades": 246
+  }
+ },
+ "full_valid_stats": {
+  "start": "2021-12-20",
+  "end": "2026-09-28",
+  "n_days": 1166,
+  "n_active": 246,
+  "cum": 0.6533604755251052,
+  "cagr": 0.11479332412452115,
+  "vol": 0.11689808446103418,
+  "sharpe": 0.9867765948319902,
+  "mdd": -0.12353680390993826,
+  "calmar": 0.9292236846940661,
+  "win": 0.508130081300813
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

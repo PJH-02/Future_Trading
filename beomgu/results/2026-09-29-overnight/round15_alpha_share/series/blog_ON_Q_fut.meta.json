@@ -1,0 +1,28 @@
+{
+ "handle": "blog_ON_Q_fut",
+ "slot": "A_overnight",
+ "market": "KOSDAQ",
+ "instrument": {
+  "signal": "229200",
+  "long": "233740",
+  "short": "251340"
+ },
+ "timing": "T 15:30 종가 매수(15:20 판단을 종가로 대체) → T+1 09:00 시가 매도, 손익은 T+1 기록",
+ "cost_bp": "롱 밤 ETF 5bp / 인버스 밤 선물 1.8bp",
+ "first_valid": "2016-08-10",
+ "last_valid": "2026-09-29",
+ "n_active": 820,
+ "source_files": "etf/229200.csv, etf/233740.csv, etf_extra/251340.csv, r15_external/kis_fut_kq150_daily.csv(front·next, 08:45 시가·15:45 종가)",
+ "repro": {
+  "n_active": 820,
+  "CAGR": 0.07511978268977804,
+  "MDD": -0.2289635984317503,
+  "비고": "저장 CSV 재계산(유효 구간 전체)"
+ },
+ "notes": "13차 blog_ON_Q 교체본: pos=−1 밤만 코스닥150 선물 front 15:45 매도→익일 08:45 환매(1.8bp, 계약 = T+1 front), 롱 밤 원본 그대로. 창 차이: ETF 15:30 종가→09:00 시가 vs 선물 15:45 종가→08:45 시가(두 번 15분, V4 분해 참조). passed=False",
+ "replaced_from": "blog_ON_Q",
+ "design": "02_kq_short_fut",
+ "created": "2026-10-30",
+ "n_changed_rows": 414,
+ "passed": false
+}

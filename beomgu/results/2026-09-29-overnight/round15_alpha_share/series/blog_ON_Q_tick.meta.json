@@ -1,0 +1,28 @@
+{
+ "handle": "blog_ON_Q_tick",
+ "slot": "A_overnight",
+ "market": "KOSDAQ",
+ "instrument": {
+  "signal": "229200",
+  "long": "233740",
+  "short": "251340"
+ },
+ "timing": "T 15:30 종가 매수(15:20 판단을 종가로 대체) → T+1 09:00 시가 매도, 손익은 T+1 기록",
+ "cost_bp": "ETF 5bp + 인버스 밤 251340 틱 비용(2024 13.6, 2025 14.2, 2026 21.5, 그 외 10bp)",
+ "first_valid": "2016-08-10",
+ "last_valid": "2026-09-29",
+ "n_active": 820,
+ "source_files": "etf/229200.csv, etf/233740.csv, etf_extra/251340.csv",
+ "repro": {
+  "n_active": 820,
+  "CAGR": 0.025991410424587524,
+  "MDD": -0.23869472953341841,
+  "비고": "저장 CSV 재계산(유효 구간 전체)"
+ },
+ "notes": "13차 blog_ON_Q 현실 기준선: pos=−1 밤의 net 에서 251340 연도별 틱 비용 차감(gross 는 원본). 창·시각 원본 그대로.",
+ "replaced_from": "blog_ON_Q",
+ "design": "02_kq_short_fut",
+ "created": "2026-10-30",
+ "n_changed_rows": 414,
+ "passed": false
+}

@@ -1,0 +1,33 @@
+{
+ "handle": "beomgu_USCAL_K",
+ "slot": "A_overnight",
+ "market": "KOSPI",
+ "instrument": "KODEX 200 (069500) 종가 매수 → 익일 시가 매도(발표 밤만)",
+ "timing": "overnight_close_to_next_open (date=청산일, 진입 = 직전 거래일 15:30)",
+ "cost_bp": 5,
+ "direction": "long_only",
+ "first_valid": "2005-01-03",
+ "last_valid": "2026-09-29",
+ "n_days": 5363,
+ "n_active": 655,
+ "source_files": [
+  "hyfe/data/raw/etf/069500.csv",
+  "round15_alpha_share/04_us_calendar/calendar_fomc.csv",
+  "calendar_bls_cpi.csv",
+  "calendar_bls_emp.csv"
+ ],
+ "repro": {
+  "expected": {
+   "cagr": 0.016108653325797917,
+   "mdd": -0.21866981031502952,
+   "trades": 655
+  },
+  "got": {
+   "cagr": 0.016108656110578767,
+   "mdd": -0.21866982244293587,
+   "trades": 655
+  }
+ },
+ "verdict": "reference",
+ "notes": "진입일 ∈ A(FOMC 성명일 ∪ BLS CPI 발표일 ∪ 고용 발표일, 미국 달력일 = 한국 거래일) 이면 069500 종가 매수 → 익일 시가 매도, 왕복 5bp. gross = 단순 수익 O_{t'}/C_t − 1. A∩H(미국 휴장) 밤도 포함."
+}

@@ -1,0 +1,48 @@
+{
+ "slot": "B_open_neutral",
+ "market": "KOSPI",
+ "instrument": "KODEX 200 (069500) 롱 1 + 코스피200 미니선물 숏 1(지수 헤지 대용)",
+ "timing": "intraday_09:00 단일가 → 15:30 종가(ETF 롱 1 + 선물 숏 1, 지수 헤지 대용)",
+ "cost_bp": 6.8,
+ "direction": "market_neutral",
+ "source_files": [
+  "hyfe/data/raw/etf/069500.csv",
+  "hyfe/data/raw/etf/KPI200.csv",
+  "round13_slot_book/series/beomgu_C3VT30.csv"
+ ],
+ "notes": "mis = ln(O_etf/O_idx) − 직전 5일 ln(C_etf/C_idx) 중앙 ≤ −10bp, beomgu_C3VT30 비활성일만, 09:00 단일가 → 15:30, net = ln차 − 6.8bp",
+ "handle": "beomgu_OH_K",
+ "first_valid": "2014-07-08",
+ "last_valid": "2026-09-29",
+ "n_days": 3000,
+ "n_active": 679,
+ "dropped_off_calendar": [],
+ "repro": {
+  "expected": {
+   "window": "2014-07-08~2026-09-29",
+   "cagr": 0.0764,
+   "mdd": -0.008,
+   "n_active": 679
+  },
+  "got": {
+   "window": "2014-07-08~2026-09-29",
+   "cagr": 0.0763786279571923,
+   "mdd": -0.008038749783827015,
+   "n_active": 679
+  }
+ },
+ "full_valid_stats": {
+  "start": "2014-07-08",
+  "end": "2026-09-29",
+  "n_days": 3000,
+  "n_active": 679,
+  "cum": 1.401798119641001,
+  "cagr": 0.0763786279571923,
+  "vol": 0.02038572989215534,
+  "sharpe": 3.621141193038187,
+  "mdd": -0.008038749783827015,
+  "calmar": 9.501306796593768,
+  "win": 0.7496318114874816
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}

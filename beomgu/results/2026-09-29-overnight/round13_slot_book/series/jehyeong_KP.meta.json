@@ -1,0 +1,53 @@
+{
+ "slot": "C_intraday",
+ "market": "KOSPI",
+ "instrument": "KOSPI200 레버리지 ETF 장중 모멘텀 (분봉, 거래소 TOSS 소스)",
+ "timing": "intraday_09:30~15:20 (거래일 당일 기록)",
+ "cost_bp": "수수료 1.5bp + 슬리피지 1bp (편도, 원 결과에 포함)",
+ "source_files": [
+  "<repo>\\jehyeong\\intraday\\results\\final\\KOSPI200\\daily_pnl.csv 열 daily_return",
+  "<repo>\\jehyeong\\intraday\\results\\final\\KOSPI200\\trades.csv",
+  "<repo>\\jehyeong\\intraday\\results\\final\\performance_summary.csv"
+ ],
+ "notes": "원 파일 행 862 = 평가일수. KRX 달력에 있으나 원 파일에 없는 날(품질 검사 제외일 등)은 0 으로 채움 → 유효 구간 일수가 늘어 full_valid_stats CAGR 이 원 수치보다 낮음(repro 는 원 행 기준). pos = Σ(direction×leverage) 당일 거래(하루 2건이면 합). gross = gross_pnl/start_equity. 달력(~2026-09-29) 밖 행은 버림. 옵션 {\"cooldown_minutes\": 0, \"direction_filter\": 1, \"entry_confirmation\": \"none\", \"entry_cutoff\": null, \"exit_policy\": \"normal\", \"exposure_cap\": null, \"max_daily_entries\": 1, \"minute_safety_stop_k\": null, \"sizing_mode\": \"full\"}",
+ "handle": "jehyeong_KP",
+ "first_valid": "2022-12-13",
+ "last_valid": "2026-09-29",
+ "n_days": 925,
+ "n_active": 279,
+ "dropped_off_calendar": [
+  "2026-09-30",
+  "2026-10-01",
+  "2026-10-02",
+  "2026-10-06",
+  "2026-10-07"
+ ],
+ "repro": {
+  "expected": {
+   "cagr": 0.0822848789556605,
+   "mdd": -0.0446926948516634,
+   "days": 862,
+   "trades": 280
+  },
+  "got": {
+   "cagr": 0.08228487895566095,
+   "mdd": -0.04469269485166327,
+   "days": 862,
+   "trades": 280
+  }
+ },
+ "full_valid_stats": {
+  "start": "2022-12-13",
+  "end": "2026-09-29",
+  "n_days": 925,
+  "n_active": 279,
+  "cum": 0.30229085228057473,
+  "cagr": 0.07460826559130718,
+  "vol": 0.08180917157537505,
+  "sharpe": 0.9201568630332345,
+  "mdd": -0.04469269485166327,
+  "calmar": 1.6693615329962717,
+  "win": 0.40860215053763443
+ },
+ "metric_defs": "누적=Π(1+r); CAGR=누적^(252/일수)-1; 연변동성=std(ddof=1)·√252(0 포함); 샤프=mean·252/vol; MDD=min(누적/누적최고-1); 승률=pos≠0 일 중 net>0 비율"
+}
