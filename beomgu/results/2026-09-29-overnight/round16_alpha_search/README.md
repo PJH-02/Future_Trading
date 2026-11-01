@@ -2,6 +2,8 @@
 
 2026-10-31 기준. 목표 CAGR 30% 이상 ∧ MDD 15% 미만. 자료 2022-11~2026-09(4절 두 전략은 ~2026-10-30), 수치는 비용 차감 후 백테스트.
 
+![16차 최종 결과 표](final_summary.png)
+
 ## 1 결론
 
 • 사전 등록 목표를 봉인 구간까지 넘긴 장부는 없다. 사전 규칙상 최종 전략 없음.
@@ -130,6 +132,7 @@
 ## 7 파일
 
 • series/: 상위 3개(QC_Df = 코스닥 5분봉 장중 전략, X_MRq = 코스닥 과매도 구간 스윙트레이딩, X_K2 = 코스피 낮 숏)와 장부(P1, P2, P3) 일수익. 열 date,pos,gross,net, 자본 1 기준, 밤 손익은 청산일 기록. 끝은 2026-09-29 다.
+• final_summary.png: 단독 알파 2개, 장부 P1~P3 최종 결과 표 한 장.
 • priority_two_tables.md: 4절 표 전체.
 • legs.csv, books.csv, book_yearly.csv, contributions.csv: 창·비용별 수치.
 • 코드: ../../../overnight_lab/topics/ 의 r16_eval_legs.py, r16_eval.py, r16_share_series.py, r16p_backtest.py 와 r16s_*.py.
