@@ -272,12 +272,12 @@ def metrics(cum: pd.Series, net: pd.Series) -> dict:
     win_rate = (net[net != 0] > 0).mean()
     n_trades = int((net != 0).sum())
     return {
-        "연환산수익률": f"{ann_ret:+.2%}",
-        "연변동성":     f"{ann_vol:.2%}",
-        "샤프지수":     f"{sharpe:+.3f}",
-        "최대낙폭":     f"{max_dd:.2%}",
-        "승률":         f"{win_rate:.2%}",
-        "거래횟수":     n_trades,
+        "CAGR":     f"{ann_ret:+.2%}",
+        "연변동성":  f"{ann_vol:.2%}",
+        "샤프지수":  f"{sharpe:+.3f}",
+        "최대낙폭":  f"{max_dd:.2%}",
+        "승률":      f"{win_rate:.2%}",
+        "거래횟수":  n_trades,
     }
 
 
@@ -359,7 +359,7 @@ def main():
         print("=" * 68)
         print(tabulate(perf, headers="keys", tablefmt="simple",
                        stralign="right", numalign="right"))
-        print("=" * 68)
+        print("=" * 70)
     except ImportError:
         print(perf.to_string())
 
