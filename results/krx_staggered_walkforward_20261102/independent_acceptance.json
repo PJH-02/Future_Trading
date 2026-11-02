@@ -1,0 +1,18 @@
+{
+  "decision": "PASS",
+  "scope": "counterfactual strategy availability, causal allocation WF, daily TWR + budget-delta resize proxy",
+  "full_runtime_exit": 0,
+  "period_start": "2010-02-22",
+  "period_end": "2026-09-17",
+  "sessions": 4080,
+  "main_cases": 10,
+  "sensitivity_cases": 20,
+  "metric_max_error": 1.4432899320127035e-14,
+  "accepted_training_solutions_verified": 15300,
+  "worst_training_constraint_margin": -1.3367777704220707e-08,
+  "future_or_untrained_strategy_allocations": "ZERO",
+  "accounts_funding_fees": "PASS",
+  "original_files_preserved": true,
+  "worker_status": "gpt-6-luna partial implementation; usage limit; lead bounded admission-rule repair per latest user choice",
+  "source_sha256": "e58a3ccd83e4632889286392956618b5274bcf1604e9a85066d2b5c97949323b"
+}

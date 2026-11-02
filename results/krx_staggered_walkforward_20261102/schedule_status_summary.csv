@@ -1,0 +1,20 @@
+method,mdd_cap,solver_status_origin,days
+CONVEX,0.05,cache_hit_optimal,2405
+CONVEX,0.05,cache_hit_optimal_inaccurate,15
+CONVEX,0.05,optimized_optimal,1371
+CONVEX,0.05,optimized_optimal_inaccurate,27
+CONVEX,0.05,"solver_failure_hold:solver:Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.",11
+CONVEX,0.05,warmup_cash,251
+CONVEX,0.1,cache_hit_optimal,2405
+CONVEX,0.1,cache_hit_optimal_inaccurate,16
+CONVEX,0.1,optimized_optimal,1374
+CONVEX,0.1,optimized_optimal_inaccurate,29
+CONVEX,0.1,"solver_failure_hold:solver:Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.",5
+CONVEX,0.1,warmup_cash,251
+EW,0.0,equal_weight,4080
+LP,0.05,cache_hit_optimal,2421
+LP,0.05,optimized_optimal,1408
+LP,0.05,warmup_cash,251
+LP,0.1,cache_hit_optimal,2421
+LP,0.1,optimized_optimal,1408
+LP,0.1,warmup_cash,251

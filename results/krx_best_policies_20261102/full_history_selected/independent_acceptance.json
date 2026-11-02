@@ -1,0 +1,19 @@
+{
+  "decision": "PASS",
+  "runtime_exit": 0,
+  "metric_check_max_abs_error": 7.194245199571014e-14,
+  "main_portfolio_rows": 10,
+  "source_trade_costs": "1.5bpfee +1bpslip perbuy/sell",
+  "rebalance_proxy_fee_slippage": "PASS",
+  "nonnegative_accounts": "PASS",
+  "market_pnl_minus_cost_equals_book_nav_change": "PASS",
+  "selected_all_3_S0": "PASS",
+  "target_budget": "PASS",
+  "historical_feasible_daily_solutions_verified": 753,
+  "worst_drawdown_constraint_margin": -1.5265566588595902e-16,
+  "original_code_docs_preserved": true,
+  "convex_solver_failures_hold_target": {
+    "0.05": 4,
+    "0.1": 3
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schedule_key": "ba98fce202231e09b038b43b12b4244beb44d248a40275cfaf28f47470a2fb7b",
+  "inputs": {
+    "code_sha256": "e58a3ccd83e4632889286392956618b5274bcf1604e9a85066d2b5c97949323b",
+    "kernel_version": "staggered-v2-mature-only",
+    "source_provenance": {
+      "beomgu_c3_vt30_etf": {
+        "path": "/home/pjh/projects/Future_Trading/beomgu/results/2026-09-29-overnight/round5_strategy/c3_levered/daily_returns.csv",
+        "sha256": "4e04340f333a4194822babb94f863cbf001a66da4176ebd1b39903adf06a01a6",
+        "rows": 5856,
+        "return_col": "net5_chosen",
+        "source_code_path": "/home/pjh/projects/Future_Trading/beomgu/overnight_lab/topics/r5_c3_levered.py",
+        "source_code_sha256": "baedc8ba6165c15eda4b9cd3a07bd00dfe9c9e17030d2441410a57276365464a",
+        "label": "beomgu C3|VT30|ETF",
+        "provenance": "Saved chosen series; includes pre-launch synthetic leveraged history per source limitations.",
+        "can_adjust_leverage": false
+      },
+      "woohyun_top40_orb_vwap_30": {
+        "trades_path": "/home/pjh/projects/Future_Trading/woohyun/Results/flow_top20_30_40_strategy_trades.csv",
+        "trades_sha256": "28027f4a5d01cef62e6ce95214bb3da396e8aafdcdc18c68e22fab238bbc2214",
+        "calendar_path": "/home/pjh/projects/Future_Trading/woohyun/data/KODEX200_1min_2023_2026.csv",
+        "calendar_sha256": "36def7c1660606d776113eb73ed4691058d8cae642f79addebd0ac94df7cbb12",
+        "foreign_buy_path": "/home/pjh/projects/Future_Trading/woohyun/data/KRX foreign_buy.xlsx",
+        "foreign_buy_sha256": "a24f1e9e4178602e3aecc5807415a36cf42bc89122c310fab7d20cb8d103bf24",
+        "foreign_sell_path": "/home/pjh/projects/Future_Trading/woohyun/data/KRX foreign_sell.xlsx",
+        "foreign_sell_sha256": "01b1cf3bd1e0a3209c96a08bc59f584ad23c9460ec514d765ed30eab8a161287",
+        "trades": 152,
+        "cost_bps_each_side": 2.5,
+        "holding_bars": 30,
+        "source_code_path": "/home/pjh/projects/Future_Trading/woohyun/Results/vwap+orb+flow40%.py",
+        "source_code_sha256": "e6ab39e48a6577e46067236821f85e50e3eed3b384dab2e88f906dad36f5a041",
+        "label": "woohyun Top40 ORB/VWAP 30m",
+        "provenance": "Positive-volume minute calendar; gross trade returns less configured round-trip cost.",
+        "can_adjust_leverage": false
+      },
+      "sunny_strategy_c": {
+        "path": "/home/pjh/projects/Future_Trading/sunny/intraday_strategy_C/output/strategy3_signals.csv",
+        "sha256": "1bd52bc341480c755e4a7d43a900c74e3970775ef0c94f1eea232074560d81f6",
+        "rows": 4114,
+        "return_col": "oc_ret*pos_C-0.0003*abs(pos_C)",
+        "source_code_path": "/home/pjh/projects/Future_Trading/sunny/intraday_strategy_C/strategy3_smart_vs_dumb.py",
+        "source_code_sha256": "a0c6227473715167b60ef8f2ac50c1d07aff12f60f616c07c84a4925b3927617",
+        "label": "sunny Strategy C",
+        "provenance": "Saved full signal/price history; index/mini-futures proxy, not physical ETF fills.",
+        "can_adjust_leverage": false
+      },
+      "daynight_v1_combined": {
+        "path": "/home/pjh/projects/Future_Trading/jehyeong/daynight/results/daily_nav.csv",
+        "sha256": "72b8563657daf2b0565efbcebde3ed7a2fd0c12e9ab1a52c27bea788c121ae0c",
+        "rows": 944,
+        "return_col": "daily_return",
+        "orders_path": "/home/pjh/projects/Future_Trading/jehyeong/daynight/results/orders.csv",
+        "orders_sha256": "2feb0a34c1e5b2fb005e515a181eb735b6df7de0e232530d875df1fdb35f3383",
+        "source_code_path": "/home/pjh/projects/Future_Trading/jehyeong/daynight/backtest_daynight.py",
+        "source_code_sha256": "9381697328e0ddb9bf30fb8c5f7194db3abae06b58b6021b1fd5a44463935675",
+        "label": "jehyeong daynight V1 combined",
+        "provenance": "Saved V1 combined account NAV and immutable trade/order ledger.",
+        "can_adjust_leverage": true
+      },
+      "intraday_kospi_final": {
+        "path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/results/final/KOSPI200/daily_pnl.csv",
+        "sha256": "d99831f6f0d67f2364b787c0ee575bb54b6f3f87d7dfb381dc0057df8169e3bf",
+        "rows": 862,
+        "return_col": "daily_return",
+        "orders_path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/results/final/KOSPI200/orders.csv",
+        "orders_sha256": "df8e9b0bf00da4bced353ab84822a1ab38182e8e5fd48fe33655ecd324dd762b",
+        "source_code_path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/code/backtest_intraday_momentum.py",
+        "source_code_sha256": "91782e27331a3a02a08425a4eb4b9c0ed22febc41feca4ba8f52bbec7efe1bba",
+        "label": "jehyeong intraday final KOSPI200",
+        "provenance": "Saved final daily P&L/trade/order ledgers; selected_rules used full sample through 2026-10-07.",
+        "can_adjust_leverage": true
+      },
+      "intraday_kosdaq_final": {
+        "path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/results/final/KOSDAQ150/daily_pnl.csv",
+        "sha256": "40ac3edb35a06da72613c8b0ae745821125743dd415e9b687d78be4d60bc0e85",
+        "rows": 881,
+        "return_col": "daily_return",
+        "orders_path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/results/final/KOSDAQ150/orders.csv",
+        "orders_sha256": "00da88c18672102c9248dbad540b1ecaa363226c8683013b29a42fafa664e2f0",
+        "source_code_path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/code/backtest_intraday_momentum.py",
+        "source_code_sha256": "91782e27331a3a02a08425a4eb4b9c0ed22febc41feca4ba8f52bbec7efe1bba",
+        "label": "jehyeong intraday final KOSDAQ150",
+        "provenance": "Saved final daily P&L/trade/order ledgers; no physical inverse-2x exists, cap short-side leverage at 1x.",
+        "can_adjust_leverage": true
+      }
+    },
+    "etf_minute_inputs": {
+      "251340": {
+        "path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/data/minute/251340_TOSS_1m.csv",
+        "sha256": "eb96010c6a0e19e84b3bb679fe539d63b9e1161ad1044a3b72f5190d2e97ccc6",
+        "rows": 368040
+      },
+      "233740": {
+        "path": "/home/pjh/projects/Future_Trading/jehyeong/intraday/data/minute/233740_TOSS_1m.csv",
+        "sha256": "5a10dd14973c7dd5df987bff087de2e308e374b9e54fdce8939551af768c8f2d",
+        "rows": 368430
+      }
+    },
+    "gap_matrix_sha256": "418ff9174e53f7a2e5431b2ab05d3f4dab55bbb5ded7d8faa364ec9ccf1168f3",
+    "developed_from": {
+      "beomgu_c3_vt30_etf": "2010-02-22",
+      "woohyun_top40_orb_vwap_30": "2024-10-10",
+      "sunny_strategy_c": "2010-03-31",
+      "daynight_v1_combined": "2022-11-23",
+      "intraday_kospi_final": "2022-12-13",
+      "intraday_kosdaq_final": "2022-12-13"
+    },
+    "new_strategy_rule": "mature_only",
+    "min_observations": 252,
+    "mdd_caps": [
+      0.05,
+      0.1
+    ],
+    "bands": [
+      0.05,
+      0.1
+    ],
+    "start": "2010-02-22",
+    "end": "2026-09-17",
+    "commission_bps": 1.5,
+    "slippage_bps": 1.0,
+    "resize_cost_basis": "sum(abs(sleeve budget delta))*(fee+slippage); cash transfer free"
+  },
+  "method": "LP",
+  "cap": 0.1,
+  "registry_ids": [
+    "beomgu_c3_vt30_etf",
+    "woohyun_top40_orb_vwap_30",
+    "sunny_strategy_c",
+    "daynight_v1_combined",
+    "intraday_kospi_final",
+    "intraday_kosdaq_final"
+  ]
+}

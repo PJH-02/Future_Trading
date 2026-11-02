@@ -1,0 +1,34 @@
+{
+  "selection_window": "full-history",
+  "selection_metric": "CALMAR",
+  "selection": "exploratory ex-post maximum CALMAR",
+  "period_start": "2022-11-23",
+  "period_end": "2026-09-17",
+  "selection_periods_by_team": {
+    "daynight_v1_combined": {
+      "policy": "S0",
+      "start": "2022-11-23",
+      "end": "2026-09-17",
+      "sessions": 933
+    },
+    "intraday_kospi_final": {
+      "policy": "S0",
+      "start": "2022-12-13",
+      "end": "2026-09-17",
+      "sessions": 919
+    },
+    "intraday_kosdaq_final": {
+      "policy": "S0",
+      "start": "2022-12-13",
+      "end": "2026-09-17",
+      "sessions": 919
+    }
+  },
+  "portfolio_evaluation_start": "2025-12-09",
+  "portfolio_evaluation_end": "2026-09-17",
+  "selected": {
+    "daynight_v1_combined": "S0",
+    "intraday_kospi_final": "S0",
+    "intraday_kosdaq_final": "S0"
+  }
+}
