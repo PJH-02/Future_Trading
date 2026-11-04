@@ -1,3 +1,5 @@
+**최우수 전략(2026.11.4): [00_최우수_15차v3_실행판_CAGR42.8_MDD8.2/](00_최우수_15차v3_실행판_CAGR42.8_MDD8.2/)** 전체 2022.12.13~2026.9.17(919일) CAGR 42.84% / MDD −8.24%(실행 체결, 기본 비용), 봉인 2025.1.2~2026.9.17(417일) 53.71% / −7.62%. 17차 전체 표(13차 ETF 장부 포함)는 [round17_exec_books 폴더](results/2026-09-29-overnight/round17_exec_books/)에 있다.
+
 # 백테스트 개요 — 옵션 레그
 
 **검증한 것.** 전일 KOSPI200 옵션시장 외국인 콜/풋 매수세가 다음날 KOSPI200 현물 방향(시가→종가)을 예측하는가.
@@ -74,6 +76,8 @@
 | `results/2026-09-29-overnight/round3_D2/` | D2 3차 디벨롭: 사양(`spec.json`)·탐색 메모와 변형 목록·2003~2009 자료 품질·판정 보고(`report.md`). 코드 `overnight_lab/topics/r3_d2.py`, `overnight_lab/tools/preopen_d2_*.py` |
 | `results/2026-09-29-overnight/strategy_d2_2010_2026/` | D2 3차 셀 전략 백테스트 2010~2026: `report.md`(구간·연도별 표), `equity.png`, `daily_returns.csv`, `summary.csv`, `yearly.csv`. 코드 `overnight_lab/topics/bt_d2_2010_2026.py` |
 | `results/2026-09-29-overnight/round5_strategy/` | 5차 전략 탐색 5갈래(C3 집행 개선·레버리지, 일봉 스윙, 장중 분봉, 종가 베팅, 수급 결합): 갈래별 `report.md`·`grid.csv`(시도한 변형 전부)·`daily_returns.csv`·`trades.csv`·`equity.png`, 팀 공유 페이지 `팀공유_C3-VT30_2026-10-05.html`. 코드 `overnight_lab/topics/r5_*.py` |
+| `00_최우수_15차v3_실행판_CAGR42.8_MDD8.2/` | 최우수 전략 요약(`README.md`)과 15차 v3 실행판 일수익 csv. 17차에서 체결 규약을 실행 가능하게 바꾼 결과 |
+| `results/2026-09-29-overnight/round17_exec_books/` | 17차 실행판 장부: 13차·15차 v3 의 체결 규약 변경 표(`README.md`), `notes.md`, books·legs·waterfall·sensitivity·yearly csv, 일수익 `daily_13_exec.csv`·`daily_15_exec.csv`·`daily_15_exec_long.csv`, 아침 다리 거래 `c3_exec_trades.csv`, `verify/` 재계산·반박 검토 csv. 코드 `overnight_lab/topics/r17_exec_books.py`, `r17_final_table.py` |
 | `data/etf/` | 네이버 siseJson 분배 수정주가 일봉(069500·229200·102110·091160·122630·233740·360750·133690·219480·114800·123310), 네이버 fchart 코스피200 지수(KPI200)·선물 연결(FUT) |
 | `data/naver_kospi_investor_daily.csv`, `data/naver_kosdaq_investor_daily.csv` | 코스피·코스닥 현물 투자자별 일별(네이버) |
 | `data/naver_program_daily.csv`, `data/naver_kosdaq_program_daily.csv` | 코스피·코스닥 프로그램 매매 일별(차익·비차익, 네이버) |
