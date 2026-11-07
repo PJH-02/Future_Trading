@@ -81,6 +81,7 @@
 | `data/etf/` | 네이버 siseJson 분배 수정주가 일봉(069500·229200·102110·091160·122630·233740·360750·133690·219480·114800·123310), 네이버 fchart 코스피200 지수(KPI200)·선물 연결(FUT) |
 | `data/naver_kospi_investor_daily.csv`, `data/naver_kosdaq_investor_daily.csv` | 코스피·코스닥 현물 투자자별 일별(네이버) |
 | `data/naver_program_daily.csv`, `data/naver_kosdaq_program_daily.csv` | 코스피·코스닥 프로그램 매매 일별(차익·비차익, 네이버) |
+| `data/kis/` | 한국투자증권 Open API 원자료: 코스피200·코스닥150 선물 일봉(계약별, front·next 표시), 코스닥150 선물 1분봉 2025.10.22\~2026.10.29, 코스피200 선물 1분봉 2025.9.22\~2026.10.29, 코스피200·코스닥150 지수 일봉, ETF NAV·괴리율, VKOSPI. 설명은 [data/kis/README.md](data/kis/README.md) |
 | `data/spx_daily.csv`, `data/ndx_comp_daily.csv`, `data/es_daily.csv`, `data/nq_daily.csv` | S&P500·나스닥 종합 지수, S&P500·나스닥100 선물 연결 일봉(미국 날짜) |
 
 재현: `cd opt_flow_study && python run_study.py --steps 1-8 --raw-dir ../data`
